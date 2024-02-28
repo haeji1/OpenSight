@@ -50,6 +50,7 @@ dependencies {
     implementation 'software.amazon.awssdk:rekognition'
 
 
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 dependencyManagement {
