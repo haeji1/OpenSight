@@ -12,7 +12,7 @@ public class OauthProvider {
     private final String tokenUrl;
     private final String userInfoUrl;
 
-    public OauthProvider(OauthProperties.User user, OauthProperties.Provider   rovider) {
+    public OauthProvider(OauthProperties.User user, OauthProperties.Provider provider) {
         this(user.getClientId(), user.getClientSecret(), user.getRedirectUri(), provider.getTokenUri(), provider.getUserInfoUri());
     }
 
