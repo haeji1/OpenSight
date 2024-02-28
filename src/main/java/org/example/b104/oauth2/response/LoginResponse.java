@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @RequiredArgsConstructor
 @NoArgsConstructor
-@AllArgsConstructor
+
 public class LoginResponse {
     private Long id;
     private String name;
@@ -17,4 +17,14 @@ public class LoginResponse {
     private String accessToken;
     private String refreshToken;
 
+    @Builder
+    public LoginResponse(Long id, String name, String email, String nickname, String tokenType, String accessToken, String refreshToken) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.nickname = nickname;
+        this.tokenType = tokenType;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
 }
