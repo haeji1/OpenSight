@@ -20,6 +20,7 @@ public class OauthRestController {
     public ResponseEntity<LoginResponse> login(@PathVariable String provider, @RequestParam("code") String code) {
         System.out.println("provider : " + provider + ", code : " + code);
         LoginResponse loginResponse = oauthService.login(provider, code);
+        System.out.println("longinResponse 토큰 : "+loginResponse.getAccessToken());
         return ResponseEntity.ok().body(loginResponse);
     }
 }

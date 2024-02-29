@@ -57,13 +57,16 @@ public class OauthService {
 
     // 가져온 유저 정보 DB에 저장
     private UserProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse, OauthProvider provider) {
+        System.out.println("*****start******");
         Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
+        System.out.println("*******userAttrivutes:*********"+userAttributes);
         // 유저 정보(map)를 통해 UserProfile 만들기
         return OauthAttributes.extract(providerName, userAttributes);
     }
 
     // OAuth 서버에서 유저 정보 map으로 가져오기
     private Map<String, Object> getUserAttributes(OauthProvider provider, OauthTokenResponse tokenResponse) {
+        System.out.println("====== webClient 통신====="+provider+tokenResponse);
         return  WebClient.create()
                 .get()
                 .uri(provider.getUserInfoUrl())
