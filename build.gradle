@@ -51,6 +51,15 @@ dependencies {
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // jwt 토큰 DatatypeConverter 설정
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+
+    // com.sun.xml.bind
+    implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
+    implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
+    // javax.xml.bind
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 }
 
 dependencyManagement {
