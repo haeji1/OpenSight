@@ -4,10 +4,7 @@ package org.example.b104.oauth2.response;
 import lombok.*;
 
 @Getter
-@Builder
-@RequiredArgsConstructor
 @NoArgsConstructor
-
 public class LoginResponse {
     private Long id;
     private String name;
