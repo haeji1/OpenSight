@@ -15,10 +15,11 @@ public class OauthRestController {
 
     private final OauthService oauthService;
 
-    @GetMapping("/login/oauth/{provider}")
-    public ResponseEntity<LoginResponse> login (@PathVariable String provider, @RequestParam String code) {
+
+    @GetMapping("/login/oauth2/code/{provider}")
+    public ResponseEntity<LoginResponse> login(@PathVariable String provider, @RequestParam("code") String code) {
+        System.out.println("provider : " + provider + ", code : " + code);
         LoginResponse loginResponse = oauthService.login(provider, code);
         return ResponseEntity.ok().body(loginResponse);
     }
-
 }
