@@ -28,6 +28,7 @@ public class OauthService {
 
     private final UserRepository userRepository;
     public LoginResponse login(String providerName, String code) {
+        System.out.println("========="+providerName);
 
         // 프론트에서 providerName 받아 InMemoryProviderRepository에서 OauthPRovider 가져오기
         OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
@@ -41,8 +42,17 @@ public class OauthService {
         User user = saveOrUpdate(userProfile);
 
         // JWT 토큰 만들기
-//        String accessToken
-        return null;
+        String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
+        String refreshToken = jwtTokenProvider.createRefreshToken();
+
+        return LoginResponse.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .tokenType("Bearer")
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
     }
 
     // 가져온 유저 정보 DB에 저장
