@@ -1,9 +1,12 @@
 package org.example.b104.oauth2.sevice;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
 import org.example.b104.oauth2.*;
+import org.example.b104.oauth2.entity.Auth;
+import org.example.b104.oauth2.repository.AuthRepository;
 import org.example.b104.oauth2.response.LoginResponse;
 import org.example.b104.oauth2.response.OauthTokenResponse;
 import org.springframework.core.ParameterizedTypeReference;
@@ -27,14 +30,22 @@ public class OauthService {
     private final InMemoryProviderRepository inMemoryProviderRepository;
 
     private final UserRepository userRepository;
+
+    private final AuthRepository authRepository;
     public LoginResponse login(String providerName, String code) {
         System.out.println("========="+providerName);
 
         // 프론트에서 providerName 받아 InMemoryProviderRepository에서 OauthProvider 가져오기
         OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
 
-        // 1. accessToken 가져오기
+        // 1. jwtToken 가져오기
         OauthTokenResponse tokenResponse = getToken(code, provider);
+        System.out.println("****tokenResponse****"+tokenResponse.getAccessToken());
+        OauthTokenResponse.builder()
+                .accessToken(tokenResponse.getAccessToken())
+                .tokenType(tokenResponse.getTokenType())
+                .scope(tokenResponse.getScope());
+
         // 2. 유저 정보 가져오기
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
 
@@ -42,16 +53,26 @@ public class OauthService {
         User user = saveOrUpdate(userProfile);
         System.out.println("===유저정보 출력==="+user.getName()+user.getEmail());
 
+
         // JWT 토큰 만들기
-        String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
+        String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
+        Auth auth = Auth.builder()
+                .user(user)
+                .refreshToken(refreshToken)
+                .build();
+
+        saveOrUpdate(auth, user);
+
+        System.out.println("jwt토큰"+jwtToken);
         return LoginResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .tokenType("Bearer")
-                .accessToken(accessToken)
+                .accessToken(tokenResponse.getAccessToken())
+                .jwtToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -107,5 +128,15 @@ public class OauthService {
                         userProfile.getName(), userProfile.getEmail()))
                 .orElseGet(userProfile::toUser);
     return userRepository.save(user);
+    }
+
+    private Auth saveOrUpdate(Auth authorization, User user) {
+        Auth auth = authRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new EntityNotFoundException());
+        Auth.builder()
+                .user(user)
+                .refreshToken(auth.getRefreshToken())
+                .build();
+        return authRepository.save(auth);
     }
 }
