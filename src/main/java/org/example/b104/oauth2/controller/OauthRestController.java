@@ -15,12 +15,11 @@ public class OauthRestController {
 
     private final OauthService oauthService;
 
-
     @GetMapping("/login/oauth2/code/{provider}")
     public ResponseEntity<LoginResponse> login(@PathVariable String provider, @RequestParam("code") String code) {
         System.out.println("provider : " + provider + ", code : " + code);
         LoginResponse loginResponse = oauthService.login(provider, code);
-        System.out.println("longinResponse 토큰 : "+loginResponse.getAccessToken());
+        System.out.println("longinResponse 토큰 : "+loginResponse.getJwtToken());
         return ResponseEntity.ok().body(loginResponse);
     }
 }
