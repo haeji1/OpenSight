@@ -30,7 +30,7 @@ public class OauthService {
     public LoginResponse login(String providerName, String code) {
         System.out.println("========="+providerName);
 
-        // 프론트에서 providerName 받아 InMemoryProviderRepository에서 OauthPRovider 가져오기
+        // 프론트에서 providerName 받아 InMemoryProviderRepository에서 OauthProvider 가져오기
         OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
 
         // 1. accessToken 가져오기
@@ -40,6 +40,7 @@ public class OauthService {
 
         // 3. 유저 DB에 저장
         User user = saveOrUpdate(userProfile);
+        System.out.println("===유저정보 출력==="+user.getName()+user.getEmail());
 
         // JWT 토큰 만들기
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
