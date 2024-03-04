@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.user.entity.User;
 
 @Getter
+@Builder
 @RequiredArgsConstructor
 @Table(name = "auth")
 @Entity
