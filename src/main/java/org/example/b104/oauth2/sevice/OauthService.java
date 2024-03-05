@@ -1,6 +1,5 @@
 package org.example.b104.oauth2.sevice;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
@@ -132,11 +131,8 @@ public class OauthService {
 
     private Auth saveOrUpdate(Auth authorization, User user) {
         Auth auth = authRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new EntityNotFoundException());
-        Auth.builder()
-                .user(user)
-                .refreshToken(auth.getRefreshToken())
-                .build();
+                .orElse(Auth.builder().user(user).build()); // 사용자를 찾지 못하면 새로운 Auth 엔티티 생성
+        auth.updateRefresh(authorization.getRefreshToken()); // 새로운 refresh token으로 갱신
         return authRepository.save(auth);
     }
 }
