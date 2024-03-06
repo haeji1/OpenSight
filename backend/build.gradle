@@ -60,6 +60,13 @@ dependencies {
     implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
     // javax.xml.bind
     implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+    //S3
+    implementation 'software.amazon.awssdk:s3'
+
+    //Transcribe
+    implementation 'software.amazon.awssdk:transcribe'
+
 }
 
 dependencyManagement {
