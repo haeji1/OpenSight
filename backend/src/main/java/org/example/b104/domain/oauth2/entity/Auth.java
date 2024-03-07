@@ -1,4 +1,4 @@
-package org.example.b104.oauth2.entity;
+package org.example.b104.domain.oauth2.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;

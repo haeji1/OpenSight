@@ -1,13 +1,14 @@
-package org.example.b104.oauth2.sevice;
+package org.example.b104.domain.oauth2.sevice;
 
 import lombok.RequiredArgsConstructor;
+import org.example.b104.domain.oauth2.*;
+import org.example.b104.domain.oauth2.entity.Auth;
+import org.example.b104.domain.oauth2.repository.AuthRepository;
+import org.example.b104.domain.oauth2.response.LoginResponse;
+import org.example.b104.domain.oauth2.response.OauthTokenResponse;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
-import org.example.b104.oauth2.*;
-import org.example.b104.oauth2.entity.Auth;
-import org.example.b104.oauth2.repository.AuthRepository;
-import org.example.b104.oauth2.response.LoginResponse;
-import org.example.b104.oauth2.response.OauthTokenResponse;
+import org.example.b104.domain.oauth2.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +39,7 @@ public class OauthService {
 
         // 1. jwtToken 가져오기
         OauthTokenResponse tokenResponse = getToken(code, provider);
-        System.out.println("****tokenResponse****"+tokenResponse.getAccessToken());
+//        System.out.println("****tokenResponse****"+tokenResponse.getAccessToken());
         OauthTokenResponse.builder()
                 .accessToken(tokenResponse.getAccessToken())
                 .tokenType(tokenResponse.getTokenType())
@@ -50,7 +50,7 @@ public class OauthService {
 
         // 3. 유저 DB에 저장
         User user = saveOrUpdate(userProfile);
-        System.out.println("===유저정보 출력==="+user.getName()+user.getEmail());
+//        System.out.println("===유저정보 출력==="+user.getName()+user.getEmail());
 
 
         // JWT 토큰 만들기
@@ -64,7 +64,7 @@ public class OauthService {
 
         saveOrUpdate(auth, user);
 
-        System.out.println("jwt토큰"+jwtToken);
+//        System.out.println("jwt토큰"+jwtToken);
         return LoginResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -80,7 +80,7 @@ public class OauthService {
     private UserProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse, OauthProvider provider) {
         System.out.println("*****start******");
         Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
-        System.out.println("*******userAttrivutes:*********"+userAttributes);
+//        System.out.println("*******userAttrivutes:*********"+userAttributes);
         // 유저 정보(map)를 통해 UserProfile 만들기
         return OauthAttributes.extract(providerName, userAttributes);
     }

@@ -1,4 +1,4 @@
-package org.example.b104.oauth2;
+package org.example.b104.domain.oauth2;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;

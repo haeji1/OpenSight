@@ -1,8 +1,6 @@
-package org.example.b104.oauth2.repository;
+package org.example.b104.domain.oauth2.repository;
 
-import org.example.b104.domain.user.entity.User;
-import org.example.b104.oauth2.UserProfile;
-import org.example.b104.oauth2.entity.Auth;
+import org.example.b104.domain.oauth2.entity.Auth;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

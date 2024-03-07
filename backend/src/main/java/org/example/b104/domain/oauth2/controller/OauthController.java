@@ -1,8 +1,8 @@
-package org.example.b104.oauth2.controller;
+package org.example.b104.domain.oauth2.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.b104.oauth2.response.LoginResponse;
-import org.example.b104.oauth2.sevice.OauthService;
+import org.example.b104.domain.oauth2.response.LoginResponse;
+import org.example.b104.domain.oauth2.sevice.OauthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

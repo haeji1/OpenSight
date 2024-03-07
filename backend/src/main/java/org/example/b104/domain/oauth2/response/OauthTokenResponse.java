@@ -1,4 +1,4 @@
-package org.example.b104.oauth2.response;
+package org.example.b104.domain.oauth2.response;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
