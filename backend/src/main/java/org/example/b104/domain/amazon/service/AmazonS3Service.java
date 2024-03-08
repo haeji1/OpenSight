@@ -15,12 +15,14 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Amazon S3 서비스를 사용하기 위한 클래스
+ * @Author : 류진호
+ */
 @Service
 public class AmazonS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
-
-
     private final S3Client s3Client;
 
     public AmazonS3Service(
@@ -30,10 +32,17 @@ public class AmazonS3Service {
                 //.credentialsProvider(EnvironmentVariableCredentialsProvider.create())
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create(accessKeyId, secretAccessKey)))
-                .region(Region.US_EAST_1) // Your desired AWS region
+                .region(Region.US_EAST_1) // 아마존 서버 지역
                 .build();
     }
 
+    /**
+     * S3에 파일을 업로드하는 함수
+     *
+     * @param filePath : 업로드할 파일의 경로
+     * @return
+     * @Author : 류진호
+     */
     public String uploadFile(String filePath) {
         try {
             File file = new File(filePath);
@@ -51,6 +60,14 @@ public class AmazonS3Service {
             return "FAILED";
         }
     }
+
+    /**
+     * S3에 저장된 JSON 파일을 다운로드하는 함수
+     * 음성인식 결과를 가져올 때 Json 파일로 저장되기 때문에 사용
+     * @param keyName
+     * @return
+     * @Author : 류진호
+     */
     public String downloadJsonFile(String keyName) {
         try {
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()

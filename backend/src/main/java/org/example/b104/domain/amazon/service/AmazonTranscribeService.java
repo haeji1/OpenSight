@@ -15,6 +15,10 @@ import software.amazon.awssdk.services.transcribe.model.StartTranscriptionJobReq
 
 import java.io.InputStream;
 
+/**
+ * Amazon Transcribe 서비스를 사용하기 위한 클래스
+ * @Author : 류진호
+ */
 @Service
 public class AmazonTranscribeService {
 
@@ -42,6 +46,14 @@ public class AmazonTranscribeService {
                 .build();
     }
 
+
+    /**
+     * S3에 저장된 오디오 파일을 텍스트로 변환하는 함수
+     * MyTranscriptionJob.json 파일로 변환된 텍스트가 저장됨
+     * 이 함수 호출 후 AWS Transcribe 서비스 내 DownloadJsonFile 함수를 호출하여 변환된 텍스트를 가져올 수 있음
+     * @param objectKey : S3에 저장된 오디오 파일의 이름
+     * @Author : 류진호
+     */
     public void transcribeAudioFile(String objectKey) {
         // S3에서 오디오 파일을 가져옴
         InputStream inputStream = s3Client.getObject(GetObjectRequest.builder()
