@@ -8,6 +8,15 @@ function parseJwt(token) {
     return JSON.parse(jsonPayload);
 };
 
+const token = localStorage.getItem('accessToken')
+
+const headers = {
+  'Authorization': `Bearer ${token}`,
+  'Content-Type': 'application/json'
+}
+
+console.log(headers)
+
 console.log(parseJwt(localStorage.getItem('accessToken')))
 </script>
 
