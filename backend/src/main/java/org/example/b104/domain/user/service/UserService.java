@@ -57,8 +57,10 @@ public class UserService {
         User newUser = User.createNewUser(
                 command.getEmail(),
                 bCryptPasswordEncoder.encode(command.getPassword()),
-                command.getUsername()
+                command.getUsername(),
+                command.getPhone()
         );
+
         User result = userRepository.save(newUser);
         return CreateUserResponse.builder()
                 .userId(result.getId())

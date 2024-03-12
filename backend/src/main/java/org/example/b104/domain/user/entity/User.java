@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
-//@AllArgsConstructor
 @Getter
 public class User {
 
@@ -25,6 +24,8 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    private String phone;
+
 //    private String institutionCode;
 //
 //    private String userKey;
@@ -32,7 +33,6 @@ public class User {
 //    private String modified;
 //    private String emailPrefix;
 //    private String uniqueFaceId;
-//    private String phoneNumber;
 
     @Builder
     public User(Long id, String oauthId, String name, String email) {
@@ -51,12 +51,15 @@ public class User {
     public static User createNewUser(
             String email,
             String password,
-            String username
+            String username,
+            String phone
     ) {
         User user = new User();
         user.email = email;
         user.password = password;
         user.username = username;
+        user.phone = phone;
+        user.oauthId = "일반 회원가입";
         return user;
     }
 
