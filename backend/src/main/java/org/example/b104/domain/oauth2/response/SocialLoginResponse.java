@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor
-public class LoginResponse {
+public class SocialLoginResponse {
     private Long id;
     private String name;
     private String email;
@@ -16,7 +16,7 @@ public class LoginResponse {
     private String refreshToken;
 
     @Builder
-    public LoginResponse(Long id, String name, String email, String nickname, String tokenType, String accessToken, String jwtToken, String refreshToken) {
+    public SocialLoginResponse(Long id, String name, String email, String nickname, String tokenType, String accessToken, String jwtToken, String refreshToken) {
         this.id = id;
         this.name = name;
         this.email = email;
