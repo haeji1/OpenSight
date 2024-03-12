@@ -41,7 +41,6 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(createUserResponse));
     }
 
-
     /*@PostMapping("/authtest")
     public ResponseEntity<String> authtest(@RequestHeader("Authorization") String token) {
         try{
@@ -55,4 +54,6 @@ public class UserController {
         }
         return ResponseEntity.ok("failed");
     }*/
+
+
 }
