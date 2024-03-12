@@ -59,7 +59,7 @@ class B104ApplicationTests {
         //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU
         //String res = jwtTokenProvider.getPayload("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU");
 
-        String res = chatGptService.generateText("Hello, how are you?");
+        String res = chatGptService.chat("[계좌이체 열어줘.] 괄호안에 있는 내용이 계좌이체면 1, 계좌조회면 2, 이체내역조회면 3, 이체한도조회면 4, 이체한도변경면 5 반환해줘. 다른거 입력하지 말고 숫자만");
         System.out.println("######## res : " + res);
 
 
