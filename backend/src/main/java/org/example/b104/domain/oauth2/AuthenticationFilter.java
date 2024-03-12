@@ -15,7 +15,7 @@ public class AuthenticationFilter implements Filter {
     private final JwtTokenProvider jwtTokenProvider;
 
     // 인증 없이 접근 허용되는 페이지
-    private static final String[] whitelist = {"/public", "/login/oauth2/code","/main","/api/users/create"};
+    private static final String[] whitelist = {"/public", "/login/oauth2/code","/main","/api/users/create","/api/users/login"};
 
     public AuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
