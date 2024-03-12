@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.oauth2.*;
 import org.example.b104.domain.oauth2.entity.Auth;
 import org.example.b104.domain.oauth2.repository.AuthRepository;
-import org.example.b104.domain.oauth2.response.LoginResponse;
+import org.example.b104.domain.oauth2.response.SocialLoginResponse;
 import org.example.b104.domain.oauth2.response.OauthTokenResponse;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
-import org.example.b104.domain.oauth2.*;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class OauthService {
     private final UserRepository userRepository;
 
     private final AuthRepository authRepository;
-    public LoginResponse login(String providerName, String code) {
+    public SocialLoginResponse socialLogin(String providerName, String code) {
         System.out.println("========="+providerName);
 
         // 프론트에서 providerName 받아 InMemoryProviderRepository에서 OauthProvider 가져오기
@@ -65,7 +64,7 @@ public class OauthService {
         saveOrUpdate(auth, user);
 
 //        System.out.println("jwt토큰"+jwtToken);
-        return LoginResponse.builder()
+        return SocialLoginResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
