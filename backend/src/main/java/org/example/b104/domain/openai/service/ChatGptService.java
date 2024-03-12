@@ -12,14 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
-import org.example.b104.domain.openai.config.ChatGPTConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 
 @Service
 public class ChatGptService {
 
+    private final ChatGPTConfig chatGPTConfig;
+    private final ChatgptService chatgptService;
 
     @Value("${gpt.model}")
     private String model;
@@ -27,45 +25,6 @@ public class ChatGptService {
     @Value("${gpt.api.url}")
     private String apiUrl;
     private final RestTemplate restTemplate;
-
-    public ChatGptService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-    public String chat(String prompt){
-        GPTRequest request = new GPTRequest(
-                model,prompt,1,256,1,2,2);
-
-        GPTResponse gptResponse = restTemplate.postForObject(
-                apiUrl
-                , request
-                , GPTResponse.class
-        );
-        return gptResponse.getChoices().get(0).getMessage().getContent();
-    }
-    private final ChatGPTConfig chatGPTConfig;
-    private final ChatgptService chatgptService;
-
-    @Autowired
-    public ChatGptService(ChatGPTConfig chatGPTConfig, ChatgptService chatgptService) {
-        this.chatGPTConfig = chatGPTConfig;
-        this.chatgptService = chatgptService;
-    }
-
-    @Value("${gpt.api.url}")
-    private String gptApiUrl;
-
-    @Value("${gpt.api.key}")
-    private String gptApiKey;
-
-    public String generateText(String prompt) {
-        String responseBody = null;
-        try {
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost(gptApiUrl);
-
-            // GPT API 요청 헤더 설정
-            httpPost.setHeader("Content-Type", "application/json");
-            httpPost.setHeader("Authorization", "Bearer " + gptApiKey);
 
             // GPT API 요청 바디 설정
             String requestBody = "{\"prompt\": \"" + prompt + "\"}";
@@ -79,5 +38,4 @@ public class ChatGptService {
         }
         return responseBody;
     }
-
 }
