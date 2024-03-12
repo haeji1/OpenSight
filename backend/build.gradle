@@ -67,6 +67,10 @@ dependencies {
     //Transcribe
     implementation 'software.amazon.awssdk:transcribe'
 
+
+    //chatgpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
 }
 
 dependencyManagement {
