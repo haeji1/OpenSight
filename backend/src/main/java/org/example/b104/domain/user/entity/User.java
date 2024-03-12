@@ -15,6 +15,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String password;
+
     private String oauthId;
 
     private String name;
@@ -23,10 +25,11 @@ public class User {
     private String email;
 
     @Builder
-    public User(Long id, String oauthId, String name, String email) {
+    public User(Long id, String oauthId, String password, String name, String email) {
         this.id = id;
         this.oauthId = oauthId;
         this.name = name;
+        this.password = password;
         this.email = email;
     }
 
