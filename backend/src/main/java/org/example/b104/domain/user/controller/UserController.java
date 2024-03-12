@@ -1,27 +1,19 @@
 package org.example.b104.domain.user.controller;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.oauth2.response.SocialLoginResponse;
-import org.example.b104.domain.user.controller.request.CreateUserRequest;
-import org.example.b104.domain.user.controller.request.FindPasswordRequest;
 import org.example.b104.domain.user.controller.request.LoginRequest;
-import org.example.b104.domain.user.controller.request.UpdateUserRequest;
-import org.example.b104.domain.user.controller.response.CreateUserResponse;
-import org.example.b104.domain.user.controller.response.FindPasswordResponse;
 import org.example.b104.domain.user.controller.response.LoginResponse;
-import org.example.b104.domain.user.controller.response.UpdateUserResponse;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
     final UserService userService;
@@ -100,4 +92,17 @@ public class UserController {
     }*/
 
 
+    /*@PostMapping("/authtest")
+    public ResponseEntity<String> authtest(@RequestHeader("Authorization") String token) {
+        try{
+            System.out.println("encrypted token : " + token);
+            String decryptedToken = jwtTokenProvider.getPayload(token);
+            System.out.println("decrypted token : " + decryptedToken);
+
+            return ResponseEntity.ok(decryptedToken);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok("failed");
+    }*/
 }
