@@ -66,7 +66,7 @@ public class OauthService {
 //        System.out.println("jwt토큰"+jwtToken);
         return SocialLoginResponse.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .name(user.getUsername())
                 .email(user.getEmail())
                 .tokenType("Bearer")
                 .accessToken(tokenResponse.getAccessToken())
