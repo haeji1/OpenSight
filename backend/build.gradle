@@ -67,6 +67,9 @@ dependencies {
     //Transcribe
     implementation 'software.amazon.awssdk:transcribe'
 
+    // 비밀번호 암호화
+    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+
 
     //chatgpt
     implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
