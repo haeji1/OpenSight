@@ -2,14 +2,11 @@ package org.example.b104.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.oauth2.response.SocialLoginResponse;
-import org.example.b104.domain.user.controller.request.CreateUserRequest;
 import org.example.b104.domain.user.controller.request.LoginRequest;
-import org.example.b104.domain.user.controller.response.CreateUserResponse;
 import org.example.b104.domain.user.controller.response.LoginResponse;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
