@@ -26,9 +26,9 @@ public class User {
 
     private String phone;
 
+    private String userKey;
+
 //    private String institutionCode;
-//
-//    private String userKey;
 //    private String created;
 //    private String modified;
 //    private String emailPrefix;
@@ -42,9 +42,23 @@ public class User {
         this.email = email;
     }
 
+    @Builder
+    public User(Long id, String oauthId, String name, String email, String userKey) {
+        this.id = id;
+        this.oauthId = oauthId;
+        this.username = name;
+        this.email = email;
+        this.userKey = userKey;
+    }
+
     public User update(String name, String email) {
         this.username = name;
         this.email = email;
+        return this;
+    }
+
+    public User updateUserKey(String userKey) {
+        this.userKey = userKey;
         return this;
     }
 
@@ -52,7 +66,8 @@ public class User {
             String email,
             String password,
             String username,
-            String phone
+            String phone,
+            String userKey
     ) {
         User user = new User();
         user.email = email;
@@ -60,6 +75,7 @@ public class User {
         user.username = username;
         user.phone = phone;
         user.oauthId = "일반 회원가입";
+        user.userKey = userKey;
         return user;
     }
 
