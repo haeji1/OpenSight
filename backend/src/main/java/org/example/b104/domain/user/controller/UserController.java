@@ -1,11 +1,18 @@
 package org.example.b104.domain.user.controller;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.oauth2.response.SocialLoginResponse;
 import org.example.b104.domain.user.controller.request.CreateUserRequest;
+import org.example.b104.domain.user.controller.request.FindPasswordRequest;
 import org.example.b104.domain.user.controller.request.LoginRequest;
+import org.example.b104.domain.user.controller.request.UpdateUserRequest;
 import org.example.b104.domain.user.controller.response.CreateUserResponse;
+import org.example.b104.domain.user.controller.response.FindPasswordResponse;
 import org.example.b104.domain.user.controller.response.LoginResponse;
+import org.example.b104.domain.user.controller.response.UpdateUserResponse;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +39,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/create")
+    @PostMapping("/register")
     public ResponseEntity<ApiResponse<CreateUserResponse>> createUser(
             @RequestBody CreateUserRequest request
     ) {
@@ -40,6 +47,42 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(createUserResponse));
     }
 
+    @PostMapping("/update-info")
+    public ResponseEntity<ApiResponse<UpdateUserResponse>> updateUser(
+            @RequestBody UpdateUserRequest request
+    ) {
+        UpdateUserResponse updateUserResponse = userService.updateUser(request.toUpdateUserCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(updateUserResponse));
+    }
+
+
+    @GetMapping("/find-pw")
+    public ResponseEntity<ApiResponse<FindPasswordResponse>> findPassword(
+            @RequestBody FindPasswordRequest request
+    ) {
+        FindPasswordResponse findPasswordResponse = userService.findPassword(request.toFindPasswordCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(findPasswordResponse));
+    }
+
+//    @PostMapping("update-pw")
+//    public ResponseEntity<ApiResponse<UpdateUserResponse>> updatePassword(HttpServletRequest request) {
+//        String token = request.getHeader("Authorization");
+//        String userId = extractUserIdFromToken(token);
+//
+//        // update
+//
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    private String extractUserIdFromToken(String token) {
+//        // 토큰 디코딩
+//        Claims claims = Jwts.parser()
+//                .setSigningKey("")
+//                .parseClaimsJws(token.replace("Bearer ", "")) // "Bearer " 부분 제거
+//                .getBody();
+//        // Payload에서 userId 추출
+//        return claims.get("userId", String.class);
+//    }
 
 
     /*@PostMapping("/authtest")
