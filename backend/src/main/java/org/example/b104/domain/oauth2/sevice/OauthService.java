@@ -53,7 +53,7 @@ public class OauthService {
 
 
         // JWT 토큰 만들기
-        String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
+        String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
         Auth auth = Auth.builder()
@@ -65,7 +65,7 @@ public class OauthService {
 
 //        System.out.println("jwt토큰"+jwtToken);
         return SocialLoginResponse.builder()
-                .id(user.getId())
+                .id(user.getUserId())
                 .name(user.getUsername())
                 .email(user.getEmail())
                 .tokenType("Bearer")
@@ -129,7 +129,7 @@ public class OauthService {
     }
 
     private Auth saveOrUpdate(Auth authorization, User user) {
-        Auth auth = authRepository.findByUserId(user.getId())
+        Auth auth = authRepository.findByUserId(user.getUserId())
                 .orElse(Auth.builder().user(user).build()); // 사용자를 찾지 못하면 새로운 Auth 엔티티 생성
         auth.updateRefresh(authorization.getRefreshToken()); // 새로운 refresh token으로 갱신
         return authRepository.save(auth);

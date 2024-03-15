@@ -38,11 +38,11 @@ public class UserService {
         }
 
         // JWT 토큰 생성
-        String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
+        String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
         return LoginResponse.builder()
-                .id(user.getId())
+                .id(user.getUserId())
                 .name(user.getUsername())
                 .email(user.getEmail())
                 .tokenType("Bearer")
@@ -80,7 +80,7 @@ public class UserService {
 
             userRepository.save(newUser);
             return CreateUserResponse.builder()
-                    .userId(newUser.getId())
+                    .userId(newUser.getUserId())
                     .build();
         }
 
@@ -93,7 +93,7 @@ public class UserService {
         if (user != null) {
             user.updateUser(command.getPassword(), command.getUsername());
             return UpdateUserResponse.builder()
-                    .userId(user.getId())
+                    .userId(user.getUserId())
                     .build();
         }
         throw new EntityNotFoundException("존재하지 않는 유저입니다.");

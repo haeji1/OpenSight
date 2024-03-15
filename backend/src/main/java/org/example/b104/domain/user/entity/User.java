@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long userId;
 
     private String password;
 
@@ -24,19 +24,19 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    private String phone;
+    private String phoneNumber;
 
     private String userKey;
 
-//    private String institutionCode;
-//    private String created;
-//    private String modified;
-//    private String emailPrefix;
-//    private String uniqueFaceId;
+    private String institutionCode;
+    private String created;
+    private String modified;
+    private String emailPrefix;
+    private String uniqueFaceId;
 
     @Builder
     public User(Long id, String oauthId, String name, String email) {
-        this.id = id;
+        this.userId = id;
         this.oauthId = oauthId;
         this.username = name;
         this.email = email;
@@ -44,7 +44,7 @@ public class User {
 
     @Builder
     public User(Long id, String oauthId, String name, String email, String userKey) {
-        this.id = id;
+        this.userId = id;
         this.oauthId = oauthId;
         this.username = name;
         this.email = email;
@@ -73,7 +73,7 @@ public class User {
         user.email = email;
         user.password = password;
         user.username = username;
-        user.phone = phone;
+        user.phoneNumber = phone;
         user.oauthId = "일반 회원가입";
         user.userKey = userKey;
         return user;
