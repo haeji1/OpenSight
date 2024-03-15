@@ -4,26 +4,15 @@ import com.sun.jdi.request.InvalidRequestStateException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.oauth2.JwtTokenProvider;
-import org.example.b104.domain.oauth2.OauthProvider;
-import org.example.b104.domain.oauth2.UserProfile;
-import org.example.b104.domain.oauth2.response.OauthTokenResponse;
-import org.example.b104.domain.user.controller.response.CreateUserResponse;
-import org.example.b104.domain.user.controller.response.LoginResponse;
+import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
-import org.example.b104.domain.user.service.command.CreateUserCommand;
-import org.example.b104.domain.user.service.command.LoginCommand;
+import org.example.b104.domain.user.service.command.*;
 import org.example.b104.global.exception.EntityNotFoundException;
-import org.example.b104.global.response.ApiResponse;
 import org.example.b104.global.response.BankApiResponse;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -77,11 +66,10 @@ public class UserService {
                 .block();
         System.out.println("=====통신완료========");
 
-        // 응답 처리
-//        System.out.println(responseEntity.getPayload().getUserKey());
+
         if (responseEntity != null) {
             String userKey = responseEntity.getPayload().getUserKey();
-//            // userKey를 저장
+
             User newUser = User.createNewUser(
                     command.getEmail(),
                     bCryptPasswordEncoder.encode(command.getPassword()),
@@ -89,22 +77,49 @@ public class UserService {
                     command.getPhone(),
                     userKey
             );
-//
+
             userRepository.save(newUser);
             return CreateUserResponse.builder()
                     .userId(newUser.getId())
                     .build();
-//        }
         }
 
-
-//    private MultiValueMap<String, String> userRequest (String apiKey, String userId) {
-//        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-//        formData.add("apiKey", apiKey);
-//        formData.add("userId", userId);
-//        return formData;
-//    }
         return null;
+    }
+
+    @Transactional(readOnly = false)
+    public UpdateUserResponse updateUser(UpdateUserCommand command) {
+        User user = userRepository.findByEmail(command.getEmail());
+        if (user != null) {
+            user.updateUser(command.getPassword(), command.getUsername());
+            return UpdateUserResponse.builder()
+                    .userId(user.getId())
+                    .build();
+        }
+        throw new EntityNotFoundException("존재하지 않는 유저입니다.");
+    }
+
+    @Transactional(readOnly = false)
+    public FindPasswordResponse findPassword(FindPasswordCommand command) {
+        User user = userRepository.findByEmailAndPhone(command.getEmail(), command.getPhone())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        return FindPasswordResponse.builder()
+                .isSuccess(true)
+                .build();
+    }
+
+//    @Transactional(readOnly = false)
+//    public UpdatePasswordResponse updatePassword(UpdatePasswordCommand command) {
+//
+//    }
+
+    @Transactional(readOnly = true)
+    public FindEmailResponse findEmail(FindEmailCommand command) {
+        User user=  userRepository.findByPhone(command.getPhone())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        return FindEmailResponse.builder()
+                .email(user.getEmail())
+                .build();
     }
 
     @Data
