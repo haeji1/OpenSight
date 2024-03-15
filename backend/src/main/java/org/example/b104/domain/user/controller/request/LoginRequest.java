@@ -7,8 +7,8 @@ import org.example.b104.domain.user.service.command.LoginCommand;
 @Data
 @Builder
 public class LoginRequest {
-    String userEmail;
-    String userPassword;
+    private String userEmail;
+    private String userPassword;
 
     public LoginCommand toLogin() {
         LoginCommand command = LoginCommand.builder()
