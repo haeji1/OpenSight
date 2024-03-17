@@ -15,7 +15,9 @@ public class AuthenticationFilter implements Filter {
     private final JwtTokenProvider jwtTokenProvider;
 
     // 인증 없이 접근 허용되는 페이지
-    private static final String[] whitelist = {"/public", "/login/oauth2/code","/main","/api/users/create","/api/users/login"};
+    private static final String[] whitelist = {"/*","/public", "/login/oauth2/code","/main","/api/users/create","/api/users/login"};
+
+    private static boolean forDebug = true;
 
     public AuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -29,6 +31,10 @@ public class AuthenticationFilter implements Filter {
         // 요청한 페이지의 경로
         String requestURI = httpServletRequest.getRequestURI();
 
+        if (forDebug){
+            System.out.println("[+] Debug bypass fillter requestURI: " + requestURI);
+            filterChain.doFilter(request, response);
+        }
         // whitelist에 포함된 경로인지 확인
         for (String path : whitelist) {
             if (requestURI.startsWith(path)) {

@@ -101,7 +101,7 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public FindPasswordResponse findPassword(FindPasswordCommand command) {
-        User user = userRepository.findByEmailAndPhone(command.getEmail(), command.getPhone())
+        User user = userRepository.findByEmailAndPhoneNumber(command.getEmail(), command.getPhone())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
         return FindPasswordResponse.builder()
                 .isSuccess(true)
@@ -115,7 +115,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public FindEmailResponse findEmail(FindEmailCommand command) {
-        User user=  userRepository.findByPhone(command.getPhone())
+        User user=  userRepository.findByPhoneNumber(command.getPhone())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
         return FindEmailResponse.builder()
                 .email(user.getEmail())

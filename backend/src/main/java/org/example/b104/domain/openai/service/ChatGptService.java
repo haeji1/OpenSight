@@ -1,6 +1,6 @@
 package org.example.b104.domain.openai.service;
 
-import io.github.flashvayne.chatgpt.service.ChatgptService;
+//import io.github.flashvayne.chatgpt.service.ChatgptService;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;

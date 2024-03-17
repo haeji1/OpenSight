@@ -129,7 +129,7 @@ public class OauthService {
     }
 
     private Auth saveOrUpdate(Auth authorization, User user) {
-        Auth auth = authRepository.findByUserId(user.getUserId())
+        Auth auth = authRepository.findByUserUserId(user.getUserId())
                 .orElse(Auth.builder().user(user).build()); // 사용자를 찾지 못하면 새로운 Auth 엔티티 생성
         auth.updateRefresh(authorization.getRefreshToken()); // 새로운 refresh token으로 갱신
         return authRepository.save(auth);
