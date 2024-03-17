@@ -7,6 +7,7 @@ import lombok.Getter;
 @Builder
 @Getter
 @AllArgsConstructor
-public class MakeManagerKeyRequest {
-    String managerId;
+public class RegisterAccountMemberRequest {
+    private String apiKey;
+    private String userId;
 }

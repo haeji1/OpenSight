@@ -1,19 +1,14 @@
 package org.example.b104.domain.account.controller.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+@Builder
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class MakeManagerKeyResponse {
     String result;
     String managerId;
     String apiKey;
-    @Builder
-    public MakeManagerKeyResponse(String result, String managerId, String apiKey) {
-        this.result = result;
-        this.managerId = managerId;
-        this.apiKey = apiKey;
-    }
 }
