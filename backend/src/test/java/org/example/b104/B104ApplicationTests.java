@@ -1,6 +1,7 @@
 package org.example.b104;
 
 
+import org.example.b104.domain.account.controller.response.InquireBankAccountTypesResponse;
 import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
 import org.example.b104.domain.account.controller.response.SearchAccountMemberResponse;
 import org.example.b104.domain.account.service.AccountService;
@@ -77,5 +78,7 @@ class B104ApplicationTests {
 //                "JinhoRyu.Dev@gmail.com");
 //        System.out.println("######## searchAccountMemberResponse : " + searchAccountMemberResponse);
 
+        InquireBankAccountTypesResponse inquireBankAccountTypesResponse = accountService.inquireBankAccountTypes("010218e760dd476db9bac3b474847947");
+        System.out.println(inquireBankAccountTypesResponse);
     }
 }

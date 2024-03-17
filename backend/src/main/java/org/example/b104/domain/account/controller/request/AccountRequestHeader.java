@@ -12,7 +12,7 @@ import java.util.Random;
 @Builder
 @Getter
 @AllArgsConstructor
-public class AccountHeader{
+public class AccountRequestHeader {
     private String apiName;
     private String transmissionDate;
     private String transmissionTime;
@@ -23,7 +23,18 @@ public class AccountHeader{
     private String apiKey;
     private String userKey;
 
+    public void generateTransmissonDate(){
+        this.transmissionDate = new SimpleDateFormat("yyyyMMdd").format(new Date());
+    }
+    public void generateTransmissonTime(){
+        this.transmissionTime = new SimpleDateFormat("HHmmss").format(new Date());
+    }
     public void generateInstitutionTransactionUniqueNo(){ // (YYYYMMDD + HHMMSS + 일련번호 6자리)
         this.institutionTransactionUniqueNo = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + String.format("%06d", new Random().nextInt(1000000));
+    }
+    public void init(){
+        generateTransmissonDate();
+        generateTransmissonTime();
+        generateInstitutionTransactionUniqueNo();
     }
 }

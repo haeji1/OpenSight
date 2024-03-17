@@ -1,16 +1,27 @@
 package org.example.b104.domain.account.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.b104.domain.account.controller.response.MakeManagerKeyResponse;
-import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
-import org.example.b104.domain.account.controller.response.SearchAccountMemberResponse;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
+import org.example.b104.domain.account.controller.request.AccountRequestHeader;
+import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
+import org.example.b104.domain.account.controller.response.*;
+import org.example.b104.domain.user.service.UserService;
+import org.example.b104.global.response.BankApiResponse;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -142,10 +153,6 @@ public class AccountService {
                 "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
 
         if (httpResponse == null) return null;
-
-        System.out.println("[+] Status Code : " + httpResponse.statusCode());
-        System.out.println("[+] Body : " +httpResponse.body());
-
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
             return SearchAccountMemberResponse.builder()
                     .result("error")
@@ -176,5 +183,57 @@ public class AccountService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public InquireBankAccountTypesResponse inquireBankAccountTypes(String apiKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireBankAccountTypes")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireBankAccountTypes")
+                .apiKey(apiKey)
+                .build();
+
+        accountRequestHeader.init();
+
+        InquireBankAccountTypesRequest request = InquireBankAccountTypesRequest.builder()
+                .Header(accountRequestHeader)
+                .build();
+
+        //아무리봐도 이렇게 하면 안되는 거 같은데 일단 작동함
+        //추후 수정 필요
+        //*********************  이 부 분 **************************
+        JsonNode jsonNode = objectMapper.valueToTree(request);
+        String jsonNodeString = jsonNode.toString();
+        char [] jsonNodeStringArray = jsonNodeString.toCharArray();
+        jsonNodeStringArray[2] = 'H'; // 지맘대로 H를 h로 바꿔서 일단 하드코딩
+        String jsonNodeString2 = new String(jsonNodeStringArray);
+        //*********************************************************
+
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireBankAccountTypes", "POST",
+                jsonNodeString2);
+
+//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+//        System.out.println("[+] Body : " +httpResponse.body());
+//        System.out.println("##################################################");
+
+
+        JSONObject jsonObject = new JSONObject(httpResponse.body());
+        JSONObject resultHeader = jsonObject.getJSONObject("Header");
+        JSONArray RECArray = jsonObject.getJSONArray("REC");
+        try{
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            REC recList[] = objectMapper.readValue(RECArray.toString(), REC[].class);
+            return InquireBankAccountTypesResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(recList)
+                    .build();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        return InquireBankAccountTypesResponse.builder()
+                .result("error")
+                .build();
     }
 }
