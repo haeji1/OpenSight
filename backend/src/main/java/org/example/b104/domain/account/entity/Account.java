@@ -11,17 +11,26 @@ import org.example.b104.domain.user.entity.User;
 @Getter
 public class Account {
     @Id
+    @GeneratedValue
     private Long accountId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
-    public Long getAccountId() {
-        return accountId;
-    }
+    private String simplePassword;
+    private String accountTypeUniqueNo;
+    private String bankCode;
+    private String bankName;
+    private String accountTypeCode;
+    private String accountTypeName;
+    private String accountName;
+    private String accountNo;
+    //private String userName;
+    private String accountCreatedDate;
+    private String accountExpiryDate;
+    private int dailyTransferLimit;
+    private int oneTimeTransferLimit;
+    private int accountBalance;
+    private String lastTransactionDate;
 }
