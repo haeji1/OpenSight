@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import org.example.b104.domain.user.entity.User;
 
 @Entity
-@Table(name = "users")
+@Table(name = "accounts")
 @NoArgsConstructor
 @Getter
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
     @ManyToOne
