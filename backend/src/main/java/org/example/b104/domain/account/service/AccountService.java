@@ -17,88 +17,74 @@ public class AccountService {
     private ObjectMapper objectMapper;
 
     /*
-
   "managerId" : "JinhoRyu.dev@gmail.com",
   "apiKey" : "64e3fbfadb5d4d73baf1f7523fc5887e"
      */
-
 
     AccountService() {
         httpClient = HttpClient.newHttpClient();
         objectMapper = new ObjectMapper();
     }
-    public MakeManagerKeyResponse makeManagerKey(String managerId) {
-        MakeManagerKeyResponse response = new MakeManagerKeyResponse();
 
+    public HttpResponse<String> SendHttpRequest(String url, String method, String body) {
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("https://finapi.p.ssafy.io/ssafy/api/v1/edu/app/issuedApiKey"))
+                .uri(URI.create(url))
                 .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"managerId\": \"" + managerId + "\"}"))
+                .method(method, HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
         try {
-            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+            return httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-            int statusCode = httpResponse.statusCode();
-            String responseBody = httpResponse.body();
+    public MakeManagerKeyResponse makeManagerKey(String managerId) {
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/app/issuedApiKey", "POST", "{\"managerId\": \"" + managerId + "\"}");
 
-            System.out.println("Status Code: " + statusCode);
-            System.out.println("Response Body: " + responseBody);
+        if (httpResponse == null) return null;
+        if (httpResponse.statusCode() != 200) return null;
 
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-            String result = jsonNode.get("result").asText();
-            if (result.equals("success")){
-                return MakeManagerKeyResponse.builder()
-                        .result("success")
-                        .managerId(managerId)
-                        .apiKey(responseBody)
-                        .build();
-            }
-            else{
-                return null;
-            }
-        } catch (Exception e) {
+        try {
+            JsonNode jsonNode = objectMapper.readTree(httpResponse.body());
+            String resultManagerId = jsonNode.get("managerId").asText();
+            String resultApiKey = jsonNode.get("apiKey").asText();
+            return MakeManagerKeyResponse.builder()
+                    .result("success")
+                    .managerId(resultManagerId)
+                    .apiKey(resultApiKey)
+                    .build();
+        }
+        catch (Exception e){
             e.printStackTrace();
         }
         return null;
     }
     public MakeManagerKeyResponse remakeManagerKey(String managerId) {
-        MakeManagerKeyResponse response = new MakeManagerKeyResponse();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/app/reIssuedApiKey", "POST", "{\"managerId\": \"" + managerId + "\"}");
 
-        HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("https://finapi.p.ssafy.io/ssafy/api/v1/edu/app/reIssuedApiKey"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString("{\"managerId\": \"" + managerId + "\"}"))
-                .build();
+        if (httpResponse == null) return null;
+        if (httpResponse.statusCode() != 200) return null;
 
         try {
-            HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            int statusCode = httpResponse.statusCode();
-            String responseBody = httpResponse.body();
-
-            System.out.println("Status Code: " + statusCode);
-            System.out.println("Response Body: " + responseBody);
-
-            JsonNode jsonNode = objectMapper.readTree(responseBody);
-
-            String responseCode = jsonNode.get("responseCode").asText();
-            if (!responseCode.isBlank()) {
-                return MakeManagerKeyResponse.builder()
-                        .result("success")
-                        .managerId(managerId)
-                        .apiKey(responseBody)
-                        .build();
-            } else {
-                String responseMessage = jsonNode.get("responseMessage").asText();
-                System.out.println("[ERROR] " + responseMessage);
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            JsonNode jsonNode = objectMapper.readTree(httpResponse.body());
+            String resultManagerId = jsonNode.get("managerId").asText();
+            String resultApiKey = jsonNode.get("apiKey").asText();
+            return MakeManagerKeyResponse.builder()
+                    .result("success")
+                    .managerId(resultManagerId)
+                    .apiKey(resultApiKey)
+                    .build();
         }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
+
 
 
 }
