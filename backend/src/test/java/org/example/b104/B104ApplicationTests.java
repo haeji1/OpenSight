@@ -2,6 +2,7 @@ package org.example.b104;
 
 
 import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
+import org.example.b104.domain.account.controller.response.SearchAccountMemberResponse;
 import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
@@ -70,6 +71,11 @@ class B104ApplicationTests {
 //        RegisterAccountMemberResponse registerAccountMemberResponse = accountService.registerAccountMember("010218e760dd476db9bac3b474847947",
 //                "JinhoRyu.Dev6@gmail.com");
 //        System.out.println("######## registerAccountMemberResponse : " + registerAccountMemberResponse);
+
+//
+//        SearchAccountMemberResponse searchAccountMemberResponse = accountService.searchAccountMember("010218e760dd476db9bac3b474847947",
+//                "JinhoRyu.Dev@gmail.com");
+//        System.out.println("######## searchAccountMemberResponse : " + searchAccountMemberResponse);
 
     }
 }
