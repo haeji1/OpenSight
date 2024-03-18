@@ -217,7 +217,6 @@ public class AccountService {
 //        System.out.println("[+] Body : " +httpResponse.body());
 //        System.out.println("##################################################");
 
-
         JSONObject jsonObject = new JSONObject(httpResponse.body());
         JSONObject resultHeader = jsonObject.getJSONObject("Header");
         JSONArray RECArray = jsonObject.getJSONArray("REC");
@@ -236,4 +235,50 @@ public class AccountService {
                 .result("error")
                 .build();
     }
+
+    public OpenAccountResponse openAccount(String apiKey, String accountTypeUniqueNo, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("openAccount")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("openAccount")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
+
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/openAccount", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"accountTypeUniqueNo\": \"" + accountTypeUniqueNo + "\"}");
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return OpenAccountResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+            String resultBankCode = REC.getString("bankCode");
+            String resultAccountNo = REC.getString("accountNo");
+
+            AccountResponseHeader accountResp = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+
+            return OpenAccountResponse.builder()
+                    .result("success")
+                    .Header(accountResp)
+                    .bankCode(resultBankCode)
+                    .accountNo(resultAccountNo)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
 }

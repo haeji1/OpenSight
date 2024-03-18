@@ -2,6 +2,7 @@ package org.example.b104;
 
 
 import org.example.b104.domain.account.controller.response.InquireBankAccountTypesResponse;
+import org.example.b104.domain.account.controller.response.OpenAccountResponse;
 import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
 import org.example.b104.domain.account.controller.response.SearchAccountMemberResponse;
 import org.example.b104.domain.account.service.AccountService;
@@ -78,7 +79,24 @@ class B104ApplicationTests {
 //                "JinhoRyu.Dev@gmail.com");
 //        System.out.println("######## searchAccountMemberResponse : " + searchAccountMemberResponse);
 
-        InquireBankAccountTypesResponse inquireBankAccountTypesResponse = accountService.inquireBankAccountTypes("010218e760dd476db9bac3b474847947");
-        System.out.println(inquireBankAccountTypesResponse);
+        //InquireBankAccountTypesResponse inquireBankAccountTypesResponse = accountService.inquireBankAccountTypes("010218e760dd476db9bac3b474847947");
+        //System.out.println(inquireBankAccountTypesResponse);
+
+        //내정보
+        //SearchAccountMemberResponse(result=succeed, userId=JinhoRyu.Dev@gmail.com, userName=JinhoRyu.Dev, institutionCode=00100, userKey=9d4b8b95-6fbc-421e-aca8-35748bb4b12b, created=2024-03-17T20:58:10.155517+09:00, modified=2024-03-17T20:58:10.155514+09:00, now=2024-03-18T17:03:55.256289+09:00)
+
+        //OpenAccountResponse openAccountResponse = accountService.openAccount("010218e760dd476db9bac3b474847947", "001-1-81fe2deafd1943", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+        //System.out.println(openAccountResponse);
+
+
+
+        /*
+        OpenAccountResponse(result=success, Header=AccountResponseHeader(responseCode=H0000, responseMessage=정상처리 되었습니다., apiName=openAccount, transmissionDate=20240318, transmissionTime=170835, institutionCode=00100, apiKey=010218e760dd476db9bac3b474847947, apiServiceCode=openAccount, institutionTransactionUniqueNo=20240318170835507602), bankCode=001, accountNo=0011964510743365)
+
+
+
+
+         */
+
     }
 }

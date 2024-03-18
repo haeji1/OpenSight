@@ -1,6 +1,5 @@
 package org.example.b104.domain.account.controller.response;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,13 +9,9 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @ToString
-public class SearchAccountMemberResponse {
+public class OpenAccountResponse {
     String result;
-    String userId;
-    String userName;
-    String institutionCode;
-    String userKey;
-    String created;
-    String modified;
-    String now;
+    AccountResponseHeader Header;
+    String bankCode;
+    String accountNo;
 }
