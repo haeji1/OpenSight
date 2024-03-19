@@ -1,28 +1,19 @@
 package org.example.b104.domain.account.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
 import org.example.b104.domain.account.controller.record.*;
 import org.example.b104.domain.account.controller.request.AccountRequestHeader;
 import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
 import org.example.b104.domain.account.controller.response.*;
-import org.example.b104.domain.user.service.UserService;
-import org.example.b104.global.response.BankApiResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class AccountService {
@@ -490,16 +481,16 @@ public class AccountService {
 
     public AccountTransferResponse accountTransfer(String apiKey, String depositBankCode, String depositAccountNo, int transactionBalance,String withdrawalBankCode, String withdrawalAccountNo, String depositTransactionSummary, String withdrawalTransactionSummary, String userKey) {
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
-                .apiName("accountTransfer")
+                .apiName("inquireAccountTransactionHistory")
                 .institutionCode("00100")
                 .fintechAppNo("001")
-                .apiServiceCode("accountTransfer")
+                .apiServiceCode("inquireAccountTransactionHistory")
                 .apiKey(apiKey)
                 .userKey(userKey)
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/accountTransfer", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountTransactionHistory", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"depositBankCode\": \"" + depositBankCode + "\", \"depositAccountNo\": \"" + depositAccountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"withdrawalBankCode\": \"" + withdrawalBankCode + "\", \"withdrawalAccountNo\": \"" + withdrawalAccountNo + "\", \"depositTransactionSummary\": \"" + depositTransactionSummary + "\", \"withdrawalTransactionSummary\": \"" + withdrawalTransactionSummary + "\"}");
 
         if (httpResponse == null) return null;
@@ -527,7 +518,47 @@ public class AccountService {
         return null;
     }
 
+    public InquireAccountTransactionHistoryResponse inquireAccountTransaction(String apiKey, String bankCode, String accountNo, String startDate, String endDate, String transactionType, String orderByType, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireAccountTransactionHistory")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireAccountTransactionHistory")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
 
-    
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountTransactionHistory", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"startDate\": \"" + startDate + "\", \"endDate\": \"" + endDate + "\", \"transactionType\": \"" + transactionType + "\", \"orderByType\": \"" + orderByType + "\"}");
 
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return InquireAccountTransactionHistoryResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+
+            InquireAccountHistoryRecord rec = objectMapper.readValue(REC.toString(), InquireAccountHistoryRecord.class);
+
+
+            return InquireAccountTransactionHistoryResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

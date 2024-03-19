@@ -1,6 +1,7 @@
 package org.example.b104;
 
 
+import org.example.b104.domain.account.controller.record.SingleAccountTransactionHistory;
 import org.example.b104.domain.account.controller.response.*;
 import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
@@ -122,27 +123,40 @@ class B104ApplicationTests {
 //        InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance("010218e760dd476db9bac3b474847947", "001","0011964510743365", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
 //        System.out.println(inquireAccountBalanceResponse);
 
-        System.out.println("###입금전###");
-        InquireAccountListResponse inquireAccountListResponse = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
-        System.out.println(inquireAccountListResponse);
+//        System.out.println("###입금전###");
+//        InquireAccountListResponse inquireAccountListResponse = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(inquireAccountListResponse);
+//
+//        AccountTransferResponse accountTransferResponse = accountService.accountTransfer("010218e760dd476db9bac3b474847947",
+//                "001",
+//                "0014009953511262",
+//                600000,
+//                "001",
+//                "0011964510743365",
+//                "계좌 2로 60만원 입금합니다",
+//                "계좌 1에서 60만원 출금합니다",
+//                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//
+//        System.out.println(accountTransferResponse);
+//
+//
+//        System.out.println("###입금후###");
+//        InquireAccountListResponse inquireAccountListResponse2 = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(inquireAccountListResponse2);
 
-        AccountTransferResponse accountTransferResponse = accountService.accountTransfer("010218e760dd476db9bac3b474847947",
-                "001",
-                "0014009953511262",
-                600000,
-                "001",
-                "0011964510743365",
-                "계좌 2로 60만원 입금합니다",
-                "계좌 1에서 60만원 출금합니다",
-                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
-
-        System.out.println(accountTransferResponse);
-
-
-        System.out.println("###입금후###");
-        InquireAccountListResponse inquireAccountListResponse2 = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
-        System.out.println(inquireAccountListResponse2);
-
-
+//        InquireAccountTransactionResponse inquireAccountTransactionResponse = accountService.inquireAccountTransaction("010218e760dd476db9bac3b474847947",
+//                "001",
+//                "0011964510743365",
+//                "20240318",
+//                "20240319",
+//                "A",
+//                "ASC",
+//                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//
+//        SingleAccountTransactionHistory[] test = inquireAccountTransactionResponse.getREC().transactionHistory();
+//        System.out.println(inquireAccountTransactionResponse.toString());
+//        for(SingleAccountTransactionHistory singleAccountTransactionHistory : test){
+//            System.out.println(singleAccountTransactionHistory.toString());
+//        }
     }
 }
