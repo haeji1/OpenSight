@@ -4,16 +4,11 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.example.b104.domain.oauth2.response.SocialLoginResponse;
 import org.example.b104.domain.user.controller.request.*;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.JwkSetUriJwtDecoderBuilderCustomizer;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,9 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     final UserService userService;
-
-//    @Value("${jwt.token.secret-key}")
-//    private String secretKey;
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {
@@ -66,8 +58,6 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(findPasswordResponse));
     }
 
-
-
     @PostMapping("update-pw")
     public ResponseEntity<ApiResponse<UpdatePasswordResponse>> updatePassword(
             HttpServletRequest request,
@@ -83,6 +73,15 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(updatePasswordResponse));
     }
 
+    @GetMapping("/find-email")
+    public ResponseEntity<ApiResponse<FindEmailResponse>> findEmail(
+            @RequestBody FindEmailRequest request
+    ) {
+        FindEmailResponse findEmailResponse = userService.findEmail(request.toFindEmail());
+        return ResponseEntity.ok(ApiResponse.createSuccess(findEmailResponse));
+    }
+
+
     private String extractUserIdFromToken(String token) {
         if (token != null && token.startsWith("Bearer ")) {
             String jwttoken =  token.substring(7); // "Bearer "의 길이는 7입니다.
@@ -91,23 +90,6 @@ public class UserController {
         }
         return null;
     }
-
-
-
-    /*@PostMapping("/authtest")
-    public ResponseEntity<String> authtest(@RequestHeader("Authorization") String token) {
-        try{
-            System.out.println("encrypted token : " + token);
-            String decryptedToken = jwtTokenProvider.getPayload(token);
-            System.out.println("decrypted token : " + decryptedToken);
-
-            return ResponseEntity.ok(decryptedToken);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok("failed");
-    }*/
-
 
 
     /*@PostMapping("/authtest")
