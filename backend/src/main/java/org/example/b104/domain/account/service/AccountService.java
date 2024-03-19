@@ -561,4 +561,47 @@ public class AccountService {
         }
         return null;
     }
+
+    public InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetail(String apiKey, String bankCode, String accountNo, int transactionUniqueNo, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireTransactionHistoryDetail")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireTransactionHistoryDetail")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
+
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireTransactionHistoryDetail", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionUniqueNo\": \"" + transactionUniqueNo + "\"}");
+
+
+//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+//        System.out.println("[+] Body : " +httpResponse.body());
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return InquireTransactionHistoryDetailResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            InquireTransactionHistoryDetailRecord rec = objectMapper.readValue(REC.toString(), InquireTransactionHistoryDetailRecord.class);
+
+            return InquireTransactionHistoryDetailResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -144,7 +144,7 @@ class B104ApplicationTests {
 //        InquireAccountListResponse inquireAccountListResponse2 = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
 //        System.out.println(inquireAccountListResponse2);
 
-//        InquireAccountTransactionResponse inquireAccountTransactionResponse = accountService.inquireAccountTransaction("010218e760dd476db9bac3b474847947",
+//        InquireAccountTransactionHistoryResponse inquireAccountTransactionResponse = accountService.inquireAccountTransaction("010218e760dd476db9bac3b474847947",
 //                "001",
 //                "0011964510743365",
 //                "20240318",
@@ -158,5 +158,12 @@ class B104ApplicationTests {
 //        for(SingleAccountTransactionHistory singleAccountTransactionHistory : test){
 //            System.out.println(singleAccountTransactionHistory.toString());
 //        }
+
+        InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetailResponse = accountService.inquireTransactionHistoryDetail("010218e760dd476db9bac3b474847947",
+                "001",
+                "0011964510743365",
+                254,
+                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+        System.out.println(inquireTransactionHistoryDetailResponse);
     }
 }
