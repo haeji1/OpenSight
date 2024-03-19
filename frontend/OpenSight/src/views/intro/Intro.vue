@@ -7,7 +7,7 @@ import { onMounted, ref } from 'vue';
 
 <template>
   <div>
-    <button @click="router.push('/login')">시작하기</button>
+    <button @click="router.push('/login')">시작 하기</button>
   </div>
 </template>
 
