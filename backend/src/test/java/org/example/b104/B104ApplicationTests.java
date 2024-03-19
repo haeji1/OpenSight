@@ -4,7 +4,7 @@ package org.example.b104;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
 import org.example.b104.domain.amazon.service.AmazonTranscribeService;
-import org.example.b104.oauth2.JwtTokenProvider;
+//import org.example.b104.oauth2.JwtTokenProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,9 +22,6 @@ class B104ApplicationTests {
     AmazonTranscribeService transcribeService;
     //@Autowired
     //JwtTokenProvider jwtTokenProvider;
-
-    @Autowired
-    ChatGptService chatGptService;
 
 
     @Test
@@ -58,9 +55,6 @@ class B104ApplicationTests {
 
         //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU
         //String res = jwtTokenProvider.getPayload("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU");
-
-        String res = chatGptService.generateText("Hello, how are you?");
-        System.out.println("######## res : " + res);
 
 
 
