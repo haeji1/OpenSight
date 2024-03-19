@@ -26,6 +26,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String phoneNumber;
 
     private String userKey;
@@ -57,6 +58,10 @@ public class User {
         this.username = name;
         this.email = email;
         return this;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
     public User updateUserKey(String userKey) {

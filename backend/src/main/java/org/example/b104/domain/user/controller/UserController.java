@@ -1,17 +1,17 @@
 package org.example.b104.domain.user.controller;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.oauth2.response.SocialLoginResponse;
-import org.example.b104.domain.user.controller.request.CreateUserRequest;
-import org.example.b104.domain.user.controller.request.FindPasswordRequest;
-import org.example.b104.domain.user.controller.request.LoginRequest;
-import org.example.b104.domain.user.controller.request.UpdateUserRequest;
-import org.example.b104.domain.user.controller.response.CreateUserResponse;
-import org.example.b104.domain.user.controller.response.FindPasswordResponse;
-import org.example.b104.domain.user.controller.response.LoginResponse;
-import org.example.b104.domain.user.controller.response.UpdateUserResponse;
+import org.example.b104.domain.user.controller.request.*;
+import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.JwkSetUriJwtDecoderBuilderCustomizer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +23,10 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     final UserService userService;
+
+//    @Value("${jwt.token.secret-key}")
+//    private String secretKey;
+
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("test");
@@ -62,25 +66,32 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(findPasswordResponse));
     }
 
-//    @PostMapping("update-pw")
-//    public ResponseEntity<ApiResponse<UpdateUserResponse>> updatePassword(HttpServletRequest request) {
-//        String token = request.getHeader("Authorization");
-//        String userId = extractUserIdFromToken(token);
-//
-//        // update
-//
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    private String extractUserIdFromToken(String token) {
-//        // 토큰 디코딩
-//        Claims claims = Jwts.parser()
-//                .setSigningKey("")
-//                .parseClaimsJws(token.replace("Bearer ", "")) // "Bearer " 부분 제거
-//                .getBody();
-//        // Payload에서 userId 추출
-//        return claims.get("userId", String.class);
-//    }
+
+
+    @PostMapping("update-pw")
+    public ResponseEntity<ApiResponse<UpdatePasswordResponse>> updatePassword(
+            HttpServletRequest request,
+            @RequestBody UpdatePasswordRequest passwordRequest
+    ) {
+
+        String token = request.getHeader("Authorization");
+        String user = extractUserIdFromToken(token);
+        Long userId = Long.parseLong(user);
+
+        // 비밀번호 수정
+        UpdatePasswordResponse updatePasswordResponse = userService.updatePassword(passwordRequest.toUpdatePasswordCommand(), userId);
+        return ResponseEntity.ok(ApiResponse.createSuccess(updatePasswordResponse));
+    }
+
+    private String extractUserIdFromToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            String jwttoken =  token.substring(7); // "Bearer "의 길이는 7입니다.
+            Claims claims = Jwts.parser().parseClaimsJws(jwttoken).getBody();
+            return (String) claims.get("sub");
+        }
+        return null;
+    }
+
 
 
     /*@PostMapping("/authtest")

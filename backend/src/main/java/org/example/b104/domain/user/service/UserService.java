@@ -117,10 +117,15 @@ public class UserService {
                 .build();
     }
 
-//    @Transactional(readOnly = false)
-//    public UpdatePasswordResponse updatePassword(UpdatePasswordCommand command) {
-//
-//    }
+    @Transactional(readOnly = false)
+    public UpdatePasswordResponse updatePassword(UpdatePasswordCommand command, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        user.updatePassword(command.getPassword());
+        return UpdatePasswordResponse.builder()
+                .isSuccess(true)
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public FindEmailResponse findEmail(FindEmailCommand command) {
