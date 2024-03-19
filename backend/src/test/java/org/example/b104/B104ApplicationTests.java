@@ -1,10 +1,7 @@
 package org.example.b104;
 
 
-import org.example.b104.domain.account.controller.response.InquireBankAccountTypesResponse;
-import org.example.b104.domain.account.controller.response.OpenAccountResponse;
-import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
-import org.example.b104.domain.account.controller.response.SearchAccountMemberResponse;
+import org.example.b104.domain.account.controller.response.*;
 import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
@@ -92,11 +89,9 @@ class B104ApplicationTests {
 
         /*
         OpenAccountResponse(result=success, Header=AccountResponseHeader(responseCode=H0000, responseMessage=정상처리 되었습니다., apiName=openAccount, transmissionDate=20240318, transmissionTime=170835, institutionCode=00100, apiKey=010218e760dd476db9bac3b474847947, apiServiceCode=openAccount, institutionTransactionUniqueNo=20240318170835507602), bankCode=001, accountNo=0011964510743365)
-
-
-
-
          */
 
+        InquireAccountListResponse inquireAccountListResponse = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+        System.out.println(inquireAccountListResponse);
     }
 }

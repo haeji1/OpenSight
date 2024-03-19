@@ -278,7 +278,48 @@ public class AccountService {
         return null;
     }
 
+    public InquireAccountListResponse inquireAccountList(String apiKey, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireAccountList")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireAccountList")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
 
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountList", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + "}");
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return InquireAccountListResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONArray RECArray = jsonObject.getJSONArray("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            REC recList[] = objectMapper.readValue(RECArray.toString(), REC[].class);
+
+            return InquireAccountListResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(recList)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }

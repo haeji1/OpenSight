@@ -13,4 +13,17 @@ public class REC {
     public String accountTypeCode;
     public String accountTypeName;
     public String accountName;
+
+    public String accountNo;
+
+    public String accountCreatedDate;
+    public String accountExpiryDate;
+
+    public String userName;
+
+    public Long dailyTransferLimit;// 1일 이체한도
+    public Long oneTimeTransferLimit;// 1회 이체한도
+    public Long accountBalance;// 최종 잔액
+
+
 }
