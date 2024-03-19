@@ -82,8 +82,8 @@ class B104ApplicationTests {
         //내정보
         //SearchAccountMemberResponse(result=succeed, userId=JinhoRyu.Dev@gmail.com, userName=JinhoRyu.Dev, institutionCode=00100, userKey=9d4b8b95-6fbc-421e-aca8-35748bb4b12b, created=2024-03-17T20:58:10.155517+09:00, modified=2024-03-17T20:58:10.155514+09:00, now=2024-03-18T17:03:55.256289+09:00)
 
-        //OpenAccountResponse openAccountResponse = accountService.openAccount("010218e760dd476db9bac3b474847947", "001-1-81fe2deafd1943", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
-        //System.out.println(openAccountResponse);
+//        OpenAccountResponse openAccountResponse = accountService.openAccount("010218e760dd476db9bac3b474847947", "001-1-81fe2deafd1943", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(openAccountResponse);
 
 
 
@@ -117,10 +117,32 @@ class B104ApplicationTests {
 //                "신용카드비용으로 빠져나가요",
 //                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
 //        System.out.println(drawingTransferResponse);
-//
-//        System.out.println("#######################################이후 잔액을 볼까요");
+
+
 //        InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance("010218e760dd476db9bac3b474847947", "001","0011964510743365", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
 //        System.out.println(inquireAccountBalanceResponse);
+
+        System.out.println("###입금전###");
+        InquireAccountListResponse inquireAccountListResponse = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+        System.out.println(inquireAccountListResponse);
+
+        AccountTransferResponse accountTransferResponse = accountService.accountTransfer("010218e760dd476db9bac3b474847947",
+                "001",
+                "0014009953511262",
+                600000,
+                "001",
+                "0011964510743365",
+                "계좌 2로 60만원 입금합니다",
+                "계좌 1에서 60만원 출금합니다",
+                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+
+        System.out.println(accountTransferResponse);
+
+
+        System.out.println("###입금후###");
+        InquireAccountListResponse inquireAccountListResponse2 = accountService.inquireAccountList("010218e760dd476db9bac3b474847947", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+        System.out.println(inquireAccountListResponse2);
+
 
     }
 }

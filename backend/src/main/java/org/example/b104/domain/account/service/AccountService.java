@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
-import org.example.b104.domain.account.controller.record.DrawingTransferRecord;
-import org.example.b104.domain.account.controller.record.InquireAccountBalanceRecord;
-import org.example.b104.domain.account.controller.record.ReceivedTransferAccountNumberRecord;
+import org.example.b104.domain.account.controller.record.*;
 import org.example.b104.domain.account.controller.request.AccountRequestHeader;
 import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
 import org.example.b104.domain.account.controller.response.*;
@@ -311,7 +309,7 @@ public class AccountService {
             JSONArray RECArray = jsonObject.getJSONArray("REC");
 
             AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
-            REC recList[] = objectMapper.readValue(RECArray.toString(), REC[].class);
+            InquireAccountListRecord recList[] = objectMapper.readValue(RECArray.toString(), InquireAccountListRecord[].class);
 
             return InquireAccountListResponse.builder()
                     .result("success")
@@ -489,5 +487,47 @@ public class AccountService {
         }
         return null;
     }
+
+    public AccountTransferResponse accountTransfer(String apiKey, String depositBankCode, String depositAccountNo, int transactionBalance,String withdrawalBankCode, String withdrawalAccountNo, String depositTransactionSummary, String withdrawalTransactionSummary, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("accountTransfer")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("accountTransfer")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
+
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/accountTransfer", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"depositBankCode\": \"" + depositBankCode + "\", \"depositAccountNo\": \"" + depositAccountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"withdrawalBankCode\": \"" + withdrawalBankCode + "\", \"withdrawalAccountNo\": \"" + withdrawalAccountNo + "\", \"depositTransactionSummary\": \"" + depositTransactionSummary + "\", \"withdrawalTransactionSummary\": \"" + withdrawalTransactionSummary + "\"}");
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return AccountTransferResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONArray RECArray = jsonObject.getJSONArray("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            AccountTransferRecord[] rec = objectMapper.readValue(RECArray.toString(), AccountTransferRecord[].class);
+
+            return AccountTransferResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    
 
 }
