@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
+import org.example.b104.domain.account.controller.record.InquireAccountBalanceRecord;
 import org.example.b104.domain.account.controller.request.AccountRequestHeader;
 import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
 import org.example.b104.domain.account.controller.response.*;
@@ -320,6 +321,85 @@ public class AccountService {
         }
         return null;
     }
+
+    public InquireAccountInfoResponse inquireAccountInfo(String apiKey,String bankCode,String accountNo, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireAccountInfo")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireAccountInfo")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
+
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountInfo", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return InquireAccountInfoResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            REC rec = objectMapper.readValue(REC.toString(), REC.class);
+
+            return InquireAccountInfoResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public InquireAccountBalanceResponse inquireAccountBalance(String apiKey, String bankCode, String accountNo, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireAccountBalance")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireAccountBalance")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
+
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountBalance", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return InquireAccountBalanceResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            InquireAccountBalanceRecord rec = objectMapper.readValue(REC.toString(), InquireAccountBalanceRecord.class);
+
+            return InquireAccountBalanceResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
 }

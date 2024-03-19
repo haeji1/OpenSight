@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.example.b104.domain.account.controller.record.DrawingTransferRecord;
-import org.example.b104.domain.account.controller.record.InquireAccountBalanceRecord;
 
 @Builder
 @Getter
-@ToString
 @AllArgsConstructor
-public class InquireAccountBalanceResponse {
+@ToString
+public class DrawingTransferResponse {
     String result;
     AccountResponseHeader Header;
-    InquireAccountBalanceRecord REC;
+    REC REC;
+
 }
