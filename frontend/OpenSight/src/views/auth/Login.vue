@@ -26,29 +26,33 @@ function naverSocialLogin() {
 
 <style scoped>
 .screen-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* display: flex; */
+  align-items: flex-start;
   justify-content: center;
-  width: 360px;
-  height: 770px;
+  overflow: auto;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
   background: #1B3C62;
   font-family: 'Poppins', sans-serif;
 }
 
 .login-container {
   background-color: #ffffff;
-  border-radius: 10px 10px 0 0; /* 아래쪽 모서리는 둥글지 않음 */
-  width: 340px; /* 가로 크기 유지 */
-  padding: 1.5em;
+  border-radius: 20px 20px 0 0; /* 아래쪽 모서리는 둥글지 않음 */
+  width: 320px; /* 가로 크기 유지 */
+  padding: 20px;
+  margin: 0 auto;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   position: fixed; /* 화면에 고정 */
   top: 130px; /* 상단으로부터 130px 떨어진 위치에 배치 */
   left: 50%; /* 가운데 정렬을 위해 */
   transform: translateX(-50%); /* 가운데 정렬을 위해 */
-  height: calc(770px - 130px); /* 상단부터 130px 위치부터 하단까지의 높이 설정 */
-  overflow: auto; /* 내용이 더 많아질 경우 스크롤 가능 */
+  height: calc(100vh - 130px); /* 상단부터 130px 위치부터 하단까지의 높이 설정 */
+  /* overflow: auto;  */
   /* 나머지 스타일은 기존에 설정한 대로 유지 */
 }
 
