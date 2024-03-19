@@ -96,8 +96,31 @@ class B104ApplicationTests {
 //
 //        InquireAccountInfoResponse inquireAccountInfoResponse = accountService.inquireAccountInfo("010218e760dd476db9bac3b474847947", "001","0011964510743365", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
 //        System.out.println(inquireAccountInfoResponse);
+//
+//        InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance("010218e760dd476db9bac3b474847947", "001","0011964510743365", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(inquireAccountBalanceResponse);
 
-        InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance("010218e760dd476db9bac3b474847947", "001","0011964510743365", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
-        System.out.println(inquireAccountBalanceResponse);
+//        ReceivedTransferAccountNumberResponse receivedTransferAccountNumberResponse = accountService.receivedTransferAccountNumber(
+//                "010218e760dd476db9bac3b474847947",
+//                "001",
+//                "0011964510743365",
+//                1000000,
+//                "싸월급들어갑니다",
+//                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(receivedTransferAccountNumberResponse);
+
+
+//        DrawingTransferResponse drawingTransferResponse = accountService.drawingTransfer("010218e760dd476db9bac3b474847947",
+//                "001",
+//                "0011964510743365",
+//                500000,
+//                "신용카드비용으로 빠져나가요",
+//                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(drawingTransferResponse);
+//
+//        System.out.println("#######################################이후 잔액을 볼까요");
+//        InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance("010218e760dd476db9bac3b474847947", "001","0011964510743365", "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(inquireAccountBalanceResponse);
+
     }
 }

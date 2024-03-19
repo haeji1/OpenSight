@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
+import org.example.b104.domain.account.controller.record.DrawingTransferRecord;
 import org.example.b104.domain.account.controller.record.InquireAccountBalanceRecord;
+import org.example.b104.domain.account.controller.record.ReceivedTransferAccountNumberRecord;
 import org.example.b104.domain.account.controller.request.AccountRequestHeader;
 import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
 import org.example.b104.domain.account.controller.response.*;
@@ -400,6 +402,92 @@ public class AccountService {
         return null;
     }
 
+    public DrawingTransferResponse drawingTransfer(String apiKey, String bankCode, String accountNo, int transactionBalance, String transactionSummary, String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("drawingTransfer")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("drawingTransfer")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
 
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/drawingTransfer", "POST",
+                   "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"transactionSummary\": \"" + transactionSummary + "\"}");
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201)) {
+
+            return DrawingTransferResponse.builder()
+                    .result("error")
+                    .build();
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            DrawingTransferRecord rec = objectMapper.readValue(REC.toString(), DrawingTransferRecord.class);
+
+            return DrawingTransferResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ReceivedTransferAccountNumberResponse receivedTransferAccountNumber(String apiKey, String bankCode, String accountNo, int transactionBalance, String transactionSummary,String userKey) {
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("receivedTransferAccountNumber")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("receivedTransferAccountNumber")
+                .apiKey(apiKey)
+                .userKey(userKey)//입금할때는 유저키가 필요가 없나?
+                .build();
+
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/receivedTransferAccountNumber", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"transactionSummary\": \"" + transactionSummary + "\"}");
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201)) {
+
+            return ReceivedTransferAccountNumberResponse.builder()
+                    .result("error")
+                    .build();
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            ReceivedTransferAccountNumberRecord rec = objectMapper.readValue(REC.toString(), ReceivedTransferAccountNumberRecord.class);
+
+            return ReceivedTransferAccountNumberResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
