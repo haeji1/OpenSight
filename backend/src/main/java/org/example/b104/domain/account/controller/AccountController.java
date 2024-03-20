@@ -39,4 +39,10 @@ public class AccountController {
         }
         return ResponseEntity.ok(ApiResponse.createSuccess(makeManagerKeyResponse));
     }
+    @PostMapping("/main")
+    public ResponseEntity<?> accountMainInfo(){
+
+
+        return ResponseEntity.ok(ApiResponse.createSuccess("success"));
+    }
 }

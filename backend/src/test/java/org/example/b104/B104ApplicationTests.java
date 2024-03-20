@@ -1,24 +1,25 @@
 package org.example.b104;
 
 
-import org.example.b104.domain.account.controller.record.SingleAccountTransactionHistory;
+/*import org.example.b104.domain.account.controller.record.SingleAccountTransactionHistory;
 import org.example.b104.domain.account.controller.response.*;
 import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
 import org.example.b104.domain.amazon.service.AmazonTranscribeService;
-//import org.example.b104.oauth2.JwtTokenProvider;
 import org.example.b104.domain.openai.service.ChatGptService;
+*/
 import org.junit.jupiter.api.Test;
+
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import software.amazon.awssdk.services.rekognition.model.FaceMatch;
-
-import java.util.List;
+//import software.amazon.awssdk.services.rekognition.model.FaceMatch;
+//import java.util.List;
 
 @SpringBootTest
 class B104ApplicationTests {
-    @Autowired
+    /*@Autowired
     AmazonRekognitionService rekognitionService;
     @Autowired
     AmazonS3Service s3Service;
@@ -159,11 +160,36 @@ class B104ApplicationTests {
 //            System.out.println(singleAccountTransactionHistory.toString());
 //        }
 
-        InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetailResponse = accountService.inquireTransactionHistoryDetail("010218e760dd476db9bac3b474847947",
-                "001",
-                "0011964510743365",
-                254,
-                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
-        System.out.println(inquireTransactionHistoryDetailResponse);
-    }
+//        InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetailResponse = accountService.inquireTransactionHistoryDetail("010218e760dd476db9bac3b474847947",
+//                "001",
+//                "0011964510743365",
+//                254,
+//                "9d4b8b95-6fbc-421e-aca8-35748bb4b12b");
+//        System.out.println(inquireTransactionHistoryDetailResponse);
+        /*int a = 0;
+        int b = 0;
+        int c = 0;
+
+        for(int i =0 ; i< 10; i++) {
+            String res = chatGptService.chat(
+                    "[사과, 딸기, 포도]" +
+                            "이 대 괄호 안에 있는 상품들 중에\n" +
+                            "[1. (출금) 사과 5,000 \n 2. (출금) 딸기 10,000 \n 3. (출금) 바나나 4,000\n 4. (출금) 사과 6,000]\n" +
+                            "이 대 괄호 안에 있는 내용을 참조해서 내가 가장 좋아하는 상품을 추천해줘.\n" +
+                            "답변은 다른말 하지말고 상품 숫자 하나만 대답해줘.\n"+
+                            "예를들어 사과면 '2'");
+            if (res.equals("1")){
+                a++;
+            }else if (res.equals("2")){
+                b++;
+            }
+            else if (res.equals("3")) {
+                c++;
+            }
+            System.out.println(res);
+        }
+        System.out.println("a : " + a);
+        System.out.println("b : " + b);
+        System.out.println("c : " + c);
+    }*/
 }
