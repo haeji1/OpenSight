@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -25,13 +27,14 @@ public class User {
     @Column(unique = true)
     private String email;
 
+    @Column(unique = true)
     private String phoneNumber;
 
     private String userKey;
 
     private String institutionCode;
-    private String created;
-    private String modified;
+    private Date created;
+    private Date modified;
     private String emailPrefix;
     private String uniqueFaceId;
 
@@ -58,6 +61,10 @@ public class User {
         return this;
     }
 
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
     public User updateUserKey(String userKey) {
         this.userKey = userKey;
         return this;
@@ -68,7 +75,12 @@ public class User {
             String password,
             String username,
             String phone,
-            String userKey
+            String userKey,
+            Date created,
+            Date modified,
+            String institutionCode,
+            String emailPrefix
+
     ) {
         User user = new User();
         user.email = email;
@@ -77,6 +89,33 @@ public class User {
         user.phoneNumber = phone;
         user.oauthId = "일반 회원가입";
         user.userKey = userKey;
+        user.created = created;
+        user.modified = modified;
+        user.institutionCode = institutionCode;
+        user.emailPrefix = emailPrefix;
+        return user;
+    }
+
+    public static User createNewUser(
+            String email,
+            String password,
+            String username,
+            String userKey,
+            Date created,
+            Date modified,
+            String institutionCode,
+            String emailPrefix
+    ) {
+        User user = new User();
+        user.email = email;
+        user.password = password;
+        user.username = username;
+        user.oauthId = "소셜 회원가입";
+        user.userKey = userKey;
+        user.created = created;
+        user.modified = modified;
+        user.institutionCode = institutionCode;
+        user.emailPrefix = emailPrefix;
         return user;
     }
 

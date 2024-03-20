@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +58,7 @@ public class UserService {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
         System.out.println("======api통신 시작=========" + command.getEmail());
+        String emailPrefix = command.getEmail().substring(0, Math.min(command.getEmail().length(), 10));
         BankApiResponse responseEntity = WebClient.create()
                 .post()
                 .uri("https://finapi.p.ssafy.io/ssafy/api/v1/member/")
@@ -69,13 +71,20 @@ public class UserService {
 
         if (responseEntity != null) {
             String userKey = responseEntity.getPayload().getUserKey();
+            Date created = responseEntity.getPayload().getCreated();
+            Date modified = responseEntity.getPayload().getModified();
+            String institutionCode = responseEntity.getPayload().getInstitutionCode();
 
             User newUser = User.createNewUser(
                     command.getEmail(),
                     bCryptPasswordEncoder.encode(command.getPassword()),
                     command.getUsername(),
                     command.getPhone(),
-                    userKey
+                    userKey,
+                    created,
+                    modified,
+                    institutionCode,
+                    emailPrefix
             );
 
             userRepository.save(newUser);
@@ -108,10 +117,15 @@ public class UserService {
                 .build();
     }
 
-//    @Transactional(readOnly = false)
-//    public UpdatePasswordResponse updatePassword(UpdatePasswordCommand command) {
-//
-//    }
+    @Transactional(readOnly = false)
+    public UpdatePasswordResponse updatePassword(UpdatePasswordCommand command, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        user.updatePassword(command.getPassword());
+        return UpdatePasswordResponse.builder()
+                .isSuccess(true)
+                .build();
+    }
 
     @Transactional(readOnly = true)
     public FindEmailResponse findEmail(FindEmailCommand command) {
