@@ -1,19 +1,13 @@
-<<<<<<< HEAD
-import { createRouter, createWebHistory } from 'vue-router'
-
-=======
 import { createRouter, createWebHistory } from 'vue-router';
 import IntroView from '@/views/intro/Intro.vue';
 import LoginView from '@/views/auth/Login.vue';
 import MainView from '@/views/dashboard/Main.vue';
->>>>>>> feature/FE-socialLogin
+import IntroView from '@/views/intro/Intro.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-<<<<<<< HEAD
-    
-=======
     {
       path: '/login',
       name: 'Login',
@@ -23,8 +17,12 @@ const router = createRouter({
       path: '/main',
       name: 'Main',
       component: MainView
-    }
->>>>>>> feature/FE-socialLogin
+    },
+    {
+      path: '/',
+      name: 'Intro',
+      component: IntroView
+    },
   ]
 })
 
