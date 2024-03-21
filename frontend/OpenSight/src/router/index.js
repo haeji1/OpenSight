@@ -5,6 +5,9 @@ import MainView from '@/views/dashboard/Main.vue';
 import IntroView from '@/views/intro/Intro.vue';
 import RegisterView from '@/views/auth/Register.vue'
 import RegisterCompleteView from '@/views/auth/RegisterComplete.vue'
+import FindEmail from '@/views/auth/FindEmail.vue'
+import FindEmailComplete from '@/views/auth/FindEmailComplete.vue'
+import FindEmailFail from '@/views/auth/FindEmailFail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +36,21 @@ const router = createRouter({
       path: '/register/complete',
       name: 'RegisterComplete',
       component: RegisterCompleteView
+    },
+    {
+      path: '/find-email',
+      name: 'FindEmail',
+      component: FindEmail
+    },
+    {
+      path: '/find-email/complete',
+      name: 'FindEmailComplete',
+      component: FindEmailComplete
+    },
+    {
+      path: '/find-email/fail',
+      name: 'FindEamilFail',
+      component: FindEmailFail
     }
   ]
 })
