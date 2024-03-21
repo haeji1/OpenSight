@@ -8,6 +8,8 @@ import RegisterCompleteView from '@/views/auth/RegisterComplete.vue'
 import FindEmail from '@/views/auth/FindEmail.vue'
 import FindEmailComplete from '@/views/auth/FindEmailComplete.vue'
 import FindEmailFail from '@/views/auth/FindEmailFail.vue'
+import EditProfileView from '@/views/profile/EditProfile.vue'
+import EditProfileCompleteView from '@/views/profile/EditProfileComplete.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +53,16 @@ const router = createRouter({
       path: '/find-email/fail',
       name: 'FindEamilFail',
       component: FindEmailFail
+    },
+    {
+      path: '/profile/edit',
+      name: 'EditProfile',
+      component: EditProfileView
+    },
+    {
+      path: '/profile/edit-complete',
+      name: 'EditProfileComplete',
+      component: EditProfileCompleteView
     }
   ]
 })
