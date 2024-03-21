@@ -10,6 +10,10 @@ import FindEmailComplete from '@/views/auth/FindEmailComplete.vue'
 import FindEmailFail from '@/views/auth/FindEmailFail.vue'
 import EditProfileView from '@/views/profile/EditProfile.vue'
 import EditProfileCompleteView from '@/views/profile/EditProfileComplete.vue'
+import PasswordFindView from '@/views/auth/PasswordFind.vue'
+import PasswordFindFailView from '@/views/auth/PasswordFindFail.vue'
+import PasswordChangeView from '@/views/auth/PasswordChange.vue'
+import PasswordChangeCompleteView from '@/views/auth/PasswordChangeComplete.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,7 +67,27 @@ const router = createRouter({
       path: '/profile/edit-complete',
       name: 'EditProfileComplete',
       component: EditProfileCompleteView
-    }
+    },
+    {
+      path: '/find-password',
+      name: 'PasswordFind',
+      component: PasswordFindView
+    },
+    {
+      path: '/find-password/fail',
+      name: 'PasswordFindFail',
+      component: PasswordFindFailView
+    },
+    {
+      path: '/password/change',
+      name: 'PasswordChange',
+      component: PasswordChangeView
+    },
+    {
+      path: '/password/change-complete',
+      name: 'PasswordChangeComplete',
+      component: PasswordChangeCompleteView
+    },
   ]
 })
 
