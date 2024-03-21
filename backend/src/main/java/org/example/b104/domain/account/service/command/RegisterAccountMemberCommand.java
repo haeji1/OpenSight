@@ -8,6 +8,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class RegisterAccountMemberCommand {
-    String apiKey;
     String userId;
 }

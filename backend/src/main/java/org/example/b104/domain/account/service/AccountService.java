@@ -96,9 +96,13 @@ public class AccountService {
 
     public RegisterAccountMemberResponse registerAccountMember(RegisterAccountMemberCommand command) {
         String userId = command.getUserId();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member",
+
+       HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member",
                 "POST",
-                "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
+                "{\"userId\": \"" + userId + "\"" +","+  "\"apiKey\": \"" + "010218e760dd476db9bac3b474847947" + "\"}");
+
+//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+//        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
@@ -134,11 +138,18 @@ public class AccountService {
     }
 
     public SearchAccountMemberResponse searchAccountMember(SearchAccountMemberCommand command) {
-        String apiKey = command.getApiKey();
         String userId = command.getUserId();
+        JSONObject jsonObject = new JSONObject();
 
+        jsonObject.put("apiKey", apiKey);
+        jsonObject.put("userId", userId);
+
+        System.out.println(jsonObject.toString());
         HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member/search", "POST",
-                "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
+                jsonObject.toString());
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
