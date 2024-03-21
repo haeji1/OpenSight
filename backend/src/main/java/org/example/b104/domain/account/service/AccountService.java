@@ -6,6 +6,7 @@ import org.example.b104.domain.account.controller.record.*;
 import org.example.b104.domain.account.controller.request.AccountRequestHeader;
 import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
 import org.example.b104.domain.account.controller.response.*;
+import org.example.b104.domain.account.service.command.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class AccountService {
 
     private HttpClient httpClient;
     private ObjectMapper objectMapper;
+
+    private final String apiKey = "010218e760dd476db9bac3b474847947";
 
     /*
   "managerId" : "JinhoRyu.dev@gmail.com",
@@ -90,13 +93,9 @@ public class AccountService {
         return null;
     }
 
-    /**
-     *
-     * @param apiKey
-     * @param userId : 이메일 형식
-     * @return
-     */
-    public RegisterAccountMemberResponse registerAccountMember(String apiKey, String userId) {
+
+    public RegisterAccountMemberResponse registerAccountMember(RegisterAccountMemberCommand command) {
+        String userId = command.getUserId();
         HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member",
                 "POST",
                 "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
@@ -134,13 +133,10 @@ public class AccountService {
         return null;
     }
 
-    /**
-     *
-     * @param apiKey
-     * @param userId : 이메일 형식
-     * @return
-     */
-    public SearchAccountMemberResponse searchAccountMember(String apiKey, String userId) {
+    public SearchAccountMemberResponse searchAccountMember(SearchAccountMemberCommand command) {
+        String apiKey = command.getApiKey();
+        String userId = command.getUserId();
+
         HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member/search", "POST",
                 "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
 
@@ -177,7 +173,7 @@ public class AccountService {
         return null;
     }
 
-    public InquireBankAccountTypesResponse inquireBankAccountTypes(String apiKey) {
+    public InquireBankAccountTypesResponse inquireBankAccountTypes() {
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireBankAccountTypes")
                 .institutionCode("00100")
@@ -228,7 +224,11 @@ public class AccountService {
                 .build();
     }
 
-    public OpenAccountResponse openAccount(String apiKey, String accountTypeUniqueNo, String userKey) {
+    public OpenAccountResponse openAccount(OpenAccountCommand command) {
+
+        String accountTypeUniqueNo = command.getAccountTypeUniqueNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("openAccount")
                 .institutionCode("00100")
@@ -270,7 +270,8 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountListResponse inquireAccountList(String apiKey, String userKey) {
+    public InquireAccountListResponse inquireAccountList(InquireAccountListCommand command) {
+        String userKey = command.getUserKey();
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountList")
                 .institutionCode("00100")
@@ -313,7 +314,11 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountInfoResponse inquireAccountInfo(String apiKey,String bankCode,String accountNo, String userKey) {
+    public InquireAccountInfoResponse inquireAccountInfo(InquireAccountInfoCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountInfo")
                 .institutionCode("00100")
@@ -352,7 +357,11 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountBalanceResponse inquireAccountBalance(String apiKey, String bankCode, String accountNo, String userKey) {
+    public InquireAccountBalanceResponse inquireAccountBalance(InquireAccountBalanceCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountBalance")
                 .institutionCode("00100")
@@ -391,7 +400,13 @@ public class AccountService {
         return null;
     }
 
-    public DrawingTransferResponse drawingTransfer(String apiKey, String bankCode, String accountNo, int transactionBalance, String transactionSummary, String userKey) {
+    public DrawingTransferResponse drawingTransfer(DrawingTransferCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        int transactionBalance = command.getTransactionBalance();
+        String transactionSummary = command.getTransactionSummary();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("drawingTransfer")
                 .institutionCode("00100")
@@ -435,7 +450,14 @@ public class AccountService {
         return null;
     }
 
-    public ReceivedTransferAccountNumberResponse receivedTransferAccountNumber(String apiKey, String bankCode, String accountNo, int transactionBalance, String transactionSummary,String userKey) {
+    public ReceivedTransferAccountNumberResponse receivedTransferAccountNumber(ReceivedTransferAccountNumberCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        int transactionBalance = command.getTransactionBalance();
+        String transactionSummary = command.getTransactionSummary();
+        String userKey = command.getUserKey();
+
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("receivedTransferAccountNumber")
                 .institutionCode("00100")
@@ -479,7 +501,16 @@ public class AccountService {
         return null;
     }
 
-    public AccountTransferResponse accountTransfer(String apiKey, String depositBankCode, String depositAccountNo, int transactionBalance,String withdrawalBankCode, String withdrawalAccountNo, String depositTransactionSummary, String withdrawalTransactionSummary, String userKey) {
+    public AccountTransferResponse accountTransfer(AccountTransferCommand command) {
+        String depositBankCode = command.getDepositBankCode();
+        String depositAccountNo = command.getDepositAccountNo();
+        int transactionBalance = command.getTransactionBalance();
+        String withdrawalBankCode = command.getWithdrawalBankCode();
+        String withdrawalAccountNo = command.getWithdrawalAccountNo();
+        String depositTransactionSummary = command.getDepositTransactionSummary();
+        String withdrawalTransactionSummary = command.getWithdrawalTransactionSummary();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountTransactionHistory")
                 .institutionCode("00100")
@@ -518,7 +549,15 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountTransactionHistoryResponse inquireAccountTransaction(String apiKey, String bankCode, String accountNo, String startDate, String endDate, String transactionType, String orderByType, String userKey) {
+    public InquireAccountTransactionHistoryResponse inquireAccountTransaction(InquireAccountTransactionCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String startDate = command.getStartDate();
+        String endDate = command.getEndDate();
+        String transactionType = command.getTransactionType();
+        String orderByType = command.getOrderByType();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountTransactionHistory")
                 .institutionCode("00100")
@@ -562,7 +601,12 @@ public class AccountService {
         return null;
     }
 
-    public InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetail(String apiKey, String bankCode, String accountNo, int transactionUniqueNo, String userKey) {
+    public InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetail(InquireTransactionHistoryDetailCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        int transactionUniqueNo = command.getTransactionUniqueNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireTransactionHistoryDetail")
                 .institutionCode("00100")
