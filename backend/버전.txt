@@ -1,0 +1,5 @@
+자바 17.0.10
+mysql 8.0.30
+
+database 이름은 bank입니다!
+create database bank; 실행 시키고 사용하시면 됩니다.
