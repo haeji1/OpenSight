@@ -13,6 +13,9 @@ import PasswordFindView from '@/views/auth/PasswordFind.vue'
 import PasswordFindFailView from '@/views/auth/PasswordFindFail.vue'
 import PasswordChangeView from '@/views/auth/PasswordChange.vue'
 import PasswordChangeCompleteView from '@/views/auth/PasswordChangeComplete.vue'
+import TransferView from '@/views/transfer/Transfer.vue'
+import TransferConfirmView from '@/views/transfer/TransferConfirm.vue'
+import TransferCompleteView from '@/views/transfer/TransferComplete.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,6 +89,21 @@ const router = createRouter({
       path: '/password/change-complete',
       name: 'PasswordChangeComplete',
       component: PasswordChangeCompleteView
+    },
+    {
+      path: '/transfer',
+      name: 'Transfer',
+      component: TransferView
+    },
+    {
+      path: '/transfer/confirm',
+      name: 'TransferConfirm',
+      component: TransferConfirmView
+    },
+    {
+      path: '/transfer/complete',
+      name: 'TransferComplete',
+      component: TransferCompleteView
     },
   ]
 })
