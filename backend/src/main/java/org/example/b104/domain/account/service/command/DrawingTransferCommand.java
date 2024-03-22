@@ -10,7 +10,7 @@ import lombok.Getter;
 public class DrawingTransferCommand {
     String bankCode;
     String accountNo;
-    int transactionBalance;
+    long transactionBalance;
     String transactionSummary;
     String userKey;
 }

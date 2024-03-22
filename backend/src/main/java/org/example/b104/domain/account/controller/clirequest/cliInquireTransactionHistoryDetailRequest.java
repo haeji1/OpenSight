@@ -9,4 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 
 public class cliInquireTransactionHistoryDetailRequest {
+    String bankCode;
+    String accountNo;
+    int transactionUniqueNo;
 }

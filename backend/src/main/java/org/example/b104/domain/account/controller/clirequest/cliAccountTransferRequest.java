@@ -8,5 +8,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class cliAccountTransferRequest {
-
+    private String depositBankCode;
+    private String depositAccountNo;
+    private Long transactionBalance;
+    private String withdrawalBankCode;
+    private String withdrawalAccountNo;
+    private String depositTransactionSummary;
+    private String withdrawalTransactionSummary;
 }

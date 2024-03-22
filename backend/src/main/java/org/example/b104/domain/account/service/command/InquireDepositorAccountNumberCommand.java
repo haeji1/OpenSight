@@ -7,12 +7,9 @@ import lombok.Getter;
 @Builder
 @Getter
 @AllArgsConstructor
-public class InquireAccountTransactionCommand {
+public class InquireDepositorAccountNumberCommand {
+    String userKey;
     String bankCode;
     String accountNo;
-    String startDate;
-    String endDate;
-    String transactionType;
-    String orderByType;
-    String userKey;
+
 }

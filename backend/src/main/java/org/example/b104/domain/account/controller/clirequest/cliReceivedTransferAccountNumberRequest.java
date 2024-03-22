@@ -9,5 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor
 
 public class cliReceivedTransferAccountNumberRequest {
-
+    private String bankCode;
+    private String accountNo;
+    private Long transactionBalance;
+    private String transactionSummary;
 }

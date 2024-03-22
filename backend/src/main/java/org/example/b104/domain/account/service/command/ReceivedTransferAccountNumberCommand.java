@@ -11,7 +11,7 @@ public class ReceivedTransferAccountNumberCommand {
     String apiKey;
     String bankCode;
     String accountNo;
-    int transactionBalance;
+    long transactionBalance;
     String transactionSummary;
     String userKey;
 }

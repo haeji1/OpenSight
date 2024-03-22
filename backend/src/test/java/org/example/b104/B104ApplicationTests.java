@@ -1,31 +1,33 @@
 package org.example.b104;
 
 
-/*import org.example.b104.domain.account.controller.record.SingleAccountTransactionHistory;
+import org.example.b104.domain.account.controller.record.SingleAccountTransactionHistory;
 import org.example.b104.domain.account.controller.response.*;
 import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
 import org.example.b104.domain.amazon.service.AmazonTranscribeService;
 import org.example.b104.domain.openai.service.ChatGptService;
-*/
+
+import org.example.b104.domain.amazon.service.AmazonS3Service;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-//import software.amazon.awssdk.services.rekognition.model.FaceMatch;
-//import java.util.List;
+import software.amazon.awssdk.services.rekognition.model.FaceMatch;
+import java.util.List;
 
 @SpringBootTest
 class B104ApplicationTests {
-    /*@Autowired
-    AmazonRekognitionService rekognitionService;
+//    @Autowired
+//    AmazonRekognitionService rekognitionService;
     @Autowired
-    AmazonS3Service s3Service;
-    @Autowired
-    AmazonTranscribeService transcribeService;
-    //@Autowired
+AmazonS3Service s3Service;
+//    @Autowired
+//    AmazonTranscribeService transcribeService;
+    /*//@Autowired
     //JwtTokenProvider jwtTokenProvider;
 
     @Autowired
@@ -61,7 +63,16 @@ class B104ApplicationTests {
         //String res = s3Service.uploadFile("C:/uploadthis.png");
 //        transcribeService.transcribeAudioFile("testvoice.mp3");
 
-//        String res = s3Service.downloadJsonFile("MyTranscriptionJob.json");
+    @Test
+    void contextLoads() {
+        System.out.println("#######################################contextLoads");
+        String resssssss = s3Service.downloadJsonFile("MyTranscriptionJob.json");
+        JSONObject jsonObject = new JSONObject(resssssss);
+        JSONObject resultObj = jsonObject.getJSONObject("results");
+        JSONObject trasncriptObj = resultObj.getJSONObject("transcripts");
+
+        System.out.println(resssssss);
+    }
 
         //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU
         //String res = jwtTokenProvider.getPayload("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU");

@@ -10,7 +10,7 @@ import lombok.Getter;
 public class AccountTransferCommand {
     String depositBankCode;
     String depositAccountNo;
-    int transactionBalance;
+    long transactionBalance;
     String withdrawalBankCode;
     String withdrawalAccountNo;
     String depositTransactionSummary;

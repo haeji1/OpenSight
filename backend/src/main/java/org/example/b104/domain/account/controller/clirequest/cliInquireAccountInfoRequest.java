@@ -9,4 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 
 public class cliInquireAccountInfoRequest {
+    String bankCode;
+    String accountNo;
 }
