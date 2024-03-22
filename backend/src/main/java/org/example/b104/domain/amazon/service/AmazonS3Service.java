@@ -8,9 +8,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetObjectResponse;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -54,6 +52,13 @@ public class AmazonS3Service {
                     .build();
 
             s3Client.putObject(putObjectRequest, file.toPath());
+
+            // 파일이 올라갈 때까지 대기
+            while (!doesFileExist(keyName)) {
+                // 파일이 존재하지 않으면 대기
+                Thread.sleep(1000); // 1초 대기
+            }
+
             return "SUCCESS";
         }catch (Exception e){
             e.printStackTrace();
@@ -85,5 +90,39 @@ public class AmazonS3Service {
             return null;
         }
     }
+
+    public boolean doesFileExist(String keyName) {
+        try {
+            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key(keyName)
+                    .build();
+
+            s3Client.headObject(headObjectRequest);
+            return true; // 파일이 존재함
+        } catch (NoSuchKeyException e) {
+            // 파일이 존재하지 않음
+            return false;
+        } catch (Exception e) {
+            // 예외가 발생한 경우
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+//    public boolean doesFileExist(String keyName) {
+//        try {
+//            HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+//                    .bucket(bucketName)
+//                    .key(keyName)
+//                    .build();
+//
+//            HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+//            return true; // 파일이 존재함
+//        } catch (Exception e) {
+//            // 파일이 존재하지 않거나 예외가 발생한 경우
+//            return false;
+//        }
+//    }
 
 }
