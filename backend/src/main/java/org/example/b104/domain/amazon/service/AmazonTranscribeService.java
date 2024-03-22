@@ -54,7 +54,10 @@ public class AmazonTranscribeService {
      * @param objectKey : S3에 저장된 오디오 파일의 이름
      * @Author : 류진호
      */
+
     public void transcribeAudioFile(String objectKey) {
+
+
         // S3에서 오디오 파일을 가져옴
         InputStream inputStream = s3Client.getObject(GetObjectRequest.builder()
                 .bucket(bucketName)
@@ -68,12 +71,14 @@ public class AmazonTranscribeService {
                 .media(Media.builder()
                         .mediaFileUri("s3://" + bucketName + "/" + objectKey)
                         .build())
-                .transcriptionJobName("MyTranscriptionJob") // Transcribe 작업 이름 설정
+                .transcriptionJobName(objectKey) // Transcribe 작업 이름 설정
                 .outputBucketName(bucketName) // 텍스트 출력을 저장할 S3 버킷 이름 지정
                 .build();
 
         // Transcribe 작업 시작
+
         transcribeClient.startTranscriptionJob(request);
     }
+
 
 }

@@ -7,6 +7,7 @@ import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
 import org.example.b104.domain.amazon.service.AmazonTranscribeService;
+import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.openai.service.ChatGptService;
 
 import org.example.b104.domain.amazon.service.AmazonS3Service;
@@ -24,11 +25,19 @@ class B104ApplicationTests {
 //    @Autowired
 //    AmazonRekognitionService rekognitionService;
     @Autowired
+    AmazonRekognitionService rekognitionService;
+    @Autowired
 AmazonS3Service s3Service;
 //    @Autowired
 //    AmazonTranscribeService transcribeService;
     /*//@Autowired
     //JwtTokenProvider jwtTokenProvider;
+    AmazonS3Service s3Service;
+    @Autowired
+    AmazonTranscribeService transcribeService;
+
+//    @Autowired
+//    JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     ChatGptService chatGptService;
@@ -59,20 +68,17 @@ AmazonS3Service s3Service;
         //lee-pillip.jpg
         //bc655131-7231-4acb-929c-f03ac68ef32d -> 나(류진호)
         //List<FaceMatch> res = rekognitionService.recognizeFace("cloud-open-sight-collection","cloud-open-sight-ue1","comparethis.jpg");
+        @Test
+        void contextLoads() {
+            System.out.println("#######################################contextLoads");
 
-        //String res = s3Service.uploadFile("C:/uploadthis.png");
-//        transcribeService.transcribeAudioFile("testvoice.mp3");
+//        String res = s3Service.uploadFile("C:/uploadthis.png");
+            String res = s3Service.uploadFile("C:/Users/SSAFY/Pictures/testvoice2.mp3");
+            String keyname ="testvoice2.mp3";
 
-    @Test
-    void contextLoads() {
-        System.out.println("#######################################contextLoads");
-        String resssssss = s3Service.downloadJsonFile("MyTranscriptionJob.json");
-        JSONObject jsonObject = new JSONObject(resssssss);
-        JSONObject resultObj = jsonObject.getJSONObject("results");
-        JSONObject trasncriptObj = resultObj.getJSONObject("transcripts");
-
-        System.out.println(resssssss);
-    }
+            transcribeService.transcribeAudioFile(keyname);
+            String res2 = s3Service.downloadJsonFile(keyname + ".json");
+            System.out.println(res2);
 
         //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU
         //String res = jwtTokenProvider.getPayload("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzA5NzE0NTQ5LCJleHAiOjE3MDk3MTQ1NTl9.ieQ93RUpihsOOGpcQE8KCzWY2-r-e2umucAeVd-zlqU");
