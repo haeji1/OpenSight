@@ -13,6 +13,8 @@ import PasswordFindView from '@/views/auth/PasswordFind.vue'
 import PasswordFindFailView from '@/views/auth/PasswordFindFail.vue'
 import PasswordChangeView from '@/views/auth/PasswordChange.vue'
 import PasswordChangeCompleteView from '@/views/auth/PasswordChangeComplete.vue'
+import SavingsView from '@/views/savings/Savings.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,6 +88,11 @@ const router = createRouter({
       path: '/password/change-complete',
       name: 'PasswordChangeComplete',
       component: PasswordChangeCompleteView
+    },
+    {
+      path: '/savings',
+      name: 'Savings',
+      component: SavingsView
     },
   ]
 })
