@@ -18,6 +18,9 @@ import OpenAccountTermsView from '@/views/account/OpenAccountTerms.vue';
 import OpenAccountCompleteView from '@/views/account/OpenAccountComplete.vue';
 import SavingsView from '@/views/savings/Savings.vue';
 import TransactionsView from '@/views/transactions/Transactions.vue';
+import TransferView from '@/views/transfer/Transfer.vue'
+import TransferConfirmView from '@/views/transfer/TransferConfirm.vue'
+import TransferCompleteView from '@/views/transfer/TransferComplete.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -116,7 +119,22 @@ const router = createRouter({
       path: '/transactions',
       name: 'Transactinos',
       component: TransactionsView
-    }
+    },
+    {
+      path: '/transfer',
+      name: 'Transfer',
+      component: TransferView
+    },
+    {
+      path: '/transfer/confirm',
+      name: 'TransferConfirm',
+      component: TransferConfirmView
+    },
+    {
+      path: '/transfer/complete',
+      name: 'TransferComplete',
+      component: TransferCompleteView
+    },
   ]
 })
 
