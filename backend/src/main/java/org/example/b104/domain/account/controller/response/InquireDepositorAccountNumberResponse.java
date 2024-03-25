@@ -4,15 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.example.b104.domain.account.controller.record.InquireAccountInfoRecord;
+import org.example.b104.domain.account.controller.record.InquireDepositorAccountNumberRecord;
 
 @Builder
 @Getter
 @AllArgsConstructor
 @ToString
-public class InquireAccountInfoResponse {
-    String result;
+public class InquireDepositorAccountNumberResponse {
     AccountResponseHeader Header;
-    InquireAccountInfoRecord REC;
-
+    String result;
+    InquireDepositorAccountNumberRecord REC;
 }

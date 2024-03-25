@@ -6,6 +6,7 @@ import org.example.b104.domain.account.controller.record.*;
 import org.example.b104.domain.account.controller.request.AccountRequestHeader;
 import org.example.b104.domain.account.controller.request.InquireBankAccountTypesRequest;
 import org.example.b104.domain.account.controller.response.*;
+import org.example.b104.domain.account.service.command.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,8 @@ public class AccountService {
 
     private HttpClient httpClient;
     private ObjectMapper objectMapper;
+
+    private final String apiKey = "010218e760dd476db9bac3b474847947";
 
     /*
   "managerId" : "JinhoRyu.dev@gmail.com",
@@ -90,16 +93,16 @@ public class AccountService {
         return null;
     }
 
-    /**
-     *
-     * @param apiKey
-     * @param userId : 이메일 형식
-     * @return
-     */
-    public RegisterAccountMemberResponse registerAccountMember(String apiKey, String userId) {
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member",
+
+    public RegisterAccountMemberResponse registerAccountMember(RegisterAccountMemberCommand command) {
+        String userId = command.getUserId();
+
+       HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member",
                 "POST",
-                "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
+                "{\"userId\": \"" + userId + "\"" +","+  "\"apiKey\": \"" + "010218e760dd476db9bac3b474847947" + "\"}");
+
+//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+//        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
@@ -134,15 +137,19 @@ public class AccountService {
         return null;
     }
 
-    /**
-     *
-     * @param apiKey
-     * @param userId : 이메일 형식
-     * @return
-     */
-    public SearchAccountMemberResponse searchAccountMember(String apiKey, String userId) {
+    public SearchAccountMemberResponse searchAccountMember(SearchAccountMemberCommand command) {
+        String userId = command.getUserId();
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("apiKey", apiKey);
+        jsonObject.put("userId", userId);
+
+        System.out.println(jsonObject.toString());
         HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member/search", "POST",
-                "{\"apiKey\": \"" + apiKey + "\", \"userId\": \"" + userId + "\"}");
+                jsonObject.toString());
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
@@ -177,7 +184,7 @@ public class AccountService {
         return null;
     }
 
-    public InquireBankAccountTypesResponse inquireBankAccountTypes(String apiKey) {
+    public InquireBankAccountTypesResponse inquireBankAccountTypes() {
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireBankAccountTypes")
                 .institutionCode("00100")
@@ -228,7 +235,11 @@ public class AccountService {
                 .build();
     }
 
-    public OpenAccountResponse openAccount(String apiKey, String accountTypeUniqueNo, String userKey) {
+    public OpenAccountResponse openAccount(OpenAccountCommand command) {
+
+        String accountTypeUniqueNo = command.getAccountTypeUniqueNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("openAccount")
                 .institutionCode("00100")
@@ -270,7 +281,8 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountListResponse inquireAccountList(String apiKey, String userKey) {
+    public InquireAccountListResponse inquireAccountList(InquireAccountListCommand command) {
+        String userKey = command.getUserKey();
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountList")
                 .institutionCode("00100")
@@ -313,7 +325,11 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountInfoResponse inquireAccountInfo(String apiKey,String bankCode,String accountNo, String userKey) {
+    public InquireAccountInfoResponse inquireAccountInfo(InquireAccountInfoCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountInfo")
                 .institutionCode("00100")
@@ -327,6 +343,10 @@ public class AccountService {
         HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountInfo", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
 
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
+
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
             return InquireAccountInfoResponse.builder()
@@ -339,7 +359,7 @@ public class AccountService {
             JSONObject REC = jsonObject.getJSONObject("REC");
 
             AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
-            REC rec = objectMapper.readValue(REC.toString(), REC.class);
+            InquireAccountInfoRecord rec = objectMapper.readValue(REC.toString(), InquireAccountInfoRecord.class);
 
             return InquireAccountInfoResponse.builder()
                     .result("success")
@@ -352,7 +372,58 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountBalanceResponse inquireAccountBalance(String apiKey, String bankCode, String accountNo, String userKey) {
+    public InquireDepositorAccountNumberResponse inquireDepositorAccountNumber(InquireDepositorAccountNumberCommand command){
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String userKey = command.getUserKey();
+
+        AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
+                .apiName("inquireDepositorAccountNumber")
+                .institutionCode("00100")
+                .fintechAppNo("001")
+                .apiServiceCode("inquireDepositorAccountNumber")
+                .apiKey(apiKey)
+                .userKey(userKey)
+                .build();
+        accountRequestHeader.init();
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireDepositorAccountNumber", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
+        if (httpResponse == null) return null;
+        if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
+            return InquireDepositorAccountNumberResponse.builder()
+                    .result("error")
+                    .build();
+
+        try {
+            JSONObject jsonObject = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject.getJSONObject("Header");
+            JSONObject REC = jsonObject.getJSONObject("REC");
+
+            AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
+            InquireDepositorAccountNumberRecord rec = objectMapper.readValue(REC.toString(), InquireDepositorAccountNumberRecord.class);
+
+            return InquireDepositorAccountNumberResponse.builder()
+                    .result("success")
+                    .Header(accountResponseHeader)
+                    .REC(rec)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public InquireAccountBalanceResponse inquireAccountBalance(InquireAccountBalanceCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountBalance")
                 .institutionCode("00100")
@@ -391,7 +462,13 @@ public class AccountService {
         return null;
     }
 
-    public DrawingTransferResponse drawingTransfer(String apiKey, String bankCode, String accountNo, int transactionBalance, String transactionSummary, String userKey) {
+    public DrawingTransferResponse drawingTransfer(DrawingTransferCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        long transactionBalance = command.getTransactionBalance();
+        String transactionSummary = command.getTransactionSummary();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("drawingTransfer")
                 .institutionCode("00100")
@@ -435,7 +512,14 @@ public class AccountService {
         return null;
     }
 
-    public ReceivedTransferAccountNumberResponse receivedTransferAccountNumber(String apiKey, String bankCode, String accountNo, int transactionBalance, String transactionSummary,String userKey) {
+    public ReceivedTransferAccountNumberResponse receivedTransferAccountNumber(ReceivedTransferAccountNumberCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        long transactionBalance = command.getTransactionBalance();
+        String transactionSummary = command.getTransactionSummary();
+        String userKey = command.getUserKey();
+
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("receivedTransferAccountNumber")
                 .institutionCode("00100")
@@ -479,19 +563,39 @@ public class AccountService {
         return null;
     }
 
-    public AccountTransferResponse accountTransfer(String apiKey, String depositBankCode, String depositAccountNo, int transactionBalance,String withdrawalBankCode, String withdrawalAccountNo, String depositTransactionSummary, String withdrawalTransactionSummary, String userKey) {
+    public AccountTransferResponse accountTransfer(AccountTransferCommand command) {
+        String depositBankCode = command.getDepositBankCode();
+        String depositAccountNo = command.getDepositAccountNo();
+        long transactionBalance = command.getTransactionBalance();
+        String withdrawalBankCode = command.getWithdrawalBankCode();
+        String withdrawalAccountNo = command.getWithdrawalAccountNo();
+        String depositTransactionSummary = command.getDepositTransactionSummary();
+        String withdrawalTransactionSummary = command.getWithdrawalTransactionSummary();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
-                .apiName("inquireAccountTransactionHistory")
+                .apiName("accountTransfer")
                 .institutionCode("00100")
                 .fintechAppNo("001")
-                .apiServiceCode("inquireAccountTransactionHistory")
+                .apiServiceCode("accountTransfer")
                 .apiKey(apiKey)
                 .userKey(userKey)
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountTransactionHistory", "POST",
-                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"depositBankCode\": \"" + depositBankCode + "\", \"depositAccountNo\": \"" + depositAccountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"withdrawalBankCode\": \"" + withdrawalBankCode + "\", \"withdrawalAccountNo\": \"" + withdrawalAccountNo + "\", \"depositTransactionSummary\": \"" + depositTransactionSummary + "\", \"withdrawalTransactionSummary\": \"" + withdrawalTransactionSummary + "\"}");
+
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/accountTransfer", "POST",
+                "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", " +
+                        "\"depositBankCode\": \"" + depositBankCode + "\", " +
+                        "\"depositAccountNo\": \"" + depositAccountNo + "\", " +
+                        "\"transactionBalance\": " + transactionBalance + ", " +
+                        "\"withdrawalBankCode\": \"" + withdrawalBankCode + "\", " +
+                        "\"withdrawalAccountNo\": \"" + withdrawalAccountNo + "\", " +
+                        "\"depositTransactionSummary\": \"" + depositTransactionSummary + "\", " +
+                        "\"withdrawalTransactionSummary\": \"" + withdrawalTransactionSummary + "\"}");
+
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
@@ -500,9 +604,9 @@ public class AccountService {
                     .build();
 
         try {
-            JSONObject jsonObject = new JSONObject(httpResponse.body());
-            JSONObject resultHeader = jsonObject.getJSONObject("Header");
-            JSONArray RECArray = jsonObject.getJSONArray("REC");
+            JSONObject jsonObject2 = new JSONObject(httpResponse.body());
+            JSONObject resultHeader = jsonObject2.getJSONObject("Header");
+            JSONArray RECArray = jsonObject2.getJSONArray("REC");
 
             AccountResponseHeader accountResponseHeader = objectMapper.readValue(resultHeader.toString(), AccountResponseHeader.class);
             AccountTransferRecord[] rec = objectMapper.readValue(RECArray.toString(), AccountTransferRecord[].class);
@@ -518,7 +622,15 @@ public class AccountService {
         return null;
     }
 
-    public InquireAccountTransactionHistoryResponse inquireAccountTransaction(String apiKey, String bankCode, String accountNo, String startDate, String endDate, String transactionType, String orderByType, String userKey) {
+        public InquireAccountTransactionHistoryResponse inquireAccountTransactionHistory(InquireAccountHistoryTransactionCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        String startDate = command.getStartDate();
+        String endDate = command.getEndDate();
+        String transactionType = command.getTransactionType();
+        String orderByType = command.getOrderByType();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireAccountTransactionHistory")
                 .institutionCode("00100")
@@ -562,7 +674,12 @@ public class AccountService {
         return null;
     }
 
-    public InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetail(String apiKey, String bankCode, String accountNo, int transactionUniqueNo, String userKey) {
+    public InquireTransactionHistoryDetailResponse inquireTransactionHistoryDetail(InquireTransactionHistoryDetailCommand command) {
+        String bankCode = command.getBankCode();
+        String accountNo = command.getAccountNo();
+        int transactionUniqueNo = command.getTransactionUniqueNo();
+        String userKey = command.getUserKey();
+
         AccountRequestHeader accountRequestHeader = AccountRequestHeader.builder()
                 .apiName("inquireTransactionHistoryDetail")
                 .institutionCode("00100")
@@ -577,8 +694,8 @@ public class AccountService {
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionUniqueNo\": \"" + transactionUniqueNo + "\"}");
 
 
-//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
-//        System.out.println("[+] Body : " +httpResponse.body());
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))

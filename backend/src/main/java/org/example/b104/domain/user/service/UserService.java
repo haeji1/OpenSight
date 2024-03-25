@@ -3,6 +3,9 @@ package org.example.b104.domain.user.service;
 import com.sun.jdi.request.InvalidRequestStateException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
+import org.example.b104.domain.account.service.AccountService;
+import org.example.b104.domain.account.service.command.RegisterAccountMemberCommand;
 import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.entity.User;
@@ -10,10 +13,13 @@ import org.example.b104.domain.user.repository.UserRepository;
 import org.example.b104.domain.user.service.command.*;
 import org.example.b104.global.exception.EntityNotFoundException;
 import org.example.b104.global.response.BankApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
@@ -22,6 +28,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private final AccountService accountService;
+
+
+    public String getPrefixOfEmail(String email) {
+        String[] parts = email.split("@");
+        if (parts.length > 0) {
+            return parts[0];
+        }
+        return null;
+    }
 
     @Transactional(readOnly = false)
     public LoginResponse Login(LoginCommand command) {
@@ -57,7 +74,7 @@ public class UserService {
     public CreateUserResponse createUser(CreateUserCommand command) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
-        System.out.println("======api통신 시작=========" + command.getEmail());
+        /*System.out.println("======api통신 시작=========" + command.getEmail());
         String emailPrefix = command.getEmail().substring(0, Math.min(command.getEmail().length(), 10));
         BankApiResponse responseEntity = WebClient.create()
                 .post()
@@ -67,31 +84,67 @@ public class UserService {
                 .bodyToMono(BankApiResponse.class)
                 .block();
         System.out.println("=====통신완료========");
+*/
+        //String emailPrefix = command.getEmail().substring(0, Math.min(command.getEmail().length(), 10));
 
+//        if (responseEntity != null) {
+//            String userKey = responseEntity.getPayload().getUserKey();
+//            Date created = responseEntity.getPayload().getCreated();
+//            Date modified = responseEntity.getPayload().getModified();
+//            String institutionCode = responseEntity.getPayload().getInstitutionCode();
+//
+//            User newUser = User.createNewUser(
+//                    command.getEmail(),
+//                    bCryptPasswordEncoder.encode(command.getPassword()),
+//                    command.getUsername(),
+//                    command.getPhone(),
+//                    userKey,
+//                    created,
+//                    modified,
+//                    institutionCode,
+//                    emailPrefix
+//            );
+//
+//            userRepository.save(newUser);
+//            return CreateUserResponse.builder()
+//                    .userId(newUser.getUserId())
+//                    .build();
+//        }
 
-        if (responseEntity != null) {
-            String userKey = responseEntity.getPayload().getUserKey();
-            Date created = responseEntity.getPayload().getCreated();
-            Date modified = responseEntity.getPayload().getModified();
-            String institutionCode = responseEntity.getPayload().getInstitutionCode();
+        RegisterAccountMemberResponse response = accountService.registerAccountMember(
+                RegisterAccountMemberCommand.builder()
+                        .userId(command.getEmail())
+                        .build()
+        );
+        try {
+            if (response != null) {
+                String userKey = response.getUserKey();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date created = formatter.parse(response.getCreated());
+                Date modified = formatter.parse(response.getModified());
+                String institutionCode = response.getInstitutionCode();
 
-            User newUser = User.createNewUser(
-                    command.getEmail(),
-                    bCryptPasswordEncoder.encode(command.getPassword()),
-                    command.getUsername(),
-                    command.getPhone(),
-                    userKey,
-                    created,
-                    modified,
-                    institutionCode,
-                    emailPrefix
-            );
+                User newUser = User.createNewUser(
+                        command.getEmail(),
+                        bCryptPasswordEncoder.encode(command.getPassword()),
+                        command.getUsername(),
+                        command.getPhone(),
+                        userKey,
+                        created,
+                        modified,
+                        institutionCode,
+                        getPrefixOfEmail(command.getEmail())
+                );
 
-            userRepository.save(newUser);
-            return CreateUserResponse.builder()
-                    .userId(newUser.getUserId())
-                    .build();
+                userRepository.save(newUser);
+                return CreateUserResponse.builder()
+                        .userId(newUser.getUserId())
+                        .build();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         return null;
     }

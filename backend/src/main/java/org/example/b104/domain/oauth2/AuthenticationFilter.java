@@ -34,6 +34,7 @@ public class AuthenticationFilter implements Filter {
         if (forDebug){
             System.out.println("[+] Debug bypass fillter requestURI: " + requestURI);
             filterChain.doFilter(request, response);
+            return;
         }
         // whitelist에 포함된 경로인지 확인
         for (String path : whitelist) {
@@ -68,5 +69,5 @@ public class AuthenticationFilter implements Filter {
         }
         return null;
     }
-
 }
+
