@@ -81,6 +81,15 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(findEmailResponse));
     }
 
+    @DeleteMapping("/withdrawl")
+    public ResponseEntity<ApiResponse<DeleteUserResponse>> deleteUser(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password
+    ) {
+        DeleteUserResponse deleteUserResponse = userService.deleteUser(email,password);
+        return ResponseEntity.ok(ApiResponse.createSuccess(deleteUserResponse));
+    }
+
 
     private String extractUserIdFromToken(String token) {
         if (token != null && token.startsWith("Bearer ")) {

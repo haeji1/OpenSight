@@ -171,6 +171,18 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
+    public DeleteUserResponse deleteUser(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        BCryptPasswordEncoder bCryptPasswordEncoder  = new BCryptPasswordEncoder();
+        if (bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            userRepository.delete(user);
+        }
+        return DeleteUserResponse.builder()
+                .userId(user.getUserId())
+                .build();
+    }
+
+    @Transactional(readOnly = false)
     public UpdatePasswordResponse updatePassword(UpdatePasswordCommand command, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
