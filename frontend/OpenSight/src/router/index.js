@@ -17,7 +17,7 @@ import OpenAccountView from '@/views/account/OpenAccount.vue';
 import OpenAccountTermsView from '@/views/account/OpenAccountTerms.vue';
 import OpenAccountCompleteView from '@/views/account/OpenAccountComplete.vue';
 import SavingsView from '@/views/savings/Savings.vue';
-
+import TransactionsView from '@/views/transactions/Transactions.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -112,6 +112,11 @@ const router = createRouter({
       name: 'Savings',
       component: SavingsView
     },
+    {
+      path: '/transactions',
+      name: 'Transactinos',
+      component: TransactionsView
+    }
   ]
 })
 
