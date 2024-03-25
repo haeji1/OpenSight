@@ -1,7 +1,6 @@
 package org.example.b104.domain.amazon.service;
 
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -60,6 +59,7 @@ public class AmazonS3Service {
                 Thread.sleep(1000); // 1초 대기
             }
 
+            System.out.println(doesFileExist(keyName));
             return "SUCCESS";
         }catch (Exception e){
             e.printStackTrace();
@@ -75,7 +75,14 @@ public class AmazonS3Service {
      * @Author : 류진호
      */
     public String downloadJsonFile(String keyName) {
+
+
+
         try {
+            while(!doesFileExist(keyName)) {
+                Thread.sleep(1000);
+            }
+
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(bucketName)
                     .key(keyName)
@@ -84,6 +91,8 @@ public class AmazonS3Service {
             ResponseBytes<GetObjectResponse> objectBytes = s3Client.getObjectAsBytes(getObjectRequest);
             byte[] contentBytes = objectBytes.asByteArray();
             String jsonContent = new String(contentBytes, StandardCharsets.UTF_8);
+
+
 
             return jsonContent;
         } catch (Exception e) {
