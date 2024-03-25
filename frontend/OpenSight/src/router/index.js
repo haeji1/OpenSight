@@ -16,6 +16,8 @@ import PasswordChangeCompleteView from '@/views/auth/PasswordChangeComplete.vue'
 import OpenAccountView from '@/views/account/OpenAccount.vue';
 import OpenAccountTermsView from '@/views/account/OpenAccountTerms.vue';
 import OpenAccountCompleteView from '@/views/account/OpenAccountComplete.vue';
+import SavingsView from '@/views/savings/Savings.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -104,6 +106,11 @@ const router = createRouter({
       path: '/account/open/complete',
       name: 'OpenAccountComplete',
       component: OpenAccountCompleteView
+    },
+    {
+      path: '/savings',
+      name: 'Savings',
+      component: SavingsView
     },
   ]
 })
