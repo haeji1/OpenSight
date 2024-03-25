@@ -60,6 +60,7 @@ public class AmazonS3Service {
                 Thread.sleep(1000); // 1초 대기
             }
 
+
             return "SUCCESS";
         }catch (Exception e){
             e.printStackTrace();

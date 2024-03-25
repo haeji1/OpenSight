@@ -10,6 +10,7 @@ import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,13 +34,35 @@ public class UserController {
 
     }
 
+    @PostMapping("/face-login")
+    public ResponseEntity<ApiResponse<LoginResponse>> faceLogin(
+            @ModelAttribute FaceLoginRequest request
+    ) {
+        LoginResponse loginResponse = userService.faceLogin(request.toFaceLoginCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(loginResponse));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<CreateUserResponse>> createUser(
-            @RequestBody CreateUserRequest request
+            @ModelAttribute CreateUserImageRequest request
+            //@RequestBody CreateUserRequest request,
+            //@RequestParam(name = "profileImage", required = false)  MultipartFile profileImage
     ) {
-        CreateUserResponse createUserResponse =  userService.createUser(request.toCreateUserCommand());
+
+
+        CreateUserResponse createUserResponse;
+        if (request.getProfileImage() != null){
+            System.out.println("profileImage exists");
+            createUserResponse = userService.createUserWithProfileImage(request.toCreateUserCommand(), request.getProfileImage());
+        }else {
+            System.out.println("profileImage is empty");
+            createUserResponse = userService.createUser(request.toCreateUserCommand());
+        }
         return ResponseEntity.ok(ApiResponse.createSuccess(createUserResponse));
     }
+
+
+
 
     @PostMapping("/update-info")
     public ResponseEntity<ApiResponse<UpdateUserResponse>> updateUser(

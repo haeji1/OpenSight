@@ -100,6 +100,34 @@ public class User {
             String email,
             String password,
             String username,
+            String phone,
+            String userKey,
+            Date created,
+            Date modified,
+            String institutionCode,
+            String emailPrefix,
+            String uniqueFaceId
+
+    ) {
+        User user = new User();
+        user.email = email;
+        user.password = password;
+        user.username = username;
+        user.phoneNumber = phone;
+        user.oauthId = "일반 회원가입";
+        user.userKey = userKey;
+        user.created = created;
+        user.modified = modified;
+        user.institutionCode = institutionCode;
+        user.emailPrefix = emailPrefix;
+        user.uniqueFaceId = uniqueFaceId;
+        return user;
+    }
+
+    public static User createNewUser(
+            String email,
+            String password,
+            String username,
             String userKey,
             Date created,
             Date modified,
