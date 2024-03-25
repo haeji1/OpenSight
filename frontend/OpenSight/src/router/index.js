@@ -21,6 +21,8 @@ import TransactionsView from '@/views/transactions/Transactions.vue';
 import TransferView from '@/views/transfer/Transfer.vue'
 import TransferConfirmView from '@/views/transfer/TransferConfirm.vue'
 import TransferCompleteView from '@/views/transfer/TransferComplete.vue'
+import ChatbotView from '@/views/Chatbot.vue';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -135,6 +137,11 @@ const router = createRouter({
       name: 'TransferComplete',
       component: TransferCompleteView
     },
+    {
+      path: '/chatbot',
+      name: 'Chatbot',
+      component: ChatbotView
+    }
   ]
 })
 
