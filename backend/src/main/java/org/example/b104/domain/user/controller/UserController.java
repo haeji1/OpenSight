@@ -1,13 +1,13 @@
 package org.example.b104.domain.user.controller;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.user.controller.request.*;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     final UserService userService;
+
+    @Value("${jwt.token.secret-key}")
+    private String secretKey;
     
     @GetMapping("/test")
     public ResponseEntity<String> test() {
@@ -65,8 +68,11 @@ public class UserController {
     ) {
 
         String token = request.getHeader("Authorization");
+        System.out.println("=====token====="+token);
         String user = extractUserIdFromToken(token);
+        System.out.println("===user===="+user);
         Long userId = Long.parseLong(user);
+        System.out.println("=====userId====="+userId);
 
         // 비밀번호 수정
         UpdatePasswordResponse updatePasswordResponse = userService.updatePassword(passwordRequest.toUpdatePasswordCommand(), userId);
@@ -92,10 +98,27 @@ public class UserController {
 
 
     private String extractUserIdFromToken(String token) {
-        if (token != null && token.startsWith("Bearer ")) {
+        if (token != null) {
+            System.out.println("not null");;
             String jwttoken =  token.substring(7); // "Bearer "의 길이는 7입니다.
-            Claims claims = Jwts.parser().parseClaimsJws(jwttoken).getBody();
-            return (String) claims.get("sub");
+            System.out.println("================jwtToken======="+jwttoken);
+//            Claims claims = Jwts.parser().parseClaimsJws(jwttoken).getBody();
+//            System.out.println("====claims===="+claims);
+//            return (String) claims.get("sub");
+            try {
+                Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwttoken).getBody();
+                System.out.println("====claims====" + claims);
+                return (String) claims.get("sub");
+            } catch (ExpiredJwtException ex) {
+                // 토큰이 만료된 경우에 대한 처리
+                ex.printStackTrace(); // 또는 로그 기록
+            } catch (SignatureException | MalformedJwtException ex) {
+                // 서명이 올바르지 않거나 JWT 형식이 잘못된 경우에 대한 처리
+                ex.printStackTrace(); // 또는 로그 기록
+            } catch (Exception ex) {
+                // 그 외 다른 예외에 대한 처리
+                ex.printStackTrace(); // 또는 로그 기록
+            }
         }
         return null;
     }
