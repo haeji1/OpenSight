@@ -37,7 +37,7 @@ const invalidCode = ref(false);
         />
         <!-- <p v-if="invalidCode">유효하지 않은 인증번호입니다.</p> -->
       </div>
-      <button @click="submitVerificationCode">이메일 찾기</button>
+      <button @click="submitVerificationCode">비밀번호 찾기</button>
     </div>
   </div>
 </template>

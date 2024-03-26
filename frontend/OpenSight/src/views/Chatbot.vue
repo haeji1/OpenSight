@@ -1,6 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ChatMessage from '@/components/ChatMessage.vue'
+import axios from 'axios';
+
+const stt = function () {
+  axios({
+    method: 'post',
+    url: 'https://175.209.203.185:7979/mic'
+  })
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
+
 
 const messages = ref([
   { id: 1, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: false },
@@ -8,6 +23,9 @@ const messages = ref([
   { id: 3, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: false },
   { id: 4, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: true },
 ])
+
+
+
 </script>
 
 <template>
@@ -20,8 +38,8 @@ const messages = ref([
     </div>
     <div class="input-text">
       <input type="text">
-      <div class="button">
-        <img class="speech" src="../assets/img/waves.png" alt="">
+      <div class="button" @click="stt">
+        <img class="speech" src="../assets/img/waves.png" alt=""> 
       </div>
     </div>
   </div>
