@@ -5,27 +5,27 @@
 <template>
   <div class="container">
     <div class="title-top">
-      <p>은행 서비스 사용하는데</p>
-      <p>그동안 불편한 점은 없었나요?</p>
+      <p class="title1">은행 서비스 사용하는데</p>
+      <p class="title1">그동안 불편한 점은 없었나요?</p>
     </div>
     <div class="title-middle">
-      <p>하지만 이러한 화면으로</p>
-      <p>보시는 분들도 있습니다.</p>
+      <p class="title3">하지만 이러한 화면으로</p>
+      <p class="title3">보시는 분들도 있습니다.</p>
     </div>
     <div class="img-section">
       <div class="left-section">
-        <!-- <img src="@/assets/img/intro-1.png" alt="전맹시각장애인이 보는 화면 이미지"> -->
-        <p>저시력 시각장애인이</p>
-        <p>보는 스마트폰 화면</p>
+        <img src="@/assets/img/intro-1.png" alt="전맹시각장애인이 보는 화면 이미지">
+        <p class="body3">저시력 시각장애인이</p>
+        <p class="body3">보는 스마트폰 화면</p>
       </div>
       <div class="right-section">
-        <p>전맹 시각장애인이</p>
-        <p>보는 스마트폰 화면</p>
-        <!-- <img src="@/assets/img/intro-2.png" alt="저시력 시각장애인이 보는 화면 이미지"> -->
+        <p class="body3">전맹 시각장애인이</p>
+        <p class="body3">보는 스마트폰 화면</p>
+        <img src="@/assets/img/intro-2.png" alt="저시력 시각장애인이 보는 화면 이미지">
       </div>
     </div>
     <div class="title-bottom">
-      <p>이러한 불편함을</p>
+      <p class="title2">이러한 불편함을</p>
     </div>   
   </div>
 </template>
@@ -62,5 +62,21 @@
   justify-content: center; /* 가운데 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
   padding: 10px;
+}
+.title1, .title2, .title3, .body3 {
+  color: #ffffff;
+  margin: 0;
+}
+
+.title-top {
+  margin: 40px 0px;
+}
+
+.title-middle {
+  margin: 20px 0px;
+}
+
+.title-bottom {
+  margin-bottom: 50px;
 }
 </style>

@@ -1,4 +1,8 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+
 
 function naverSocialLogin() {
   window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=4hSpDvA1GDlGXjqG6sac&redirect_uri=http://192.168.31.25:8080/login/oauth2/code/naver'
@@ -11,14 +15,14 @@ function naverSocialLogin() {
     <div class="login-container">
       <div class="login-subheader">환영합니다</div>
       <div class="login-description">여기에 사이트 설명이나 그것과 관련된 내용</div>
-      <input type="email" placeholder="ssafy@ssafy.com" class="login-input" />
-      <input type="password" placeholder="**********" class="login-input" />
+      <input type="email" placeholder="이메일" class="login-input" />
+      <input type="password" placeholder="비밀번호" class="login-input" />
       <button type="submit" class="login-button">로그인</button>
       <div class="help-links">
         <img class="login-naver" src="../../assets/img/naver.png" alt="네이버 소셜로그인 하기" @click="naverSocialLogin">
-        <a href="#" class="help-link">회원이 아니신가요? <span class="link-highlight">회원가입</span></a>
-        <a href="#" class="help-link">이메일을 잊으셨나요?</a>
-        <a href="#" class="help-link">비밀번호를 잊으셨나요?</a>
+        <a href="#" class="help-link" @click="router.push('/register')">회원이 아니신가요? <span class="link-highlight" @click="router.push('/register')">회원가입</span></a>
+        <a href="#" class="help-link" @click="router.push('/find-email')">이메일을 잊으셨나요?</a>
+        <a href="#" class="help-link" @click="router.push('/find-password')">비밀번호를 잊으셨나요?</a>
       </div>
     </div>
   </div>
@@ -42,7 +46,7 @@ function naverSocialLogin() {
 .login-container {
   background-color: #ffffff;
   border-radius: 20px 20px 0 0; /* 아래쪽 모서리는 둥글지 않음 */
-  width: 320px; /* 가로 크기 유지 */
+  width: 360px; /* 가로 크기 유지 */
   padding: 20px;
   margin: 0 auto;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

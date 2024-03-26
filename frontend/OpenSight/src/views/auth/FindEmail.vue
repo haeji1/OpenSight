@@ -28,7 +28,7 @@ const invalidCode = ref(false);
         <input
           v-model="verificationCode"
           type="text"
-          placeholder="인증번호"
+          placeholder="전화번호"
           @input="checkVerificationCode"
         />
         <!-- <p v-if="invalidCode">유효하지 않은 인증번호입니다.</p> -->

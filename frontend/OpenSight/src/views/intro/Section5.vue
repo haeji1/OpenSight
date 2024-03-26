@@ -1,11 +1,13 @@
 <script setup>
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 </script>
 
 <template>
   <div class="container">
-    <p>OpenSight를 통해</p>
-    <p>만나보세요</p>
+    <p class="title1">OpenSight를 통해</p>
+    <p class="title1">만나보세요</p>
     <button class="button" @click="router.push('/login')">시작하기</button>
   </div>
 </template>
@@ -26,16 +28,16 @@
   padding: 10px 20px; /* 버튼 안쪽 여백 */
   margin-top: 20px; /* 버튼 상단 여백 */
   border: none; /* 테두리 없음 */
-  background-color: #007bff; /* 배경 색상 */
-  color: white; /* 글자 색상 */
-  font-size: 1em; /* 글자 크기 */
+  background-color: #ffffff; /* 배경 색상 */
+  color: #1b3c62; /* 글자 색상 */
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer; /* 마우스 오버 시 커서 변경 */
   border-radius: 5px; /* 모서리 둥글게 */
 }
 
-/* 버튼 호버 효과 */
-.button:hover {
-  background-color: #0056b3; /* 호버 시 배경 색상 변경 */
+.title1 {
+  color: #ffffff;
+  margin: 0;
 }
-
 </style>

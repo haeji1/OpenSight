@@ -1,6 +1,7 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ChatMessage from '@/components/ChatMessage.vue'
+
 
 const messages = ref([
   { id: 1, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: false },
@@ -8,6 +9,9 @@ const messages = ref([
   { id: 3, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: false },
   { id: 4, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: true },
 ])
+
+
+
 </script>
 
 <template>
@@ -21,7 +25,7 @@ const messages = ref([
     <div class="input-text">
       <input type="text">
       <div class="button">
-        <img class="speech" src="../assets/img/waves.png" alt="">
+        <img class="speech" src="../assets/img/waves.png" alt=""> 
       </div>
     </div>
   </div>

@@ -4,8 +4,8 @@
 
 <template>
   <div class="container">
-    <!-- <img src="@/assets/img/intro-3.png" alt="쉬운 UI를 설명하는 이미지"> -->
-    <p>쉬운 UI와</p>
+    <img class="img" src="@/assets/img/intro-3.png" alt="쉬운 UI를 설명하는 이미지">
+    <p class="title2">쉬운 UI와</p>
   </div>
 </template>
 
@@ -18,5 +18,14 @@
   align-items: center; /* 중앙 정렬 (가로 방향) */
   height: 100vh; /* 전체 뷰포트 높이 */
   text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+.img {
+  height: 85vh;
+  display: flex;
+}
+
+.title2 {
+  color: #ffffff;
 }
 </style>
