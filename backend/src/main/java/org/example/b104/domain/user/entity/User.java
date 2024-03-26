@@ -151,5 +151,8 @@ public class User {
         this.password = password;
         this.username = username;
     }
+    public void updateFaceId(String uniqueFaceId) {
+        this.uniqueFaceId = uniqueFaceId;
+    }
 
 }

@@ -4,10 +4,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.user.controller.request.*;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.service.UserService;
 import org.example.b104.global.response.ApiResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     final UserService userService;
-    
+
+    @Autowired
+    final JwtTokenProvider jwtTokenProvider;
+
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         return ResponseEntity.ok("test");
@@ -52,10 +57,8 @@ public class UserController {
 
         CreateUserResponse createUserResponse;
         if (request.getProfileImage() != null){
-            System.out.println("profileImage exists");
             createUserResponse = userService.createUserWithProfileImage(request.toCreateUserCommand(), request.getProfileImage());
         }else {
-            System.out.println("profileImage is empty");
             createUserResponse = userService.createUser(request.toCreateUserCommand());
         }
         return ResponseEntity.ok(ApiResponse.createSuccess(createUserResponse));
@@ -73,6 +76,18 @@ public class UserController {
     }
 
 
+    @PostMapping("/update-face")
+    public ResponseEntity<ApiResponse<UpdateFaceResponse>>updateFace(
+            @RequestHeader("Authorization") String token,
+            @ModelAttribute UpdateFaceRequest request
+    ){
+        String decryptedToken = jwtTokenProvider.getPayload(token);
+        Long userId = Long.parseLong(decryptedToken);
+
+        UpdateFaceResponse updateFaceResponse = userService.updateFace(request.toUpdateFaceCommand(),userId);
+        return ResponseEntity.ok(ApiResponse.createSuccess(updateFaceResponse));
+    }
+
     @GetMapping("/find-pw")
     public ResponseEntity<ApiResponse<FindPasswordResponse>> findPassword(
             @RequestBody FindPasswordRequest request
@@ -83,13 +98,11 @@ public class UserController {
 
     @PostMapping("update-pw")
     public ResponseEntity<ApiResponse<UpdatePasswordResponse>> updatePassword(
-            HttpServletRequest request,
+            @RequestHeader("Authorization") String token,
             @RequestBody UpdatePasswordRequest passwordRequest
     ) {
-
-        String token = request.getHeader("Authorization");
-        String user = extractUserIdFromToken(token);
-        Long userId = Long.parseLong(user);
+        String decryptedToken = jwtTokenProvider.getPayload(token);
+        Long userId = Long.parseLong(decryptedToken);
 
         // 비밀번호 수정
         UpdatePasswordResponse updatePasswordResponse = userService.updatePassword(passwordRequest.toUpdatePasswordCommand(), userId);
