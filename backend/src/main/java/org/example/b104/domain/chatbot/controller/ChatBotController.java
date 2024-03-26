@@ -6,10 +6,7 @@ import org.example.b104.domain.chatbot.controller.response.ChatBotTextResponse;
 import org.example.b104.domain.chatbot.service.ChatBotService;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -19,9 +16,11 @@ public class ChatBotController {
 
     private final ChatBotService chatBotService;
 
-//    @PostMapping("/request")
-//    public ResponseEntity<ApiResponse<ChatBotTextRequest>> receiveTextRequest() {
-//        ChatBotTextResponse chatBotTextResponse;
+//    @PostMapping("/mic-request")
+//    public ResponseEntity<ApiResponse<ChatBotTextRequest>> receiveTextRequest(
+//            @RequestBody ChatBotTextRequest request
+//    ) {
+//        ChatBotTextResponse chatBotTextResponse = chatBotService.
 //        return ResponseEntity.ok(ApiResponse.createSuccess(chatBotTextResponse));
 //    }
 }

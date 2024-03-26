@@ -6,13 +6,19 @@ import org.example.b104.domain.chatbot.service.command.ChatBotTextCommand;
 @Data
 public class ChatBotTextRequest {
 
-    private Long number;
-    private String tmp;
+    private Long command_id;
+    private String message;
+    private String name;
+    private String account;
+    private Long money;
 
     public ChatBotTextCommand toChatBotTextCommand() {
         return ChatBotTextCommand.builder()
-                .number(number)
-                .tmp(tmp)
+                .command_id(command_id)
+                .message(message)
+                .name(name)
+                .account(account)
+                .money(money)
                 .build();
     }
 }
