@@ -1,0 +1,109 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.2'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//    testImplementation 'org.springframework.security:spring-security-test'
+    // Access Token 받을 때 OAuth 서버와 통신
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    // Apache HttpComponents Core
+    implementation 'org.apache.httpcomponents:httpcore:4.4.14'
+
+    // Apache HttpComponents Client
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+
+    // JSON library
+    implementation 'org.json:json:20201115'
+
+
+    implementation(platform("software.amazon.awssdk:bom:2.21.1"))
+    implementation 'software.amazon.awssdk:rekognition'
+
+
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // jwt 토큰 DatatypeConverter 설정
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+
+    // com.sun.xml.bind
+    implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
+    implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
+    // javax.xml.bind
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+
+    //S3
+    implementation 'software.amazon.awssdk:s3'
+
+    //Transcribe
+    implementation 'software.amazon.awssdk:transcribe'
+
+
+    //chatgpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
+    // 비밀번호 암호화
+    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+
+
+    //chatgpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
+    // 비밀번호 암호화
+    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+
+
+    //chatgpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
+    // 비밀번호 암호화
+    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+
+
+    //chatgpt
+    implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
+    // 비밀번호 암호화
+    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'software.amazon.awssdk:bom:2.21.1'
+    }
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
