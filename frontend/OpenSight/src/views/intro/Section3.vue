@@ -5,7 +5,7 @@
 <template>
   <div class="container">
     <img class="img" src="@/assets/img/intro-3.png" alt="쉬운 UI를 설명하는 이미지">
-    <p class="title2">쉬운 UI와</p>
+    <p class="title1">쉬운 UI와</p>
   </div>
 </template>
 
@@ -21,11 +21,13 @@
 }
 
 .img {
-  height: 85vh;
+  height: 70vh;
   display: flex;
+  margin-top: 50px;
 }
 
-.title2 {
+.title1 {
   color: #ffffff;
+  margin-bottom: 100px;
 }
 </style>

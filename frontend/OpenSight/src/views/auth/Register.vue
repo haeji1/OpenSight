@@ -1,23 +1,29 @@
 <script setup>
 import { ref, computed } from 'vue';
 import router from '@/router';
+import { useAuthStore } from '@/stores/auth';
 
-const password = ref('');
+const authStore = useAuthStore()
+const email = ref(null)
+const password = ref(null)
+const passwordConfirm = ref(null)
+const name = ref(null)
+const phoneNumber = ref(null)
 
-const isLengthValid = computed(() => {
-  return password.value.length >= 10 && password.value.length <= 30;
-});
-
-const hasAllRequiredCharacters = computed(() => {
-  const lowerCase = /[a-z]/.test(password.value);
-  const upperCase = /[A-Z]/.test(password.value);
-  const numbers = /[0-9]/.test(password.value);
-  return lowerCase && upperCase && numbers;
-});
-
-function goComplete () {
-  router.push('/register/complete')
+const register = function () {
+  if (password === passwordConfirm) {
+    const payload = {
+      email: email.value,
+      password: password.value,
+      name: name.value,
+      phoneNumber: phoneNumber.value,
+      userImage: userImage.value
+    }
+    authStore.register(payload)
+  }
 }
+
+
 </script>
 
 <template>
@@ -25,12 +31,13 @@ function goComplete () {
     <div class="back-button">&lt; 회원가입</div>
     <div class="content">
       <p>환영합니다</p>
-      <form class="form">
+      <form @click.prevent="register" class="form">
         <label for="email">이메일(필수)</label>
-        <input type="email" id="email" placeholder="이메일" required>
+        <input type="email" name="email" id="email" placeholder="이메일" v-model.trim="email" required>
 
         <label for="password">비밀번호(필수)</label>
-        <input type="password" id="password" placeholder="비밀번호" required>
+        <input type="password" name="password" id="password" placeholder="비밀번호" v-model.trim="password" required>
+
         <p>비밀번호는 다음과 같은 조건을 만족해야 합니다</p>
         <div class="pwd-check1">
           <span v-if="isLengthValid" class="checkmark">✔</span>
@@ -43,13 +50,15 @@ function goComplete () {
           <p>영어 대문자, 영어 소문자, 특수문자를 최소 한 글자 이상 포함한 문자 조합이어야 합니다.</p>
         </div>
         <label for="passwordConfirm">비밀번호 확인(필수)</label>
-        <input type="password" id="passwordConfirm" placeholder="비밀번호 확인" required>
+        <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="비밀번호 확인" v-model.trim="passwordConfirm" required>
 
         <label for="name">이름(필수)</label>
-        <input type="text" id="name" placeholder="이름" required>
+        <input type="text" name="name" id="name" placeholder="이름" v-model.trim="name" required>
 
         <label for="phoneNumber">전화번호(필수)</label>
-        <input type="tel" id="phoneNumber" placeholder="전화번호" required>
+        <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="전화번호" v-model.trim="phoneNumber" required>
+
+        
 
         <button type="submit" @click="goComplete">회원가입</button>
       </form>

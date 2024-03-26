@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('authStore', () => {
+  const API_URL = 'https://j10b104.p.ssafy.io:8080'
   const router = useRouter()
   let accessToken = ref(null)
   let refreshToken = ref(null)
