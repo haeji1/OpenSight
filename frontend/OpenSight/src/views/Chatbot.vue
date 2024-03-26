@@ -1,6 +1,20 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import ChatMessage from '@/components/ChatMessage.vue'
+import axios from 'axios';
+
+const stt = function () {
+  axios({
+    method: 'post',
+    url: 'https://175.209.203.185:7979/mic'
+  })
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
 
 
 const messages = ref([
@@ -24,7 +38,7 @@ const messages = ref([
     </div>
     <div class="input-text">
       <input type="text">
-      <div class="button">
+      <div class="button" @click="stt">
         <img class="speech" src="../assets/img/waves.png" alt=""> 
       </div>
     </div>
