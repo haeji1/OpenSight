@@ -4,8 +4,12 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('authStore', () => {
-  const API_URL = 'https://j10b104.p.ssafy.io:8080'
+  // const API_URL = 'https://j10b104.p.ssafy.io:8080'
+   const API_URL = 'http://192.168.31.168:8080'
   const router = useRouter()
+  let id = ref(null)
+  let name = ref(null)
+  let email = ref(null)
   let accessToken = ref(null)
   let refreshToken = ref(null)
 
@@ -41,27 +45,23 @@ export const useAuthStore = defineStore('authStore', () => {
   }
 
   const login = function (payload) {
-    const { email, password } = payload
     axios({
-      method: 'post',
+      method: 'post', 
       url: `${API_URL}/api/users/login`,
       data: {
         code: 'login',
-        email,
-        password
+        userEmail : payload.username,
+        userPassword : payload.password
       }
     })
     .then((res) => {
-      if (res.data.result === "success") {
-        accessToken = res.data.acctoken
-        refreshToken = res.data.responsetoken
-        sessionStorage.setItem('userId', res.data.userId)
-        sessionStorage.setItem('accessToken', res.data.acctoken)
-        sessionStorage.setItem('refreshToken', res.data.responsetoken)
-        router.push('/main')
-      } else {
-        console.log('Login failed:', res.data)
-      }
+      console.log(res)
+
+      
+      sessionStorage.setItem('userId', res.data.data.id)
+      sessionStorage.setItem('accessToken', res.data.data.accessToken)
+      sessionStorage.setItem('refreshToken', res.data.data.refreshToken)
+      router.push('/main')
     })
     .catch((err) => {console.log(err)})
   }

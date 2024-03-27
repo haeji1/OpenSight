@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
+import axios from 'axios';
 
 const authStore = useAuthStore()
 const email = ref(null)
@@ -9,19 +10,85 @@ const password = ref(null)
 const passwordConfirm = ref(null)
 const name = ref(null)
 const phoneNumber = ref(null)
+const videoRef = ref(null);
+const canvasRef = ref(null);
 
-const register = function () {
-  if (password === passwordConfirm) {
-    const payload = {
-      email: email.value,
-      password: password.value,
-      name: name.value,
-      phoneNumber: phoneNumber.value,
-      userImage: userImage.value
-    }
-    authStore.register(payload)
+const setupCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    videoRef.value.srcObject = stream;
+    console.error("Setup camera successful");
+  } catch (error) {
+    console.error("Error accessing the camera", error);
   }
-}
+};
+
+
+const captureImage = () => {
+  canvasRef.value.width = videoRef.value.videoWidth;
+  canvasRef.value.height = videoRef.value.videoHeight;
+  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
+};
+
+
+
+const register = async () => {
+  //await setupCamera();
+  //console.error("after Setup");
+
+  captureImage();
+  console.error("after captureImage");
+
+  const now = new Date();
+  const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+  const uniqueFilename = `profileImage_${dateTimeStr}.jpg`;
+
+  canvasRef.value.toBlob(async (blob) => {
+  const formData = new FormData();
+  formData.append('email', email.value);
+  formData.append('password', password.value);
+  formData.append('username', name.value);
+  formData.append('phone', phoneNumber.value);
+  // Append the image with a unique filename
+  formData.append('profileImage', blob, uniqueFilename);
+
+
+    try {
+      const response = await axios.post('localhost:8080/api/users/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('Registration successful:', response.data);
+      // Handle success, e.g., redirect or show a success message
+    } catch (error) {
+      console.error('Registration failed:', error);
+      // Handle error, e.g., show an error message
+    }
+  }, 'image/jpeg');
+};
+
+// Check if `userImage` is a file input and has a file selected
+/*if (userImage.files && userImage.files[0]) {
+  formData.append('userImage', userImage.files[0]);
+}*/
+
+// Calling the register method with FormData
+// authStore.register(formData);
+
+  //if (password === passwordConfirm) {
+    
+  // alert('register');
+  //   const payload = {
+  //     email: email.value,
+  //     password: password.value,
+  //     name: name.value,
+  //     phoneNumber: phoneNumber.value,
+  //     userImage: userImage.value
+  //   }
+  //   authStore.register(payload)
+ // }
+
 
 
 </script>
@@ -31,7 +98,7 @@ const register = function () {
     <div class="back-button">&lt; 회원가입</div>
     <div class="content">
       <p>환영합니다</p>
-      <form @click.prevent="register" class="form">
+      <form @submit.prevent="register" class="form">
         <label for="email">이메일(필수)</label>
         <input type="email" name="email" id="email" placeholder="이메일" v-model.trim="email" required>
 
@@ -58,9 +125,15 @@ const register = function () {
         <label for="phoneNumber">전화번호(필수)</label>
         <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="전화번호" v-model.trim="phoneNumber" required>
 
+        <video ref="videoRef" autoplay style="display:none;"></video>
+        <canvas ref="canvasRef" style="display:none;"></canvas>
+        <button type="button" @click="setupCamera">Enable Camera</button>
+        <button type="submit" @click.prevent="register">Register</button>
+
+
         
 
-        <button type="submit" @click="goComplete">회원가입</button>
+        <button type="submit">회원가입</button>
       </form>
     </div>
   </div>

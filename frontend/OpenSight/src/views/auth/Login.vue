@@ -1,7 +1,67 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { ref } from 'vue';
+import axios from 'axios'
 
 const router = useRouter()
+const authStore = useAuthStore()
+const username = ref(null)
+const password = ref(null)
+const videoRef = ref(null);
+const canvasRef = ref(document.createElement('canvas'));
+const cameraEnabled = ref(false); // State to track if the camera is enabled
+
+const logIn = function () {
+  const payload = {
+    username: username.value,
+    password: password.value
+  } 
+  authStore.login(payload)
+}
+
+const setupCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    videoRef.value.srcObject = stream;
+  } catch (error) {
+    console.error("Error accessing the camera", error);
+  }
+};
+
+const captureImage = async () => {
+  canvasRef.value.width = videoRef.value.videoWidth;
+  canvasRef.value.height = videoRef.value.videoHeight;
+  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
+};
+
+
+const faceLogin = async () => {
+  setupCamera();
+  captureImage();
+
+  const now = new Date();
+  const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+  const uniqueFilename = `capturedImage_${dateTimeStr}.jpg`;
+
+  canvasRef.value.toBlob(async (blob) => {
+    const formData = new FormData();
+    formData.append('requestImage', blob, uniqueFilename);
+
+    try {
+      const response = await axios.post('backend:8080/api/users/face-login', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('face login successful:', response.data);
+      // Handle success, e.g., redirect or show a success message
+    } catch (error) {
+      console.error('face login failed:', error);
+      // Handle error, e.g., show an error message
+    }
+  }, 'image/jpeg');
+};
 
 
 function naverSocialLogin() {
@@ -19,13 +79,22 @@ function naverSocialLogin() {
         <p class="title1-blue">환영합니다</p>
         <p class="caption2">모두를 위한 금융서비스 OpenSight</p>
       </div>
-      <form @click.prevent="login" class="form">
-        <input type="email" placeholder="이메일" class="login-input" />
-        <input type="password" placeholder="비밀번호" class="login-input" />
+      <form @click.prevent="logIn" class="form">
+        <input type="email" v-model.trim="username" placeholder="이메일" class="login-input" />
+        <input type="password" v-model.trim="password" placeholder="비밀번호" class="login-input" />
         <button type="submit" class="login-button">로그인</button>
       </form>
       <div class="help-links">
-        <img class="login-naver" src="../../assets/img/naver.png" alt="네이버 소셜로그인 하기" @click="naverSocialLogin">
+        <div class="other-login">
+          <video ref="video" class="video-feed" style="display:none;"></video>
+          <canvas ref="canvas" style="display:none;"></canvas>
+
+          <video ref="videoRef" autoplay style="display:none;"></video>
+          <canvas ref="canvasRef" style="display:none;"></canvas>
+
+          <img class="login-face" src="../../assets/img/faceid.png" alt="얼굴인식 로그인하기" @click="faceLogin">
+          <img class="login-naver" src="../../assets/img/naver.png" alt="네이버 소셜로그인 하기" @click="naverSocialLogin">
+        </div>
         <a href="#" class="help-link" @click="router.push('/register')">회원이 아니신가요? <span class="link-highlight" @click="router.push('/register')">회원가입</span></a>
         <a href="#" class="help-link" @click="router.push('/find-email')">이메일을 잊으셨나요?</a>
         <a href="#" class="help-link" @click="router.push('/find-password')">비밀번호를 잊으셨나요?</a>
@@ -113,6 +182,20 @@ function naverSocialLogin() {
 .login-naver {
   width: 50px;
   height: 50px;
+  margin-left: 25px;
+}
+
+.login-face {
+  width: 50px;
+  height: 50px;
+  margin-right: 25px;
+}
+
+.other-login {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 1em;
 }
 
 .help-links {
