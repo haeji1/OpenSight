@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
 import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.account.service.command.RegisterAccountMemberCommand;
+import org.example.b104.domain.amazon.service.AmazonRekognitionService;
+import org.example.b104.domain.amazon.service.AmazonS3Service;
 import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.entity.User;
@@ -17,10 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
+import software.amazon.awssdk.services.rekognition.model.FaceMatch;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +38,11 @@ public class UserService {
     @Autowired
     private final AccountService accountService;
 
+    @Autowired
+    private final AmazonRekognitionService amazonRekognitionService;
+    @Autowired
+    private final AmazonS3Service s3Service;
+    private static final String UPLOAD_DIR = "C:\\OPENSIGHT\\profileImages";
 
     public String getPrefixOfEmail(String email) {
         String[] parts = email.split("@");
@@ -69,6 +81,53 @@ public class UserService {
                 .build();
 
     }
+
+
+    @Transactional(readOnly = false)
+    public LoginResponse faceLogin(FaceLoginCommand command) {
+        File uploadDir = new File(UPLOAD_DIR);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        // 파일을 지정된 디렉토리에 저장
+        String fileName = command.getRequestImage().getOriginalFilename();
+        try {
+            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+            command.getRequestImage().transferTo(destFile);
+
+            File file = new File(UPLOAD_DIR + File.separator + fileName);
+            String keyName = file.getName();
+
+            s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            List<FaceMatch> matchList = amazonRekognitionService.recognizeFace("cloud-open-sight-collection", "cloud-open-sight-ue1", keyName);
+
+            if (matchList.isEmpty())
+                throw new EntityNotFoundException("매치리스트가 없습니다");
+
+            User user = userRepository.findByUniqueFaceId(matchList.get(0).face().faceId());
+            if (user == null) {
+                throw new EntityNotFoundException("로그인 실패");
+            }
+
+            // JWT 토큰 생성
+            String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
+            String refreshToken = jwtTokenProvider.createRefreshToken();
+
+            return LoginResponse.builder()
+                    .id(user.getUserId())
+                    .name(user.getUsername())
+                    .email(user.getEmail())
+                    .tokenType("Bearer")
+                    .accessToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new EntityNotFoundException("로그인 실패");
+        }
+    }
+
 
     @Transactional(readOnly = false)
     public CreateUserResponse createUser(CreateUserCommand command) {
@@ -114,12 +173,13 @@ public class UserService {
         RegisterAccountMemberResponse response = accountService.registerAccountMember(
                 RegisterAccountMemberCommand.builder()
                         .userId(command.getEmail())
-                        .build()
-        );
+                        .build());
         try {
             if (response != null) {
                 String userKey = response.getUserKey();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+
                 Date created = formatter.parse(response.getCreated());
                 Date modified = formatter.parse(response.getModified());
                 String institutionCode = response.getInstitutionCode();
@@ -150,6 +210,73 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
+    public CreateUserResponse createUserWithProfileImage(CreateUserCommand command, MultipartFile profileImage) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
+        RegisterAccountMemberResponse response = accountService.registerAccountMember(
+                RegisterAccountMemberCommand.builder()
+                        .userId(command.getEmail())
+                        .build()
+        );
+
+        String faceId = null;
+
+        try {
+            // 디렉토리가 없으면 생성
+            File uploadDir = new File(UPLOAD_DIR);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            // 파일을 지정된 디렉토리에 저장
+            String fileName = command.getEmail() + profileImage.getOriginalFilename();
+            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+            profileImage.transferTo(destFile);
+
+
+            String fn = s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            faceId = amazonRekognitionService.registeruser("cloud-open-sight-ue1", fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+
+        try {
+            if (response != null) {
+                String userKey = response.getUserKey();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date created = formatter.parse(response.getCreated());
+                Date modified = formatter.parse(response.getModified());
+                String institutionCode = response.getInstitutionCode();
+
+                User newUser = User.createNewUser(
+                        command.getEmail(),
+                        bCryptPasswordEncoder.encode(command.getPassword()),
+                        command.getUsername(),
+                        command.getPhone(),
+                        userKey,
+                        created,
+                        modified,
+                        institutionCode,
+                        getPrefixOfEmail(command.getEmail()),
+                        faceId
+                );
+
+                userRepository.save(newUser);
+                return CreateUserResponse.builder()
+                        .userId(newUser.getUserId())
+                        .build();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+    }
+
+    @Transactional(readOnly = false)
     public UpdateUserResponse updateUser(UpdateUserCommand command) {
         User user = userRepository.findByEmail(command.getEmail());
         if (user != null) {
@@ -159,6 +286,39 @@ public class UserService {
                     .build();
         }
         throw new EntityNotFoundException("존재하지 않는 유저입니다.");
+    }
+
+    @Transactional(readOnly = false)
+    public UpdateFaceResponse updateFace(UpdateFaceCommand command, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+
+        String faceId = null;
+
+        try {
+            // 디렉토리가 없으면 생성
+            File uploadDir = new File(UPLOAD_DIR);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            // 파일을 지정된 디렉토리에 저장
+            String fileName = user.getEmail() + command.getRequestImage().getOriginalFilename();
+            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+            command.getRequestImage().transferTo(destFile);
+
+
+            String fn = s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            faceId = amazonRekognitionService.registeruser("cloud-open-sight-ue1", fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            throw new EntityNotFoundException("얼굴 등록 실패");
+        }
+        user.updateFaceId(faceId);
+        return UpdateFaceResponse.builder()
+                    .result("얼굴 등록 성공")
+                    .build();
     }
 
     @Transactional(readOnly = false)
