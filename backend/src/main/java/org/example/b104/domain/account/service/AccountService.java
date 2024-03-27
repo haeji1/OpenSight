@@ -96,10 +96,12 @@ public class AccountService {
 
     public RegisterAccountMemberResponse registerAccountMember(RegisterAccountMemberCommand command) {
         String userId = command.getUserId();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("apiKey", apiKey);
+        jsonObject.put("userId", userId);
 
-       HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member",
-                "POST",
-                "{\"userId\": \"" + userId + "\"" +","+  "\"apiKey\": \"" + "010218e760dd476db9bac3b474847947" + "\"}");
+        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member", "POST",
+                jsonObject.toString());
 
 //        System.out.println("[+] Status Code : " + httpResponse.statusCode());
 //        System.out.println("[+] Body : " +httpResponse.body());
