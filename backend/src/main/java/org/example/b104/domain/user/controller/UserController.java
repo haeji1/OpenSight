@@ -69,6 +69,15 @@ public class UserController {
     }
 
 
+    @PostMapping("/register/account")
+    public ResponseEntity<ApiResponse<RegisterAccountResponse>> registerAccount(
+            @RequestBody RegisterAccountRequest request,
+            @RequestHeader("Authorization") String token
+    ) {
+        RegisterAccountResponse registerAccountResponse = userService.registerAccount(request.toRegisterAccountCommand(), token);
+        return ResponseEntity.ok(ApiResponse.createSuccess(registerAccountResponse));
+    }
+
 
 
     @PostMapping("/update-info")

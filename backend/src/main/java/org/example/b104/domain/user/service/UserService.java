@@ -361,15 +361,32 @@ public class UserService {
                 .build();
     }
 
-    @Data
-    static class MemberRequest {
-        private String apiKey;
-        private String userId;
+    @Transactional(readOnly = false)
+    public RegisterAccountResponse registerAccount(RegisterAccountCommand command, String token) {
+        User user = getUserFromToken(token);
+        user.updateAccount(command.getAccountNo(), command.getBankCode());
+        return RegisterAccountResponse.builder()
+                .isSuccess(true)
+                .build();
+    }
 
-        public MemberRequest(String apiKey, String userId) {
-            this.apiKey = apiKey;
-            this.userId = userId;
-        }
+//    @Data
+//    static class MemberRequest {
+//        private String apiKey;
+//        private String userId;
+//
+//        public MemberRequest(String apiKey, String userId) {
+//            this.apiKey = apiKey;
+//            this.userId = userId;
+//        }
+//    }
+
+    private User getUserFromToken(String token) {
+        String userId = jwtTokenProvider.getPayload(token);
+        Long userIdLong = Long.parseLong(userId);
+        User user = userRepository.findById(userIdLong)
+                .orElseThrow(()-> new EntityNotFoundException("존재하지 않는 유저입니다."));
+        return user;
     }
 
 }

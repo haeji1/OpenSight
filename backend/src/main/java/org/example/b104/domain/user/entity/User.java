@@ -38,6 +38,10 @@ public class User {
     private String emailPrefix;
     private String uniqueFaceId;
 
+    @Column(unique = true)
+    private String accountNo;
+    private String bankCode;
+
     @Builder
     public User(Long id, String oauthId, String name, String email) {
         this.userId = id;
@@ -155,4 +159,8 @@ public class User {
         this.uniqueFaceId = uniqueFaceId;
     }
 
+    public void updateAccount(String accountNo, String bankCode) {
+        this.accountNo = accountNo;
+        this.bankCode = bankCode;
+    }
 }
