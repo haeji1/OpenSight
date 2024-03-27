@@ -14,18 +14,22 @@
     </div>
     <div class="img-section">
       <div class="left-section">
-        <img src="@/assets/img/intro-1.png" alt="전맹시각장애인이 보는 화면 이미지">
-        <p class="body3">저시력 시각장애인이</p>
-        <p class="body3">보는 스마트폰 화면</p>
+        <img class="img" src="@/assets/img/intro-1.png" alt="전맹시각장애인이 보는 화면 이미지">
+        <div class="intro-ment-left">
+          <p class="body3">저시력 시각장애인이</p>
+          <p class="body3">보는 스마트폰 화면</p>
+        </div>
       </div>
       <div class="right-section">
-        <p class="body3">전맹 시각장애인이</p>
-        <p class="body3">보는 스마트폰 화면</p>
-        <img src="@/assets/img/intro-2.png" alt="저시력 시각장애인이 보는 화면 이미지">
+        <div class="intro-ment-right">
+          <p class="body3">전맹 시각장애인이</p>
+          <p class="body3">보는 스마트폰 화면</p>
+        </div>
+        <img class="img" src="@/assets/img/intro-2.png" alt="저시력 시각장애인이 보는 화면 이미지">
       </div>
     </div>
     <div class="title-bottom">
-      <p class="title2">이러한 불편함을</p>
+      <p class="title1">이러한 불편함을</p>
     </div>   
   </div>
 </template>
@@ -51,7 +55,6 @@
   flex-direction: column; /* 자식 요소들을 세로로 배열 */
   display: flex;
   justify-content: center; /* 가운데 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
   padding: 10px;
 }
 
@@ -60,23 +63,38 @@
   flex-direction: column; /* 자식 요소들을 세로로 배열 */
   display: flex;
   justify-content: center; /* 가운데 정렬 */
-  align-items: center; /* 세로 중앙 정렬 */
   padding: 10px;
 }
+
+.img {
+  width: 150px;
+}
+
+.intro-ment-left {
+  margin: 30px 0px;
+  text-align: right;
+}
+
+.intro-ment-right {
+  margin: 30px 0px;
+  text-align: left;
+}
+
+
 .title1, .title2, .title3, .body3 {
   color: #ffffff;
   margin: 0;
 }
 
 .title-top {
-  margin: 40px 0px;
+  margin-top: 30px;
 }
 
 .title-middle {
-  margin: 20px 0px;
+  margin-top: 40px;
 }
 
 .title-bottom {
-  margin-bottom: 50px;
+  margin-bottom: 110px;
 }
 </style>
