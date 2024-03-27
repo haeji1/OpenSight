@@ -11,6 +11,7 @@ public class ChatBotTextCommand {
     private String message;
     private String name;
     private String account;
+    private String bankCode;
     private Long money;
 
 }
