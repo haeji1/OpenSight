@@ -87,34 +87,31 @@ public class ChatBotService {
             }
 
             SingleAccountTransactionHistory[] list = inquireAccountTransactionHistoryResponse.getREC().transactionHistory();
-            System.out.println(list);
+//            System.out.println(list);
 
-//            for (int i = 0; i < Math.min(length, 5); i++) {
-//                JSONObject transaction = new JSONObject();
-//                JSONObject currentTransaction = list.getJSONObject(i);
-//
-//                transaction.put("transactionDate", currentTransaction.getString("transactionDate"));
-//                transaction.put("transactionSummary", currentTransaction.getString("transactionSummary"));
-//                transaction.put("transactionBalance", currentTransaction.getString("transactionBalance"));
-//                transaction.put("transactionTypeName", currentTransaction.getString("transactionTypeName"));
-//
-//                transactionsList.put(transaction);
-//            }
-//
-//            // Add history fields to jsonObject
-//            for (int i = 0; i < 5; i++) {
-//                if (i < transactionsList.length()) {
-//                    jsonObject.put("history" + (i + 1), transactionsList.getJSONObject(i));
-//                } else {
-//                    jsonObject.put("history" + (i + 1), JSONObject.NULL);
-//                }
-//            }
-//
-//            // Add additional fields
-//            jsonObject.put("text2", "추가 텍스트");
-//            jsonObject.put("ischatbot", 1);
-//
-//            return jsonObject.toString();
+            for (int i = 0; i < Math.min(length, 5); i++) {
+                SingleAccountTransactionHistory currentTransaction = list[i];
+
+                JSONObject transaction = new JSONObject();
+                transaction.put("transactionDate", currentTransaction.transactionDate());
+                transaction.put("transactionSummary", currentTransaction.transactionSummary());
+                transaction.put("transactionBalance", currentTransaction.transactionBalance());
+                transaction.put("transactionTypeName", currentTransaction.transactionTypeName());
+
+                transactionsList.put(transaction);
+            }
+
+            // Add history fields to jsonObject
+            for (int i = 0; i < 5; i++) {
+                if (i < transactionsList.length()) {
+                    jsonObject.put("history" + (i + 1), transactionsList.getJSONObject(i));
+                } else {
+                    jsonObject.put("history" + (i + 1), JSONObject.NULL);
+                }
+            }
+            jsonObject.put("text2", "추가 텍스트");
+            jsonObject.put("isChatBot",1);
+            return jsonObject;
         }
         else if (commandId == 4) {
             JSONObject jsonObject = new JSONObject();
