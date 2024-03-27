@@ -1,22 +1,14 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from "vue"
+
 import ChatMessage from '@/components/ChatMessage.vue'
-import axios from 'axios';
+import { useChatBotStore } from '@/stores/chatbot'
 
-const stt = function () {
-  axios({
-    method: 'post',
-    url: 'https://175.209.203.185:7979/mic'
-  })
-  .then((res) => {
-    console.log(res)
-  })
-  .catch((err) => {
-    console.log(err)
-  })
-}
+const store = useChatBotStore()
 
+const textMessage = ref(null)
 
+// test code
 const messages = ref([
   { id: 1, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: false },
   { id: 2, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: true },
@@ -24,25 +16,40 @@ const messages = ref([
   { id: 4, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: true },
 ])
 
-
-
 </script>
 
 <template>
+
   <header>
     <p>&lt; 챗봇</p>
   </header>
   <div class="content">
+
     <div class="chat-container">
-      <ChatMessage v-for="msg in messages" :key="msg.id" :message="msg" :isUser="msg.isUser" />
+      <ChatMessage v-for="msg in messages"
+      :key="msg.id"
+      :message="msg"
+      :isUser="msg.isUser" />
     </div>
+
     <div class="input-text">
-      <input type="text">
-      <div class="button" @click="stt">
-        <img class="speech" src="../assets/img/waves.png" alt=""> 
+      <input type="text" name="textMessage" id="textMessage"
+      v-model="textMessage" placeholder="옆 버튼을 눌러 음성으로 말하거나 보실 은행 업무를 입력해주세요.">
+
+      <div v-if="textMessage">
+        <div class="button" @click="store.textCommand(textMessage)">
+          <img class="speech" src="../assets/img/send.png" alt=""> 
+        </div>
+      </div>
+
+      <div v-else>
+        <div class="button" @click="store.micCommand">
+          <img class="speech" src="../assets/img/waves.png" alt=""> 
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>
