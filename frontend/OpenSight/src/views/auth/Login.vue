@@ -17,7 +17,7 @@ function naverSocialLogin() {
     <div class="login-container">
       <div class="login-subheader">
         <p class="title1-blue">환영합니다</p>
-        <p class="caption2">모두를 위한 금융서비스</p>
+        <p class="caption2">모두를 위한 금융서비스 OpenSight</p>
       </div>
       <form @click.prevent="login" class="form">
         <input type="email" placeholder="이메일" class="login-input" />
@@ -96,21 +96,19 @@ function naverSocialLogin() {
 }
 
 .login-button {
-  background-color: #87AAD3;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  height: 45px; 
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #1B3C62;
+  color: #ffffff;
+  border-radius: 10px;
   padding: 1em;
   width: 100%;
-  font-size: 0.9em;
   margin-bottom: 1.5em;
   cursor: pointer;
-  transition: background-color 0.2s;
+  text-align: center;
 }
 
-.login-button:hover {
-  background-color: #1B3C62;
-}
 
 .login-naver {
   width: 50px;

@@ -7,39 +7,47 @@ body {
 .title1 {
   font-size: 24px;
   font-weight: 600;
+  color: #1B3C62;
 }
 
 .title2 {
   font-size: 20px;
+  color: #1B3C62;
   font-weight: 600;
 }
 
 .title3 {
   font-size: 16px;
+  color: #1B3C62;
   font-weight: 600;
 }
 
 .body1 {
   font-size: 16px;
+  color: #1B3C62;
   font-weight: 500;
 }
 
 .body2 {
   font-size: 16px;
+  color: #1B3C62;
   font-weight: 400;
 }
 
 .body3 {
   font-size: 14px;
+  color: #1B3C62;
   font-weight: 500;
 }
 
 .caption1 {
   font-size: 12px;
+  color: #1B3C62;
   font-weight: 600;
 }
 
 .caption2 {
   font-size: 14px;
+  color: #1B3C62;
   font-weight: 500;
 }

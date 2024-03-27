@@ -9,10 +9,14 @@ import router from '@/router';
         <img class="caution-img" src="../../assets/img/caution.png" alt="">
       </div>
       <div>
-        <p>입력하신 전화번호로</p>
-        <p>가입된 회원정보를 찾을 수 없습니다</p>
-        <p>맞는 전화번호인지</p>
-        <p>확인 후 다시 시도해주세요</p>
+        <div class="title-message">
+          <p class="title2">입력하신 전화번호로</p>
+          <p class="title2">가입된 회원정보를 찾을 수 없습니다</p>
+        </div>
+        <div class="body-message">
+          <p class="body2">맞는 전화번호인지</p>
+          <p class="body2">확인 후 다시 시도해주세요</p>
+        </div>
       </div>
       <div class="route-button">
         <button @click="router.push('/find-email')">전화번호 다시 입력하기</button>
@@ -28,6 +32,7 @@ import router from '@/router';
   flex-direction: column;
   justify-content: center;
   text-align: center;
+  background-color: #ffffff;
 }
 .content {
   background-color: #ffffff;
@@ -37,4 +42,35 @@ import router from '@/router';
   height: 150px;
 }
 
+.title2, .body2 {
+  margin: 0;
+  color: #1B3C62;
+}
+
+.title-message {
+  margin-top: 50px;
+}
+
+.body-message {
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+.route-button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.route-button button {
+  margin: 15px;
+  width: 327px;
+  height: 45px; 
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #1B3C62;
+  color: #ffffff;
+  border-radius: 10px;
+}
 </style>
