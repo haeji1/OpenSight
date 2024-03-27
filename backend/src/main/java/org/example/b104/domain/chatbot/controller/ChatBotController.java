@@ -18,11 +18,11 @@ public class ChatBotController {
 
 
     @PostMapping("/request")
-    public ResponseEntity<ApiResponse<JSONObject>> receiveTextRequest(
+    public ResponseEntity<ApiResponse<String>> receiveTextRequest(
             @RequestHeader("Authorization") String token,
             @RequestBody ChatBotTextRequest request
     ) {
-        JSONObject chatBotResponse = chatBotService.ReceiveTextRequest(token, request.toChatBotTextCommand());
+        String chatBotResponse = chatBotService.ReceiveTextRequest(token, request.toChatBotTextCommand());
         return ResponseEntity.ok(ApiResponse.createSuccess(chatBotResponse));
     }
 }
