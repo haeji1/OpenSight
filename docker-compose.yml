@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  app:
+    image: chiseungoh/backend:latest # Replace with your actual Spring Boot Docker image tag
+    ports:
+      - "8080:8080"
+    container_name: backend
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bank?serverTimezone=UTC&characterEncoding=UTF-8
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: SSAFY
+      # Add other environment variables here
+    networks:
+      - app-network
+
+  mysql:
+    image: chiseungoh/mysql:latest # Replace with your actual MySQL Docker image tag
+    environment:
+      MYSQL_ROOT_PASSWORD: SSAFY
+      MYSQL_DATABASE: bank
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    container_name: mysql
+    networks:
+      - app-network
+
+  frontend:
+    image: chiseungoh/frontend:latest # Replace with your actual frontend Docker image tag
+    ports:
+      - "8081:80"
+    networks:
+      - app-network
+    depends_on:
+      - app
+    container_name: frontend
+
+networks:
+  app-network:
+    name: docker-network
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
