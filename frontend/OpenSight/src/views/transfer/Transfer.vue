@@ -1,38 +1,43 @@
 <script setup>
-import BookMarkModal from'@/components/modal/BookMarkModal.vue';
-import SelectBankModal from '@/components/modal/SelectBankModal.vue';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const openBookMarkModal = () => {
-  isModalVisible.value = true;
-}
+const router = useRouter()
 
-const closeBookMarkModal = () => {
-  isModalVisible.value = false;
-}
-
+const banks = ref([
+  { bankCode: '001', bankName: '한국은행'},
+  { bankCode: '002', bankName: '산업은행'},
+  { bankCode: '003', bankName: '기업은행'},
+  { bankCode: '004', bankName: '국민은행'},
+])
 
 </script>
 
 <template>
-  <div class="transfer-container">
-    <header>
-      <h1>이체</h1>
-    </header>
+  <div class="container">
+    <div class="header">
+      <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">이체</p>
+    </div>
     <div class="content">
       <div class="account-info">
-        <label>자유입출금통장</label>
-        <div class="account-number">123456-78-901234</div>
-        <div class="balance-info">
-          <div class="current-balance">잔액 1,316,000원</div>
-          <div class="available-balance">1일 출금한도 5,000,000원</div>
+        <p class="body3">자유입출금통장</p>
+        <p class="title2">123456-78-901234</p>
+        <div class="current-balance">
+          <p class="body3">잔액</p><p class="body1">1,316,000원</p>
+        </div>
+        <div class="available-balance">
+          <p class="body3">1일 출금한도</p><p class="body1">5,000,000원</p>
         </div>
       </div>
 
       <form class="transfer-form">
         <section class="input-group">
-          <label>은행명</label>
-          <button @click="openBookMarkModal()">즐겨찾기</button>
-          <input type="text" @click="" readonly>
+          <select class="select-bank" name="bank" id="bank">
+            <option value="">은행선택</option>
+            <option v-for="bank in banks" :key="bank.bankCode" :value="bank.bankCode">
+              {{ bank.bankName }}
+            </option>
+          </select>
         </section>
 
         <section class="input-group">
@@ -69,15 +74,16 @@ const closeBookMarkModal = () => {
 </script>
 
 <style scoped>
-.transfer-container {
-  max-width: 400px;
-  margin: auto;
+.container {
+  background-color: #ffffff;
 }
 
-.content {
-  background-color: #ffffff;
-  padding: 10px;
+.header {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
 }
+
 
 /* 여기에 추가적인 CSS 스타일을 정의하시면 됩니다 */
 /* 예시 */
@@ -105,7 +111,10 @@ const closeBookMarkModal = () => {
 .button-group button:last-child {
   margin-right: 0;
 }
-h1 {
-  color: #ffffff;
+
+
+
+.body1, .body3 {
+  margin: 0;
 }
 </style>

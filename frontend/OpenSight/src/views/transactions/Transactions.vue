@@ -17,13 +17,55 @@ const transactions = ref([
 </script>
 
 <template>
-  <div>
-    <Account />
-    <button @click="">이체하기</button>
-    <TransactionList :transactions="transactions" />
+  <div class="container">
+    <div class="header">
+      <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">거래 내역 조회</p>
+    </div>
+    <div class="content">
+      <Account class="account" />
+      <button class="button" @click="">이체하기</button>
+      <TransactionList :transactions="transactions" />
+    </div>
   </div>
 </template>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
 
+
+.content {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  padding-left: 30px;
+  justify-content: left;
+  text-align: left;
+}
+
+.button {
+  margin-top: 10px;
+  width: 327px;
+  height: 45px; 
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #1B3C62;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.title2 {
+  margin-right: 10px;
+}
 </style>
