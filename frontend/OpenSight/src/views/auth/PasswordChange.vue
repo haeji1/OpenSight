@@ -23,7 +23,7 @@ const updatePassword = function() {
         <label for="password">새로운 비밀번호를 입력하세요</label>
         <input type="password" id="password" placeholder="비밀번호" required>
         <p>비밀번호는 다음과 같은 조건을 만족해야 합니다</p>
-        <!-- <div class="pwd-check1">
+        <div class="pwd-check1">
           <span v-if="isLengthValid" class="checkmark">✔</span>
           <span v-else>✔</span>
           <p>비밀번호는 공백없이 10자리 이상 30자 이하여야 합니다</p>
@@ -32,7 +32,7 @@ const updatePassword = function() {
           <span v-if="hasAllRequiredCharacters" class="checkmark">✔</span>
           <span v-else>✔</span>
           <p>영어 대문자, 영어 소문자, 특수문자를 최소 한 글자 이상 포함한 문자 조합이어야 합니다.</p>
-        </div> -->
+        </div>
         <label for="passwordConfirm">비밀번호를 확인해주세요</label>
         <input type="password" id="passwordConfirm" v-model="newPassword" placeholder="비밀번호 확인" required>
         <button type="submit" >비밀번호 변경</button>
