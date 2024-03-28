@@ -15,10 +15,6 @@ const updatePassword = function() {
 
 <template>
 <div class="container">
-<<<<<<< HEAD
-  <div class="header">
-    <p class="title2">&lt;</p><p class="title2">비밀번호 찾기</p>
-=======
     
     <div class="content">
       <div>&lt; 비밀번호 찾기</div>
@@ -42,21 +38,8 @@ const updatePassword = function() {
         <button type="submit" >비밀번호 변경</button>
       </form>
     </div>
->>>>>>> fad3ccaa1b703cf77565da2a9d9852e8308ee35b
   </div>
-  <div class="content">
-    <form class="form">
-      <label for="password"><p class="caption1">새로운 비밀번호를 입력하세요</p></label>
-      <input class="input" type="password" id="password" placeholder="비밀번호" >
-      <p class="caption1">비밀번호는 다음과 같은 조건을 만족해야 합니다</p>
-      <p class="caption2">비밀번호는 공백없이 10자리 이상 30자 이하여야 합니다</p>
-      <p class="caption2">영어 대문자, 영어 소문자, 특수문자를 최소 한 글자 이상 포함한 문자 조합이어야 합니다.</p>
-      <label for="passwordConfirm"><p class="caption1">비밀번호를 확인해주세요</p></label>
-      <input class="input" type="password" id="passwordConfirm" placeholder="비밀번호 확인" >
-    </form>
-    <button class="button" type="submit" @click="goComplete">비밀번호 변경</button>
-  </div>
-</div>
+
 </template>
 
 <style scoped>
