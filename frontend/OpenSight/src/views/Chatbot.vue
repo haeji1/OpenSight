@@ -108,6 +108,10 @@ watch(() => store.getDjango, (newMessage) => {
       :isChatbot="message.isChatbot" />
     </div>
 
+    {{ store.getDjango.money }}
+    {{store.django.command_id}}
+    processCo
+
     <div class="input-text">
       <input type="text" name="textMessage" id="textMessage"
       v-model="textMessage" placeholder="옆 버튼을 눌러 음성으로 말하거나 보실 은행 업무를 입력해주세요.">

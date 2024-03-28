@@ -1,0 +1,58 @@
+Index: .idea/copilot/chatSessions/xd.lck
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>Private property of Exodus: 5304@DESKTOP-LL7FDJ6\r\n\r\njetbrains.exodus.io.LockingManager.lock(LockingManager.kt:88)\r\njetbrains.exodus.io.LockingManager.lock(LockingManager.kt:39)\r\njetbrains.exodus.io.FileDataWriter.lock(FileDataWriter.kt:70)\r\njetbrains.exodus.log.Log.tryLock(Log.kt:804)\r\njetbrains.exodus.log.Log.<init>(Log.kt:117)\r\njetbrains.exodus.env.Environments.newLogInstance(Environments.kt:117)\r\njetbrains.exodus.env.Environments.newLogInstance(Environments.kt:81)\r\njetbrains.exodus.env.Environments.newLogInstance(Environments.kt:77)\r\njetbrains.exodus.env.Environments$newInstance$4.invoke(Environments.kt:46)\r\njetbrains.exodus.env.Environments$newInstance$4.invoke(Environments.kt:46)\r\njetbrains.exodus.env.Environments.prepare(Environments.kt:120)\r\njetbrains.exodus.env.Environments.newInstance(Environments.kt:46)\r\nkotlinx.dnq.store.container.EntityStoreHelperKt.createTransientEntityStore(EntityStoreHelper.kt:40)\r\nkotlinx.dnq.store.container.EntityStoreHelperKt.createTransientEntityStore(EntityStoreHelper.kt:31)\r\nkotlinx.dnq.store.container.EntityStoreHelperKt.createTransientEntityStore$default(EntityStoreHelper.kt:30)\r\ncom.github.copilot.chat.session.persistence.xodus.XdChatSessionPersistenceService.initStore(XdChatSessionPersistenceService.kt:115)\r\ncom.github.copilot.chat.session.persistence.xodus.XdChatSessionPersistenceService.<init>(XdChatSessionPersistenceService.kt:22)\r\ncom.github.copilot.chat.session.persistence.xodus.XdChatSessionPersistenceService.<init>(XdChatSessionPersistenceService.kt:15)\r\ncom.github.copilot.chat.session.persistence.ChatSessionPersistenceServiceKt.ChatSessionPersistenceService(ChatSessionPersistenceService.kt:43)\r\ncom.github.copilot.chat.session.persistence.ChatSessionPersistenceServiceKt.chatSessionsPersistenceService(ChatSessionPersistenceService.kt:53)\r\ncom.github.copilot.chat.session.ChatSessionManager.<init>(ChatSessionManager.kt:45)\r\ncom.github.copilot.chat.session.ChatSessionManager.<init>(ChatSessionManager.kt:25)\r\ncom.github.copilot.chat.window.CopilotChatToolWindow.onCopilotReady(CopilotChatToolWindow.kt:133)\r\ncom.github.copilot.chat.window.CopilotChatToolWindow.access$onCopilotReady(CopilotChatToolWindow.kt:40)\r\ncom.github.copilot.chat.window.CopilotChatToolWindow$initCopilotStatusListener$1.invoke(CopilotChatToolWindow.kt:118)\r\ncom.github.copilot.chat.window.CopilotChatToolWindow$initCopilotStatusListener$1.invoke(CopilotChatToolWindow.kt:115)\r\ncom.github.copilot.status.CopilotAuthStatusKt.subscribeToCopilotAuthStatus$lambda$0(CopilotAuthStatus.kt:44)\r\ncom.intellij.util.messages.impl.MessageBusImplKt.invokeMethod(MessageBusImpl.kt:700)\r\ncom.intellij.util.messages.impl.MessageBusImplKt.invokeListener(MessageBusImpl.kt:664)\r\ncom.intellij.util.messages.impl.MessageBusImplKt.deliverMessage(MessageBusImpl.kt:423)\r\ncom.intellij.util.messages.impl.MessageBusImplKt.pumpWaiting(MessageBusImpl.kt:402)\r\ncom.intellij.util.messages.impl.MessageBusImplKt.access$pumpWaiting(MessageBusImpl.kt:1)\r\ncom.intellij.util.messages.impl.MessagePublisher.invoke(MessageBusImpl.kt:461)\r\njdk.proxy6/jdk.proxy6.$Proxy165.onCopilotStatus(Unknown Source)\r\ncom.github.copilot.status.CopilotStatusService.notifyApplication(CopilotStatusService.java:76)\r\ncom.github.copilot.status.CopilotStatusService.notifyApplication(CopilotStatusService.java:64)\r\ncom.github.copilot.github.GitHubAuthStartupActivity.handleAuthNotifications(GitHubAuthStartupActivity.java:54)\r\ncom.github.copilot.github.GitHubAuthStartupActivity.execute(GitHubAuthStartupActivity.java:35)\r\ncom.intellij.ide.startup.impl.StartupManagerImplKt$launchActivity$1.invokeSuspend(StartupManagerImpl.kt:482)\r\nkotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)\r\nkotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)\r\nkotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)\r\nkotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)\r\nkotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)\r\nkotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/copilot/chatSessions/xd.lck b/.idea/copilot/chatSessions/xd.lck
+--- a/.idea/copilot/chatSessions/xd.lck	(revision ea741f08cde54c5296b1ec57e5342cb00873be6d)
++++ b/.idea/copilot/chatSessions/xd.lck	(date 1711629666274)
+@@ -1,47 +1,0 @@
+-Private property of Exodus: 5304@DESKTOP-LL7FDJ6
+-
+-jetbrains.exodus.io.LockingManager.lock(LockingManager.kt:88)
+-jetbrains.exodus.io.LockingManager.lock(LockingManager.kt:39)
+-jetbrains.exodus.io.FileDataWriter.lock(FileDataWriter.kt:70)
+-jetbrains.exodus.log.Log.tryLock(Log.kt:804)
+-jetbrains.exodus.log.Log.<init>(Log.kt:117)
+-jetbrains.exodus.env.Environments.newLogInstance(Environments.kt:117)
+-jetbrains.exodus.env.Environments.newLogInstance(Environments.kt:81)
+-jetbrains.exodus.env.Environments.newLogInstance(Environments.kt:77)
+-jetbrains.exodus.env.Environments$newInstance$4.invoke(Environments.kt:46)
+-jetbrains.exodus.env.Environments$newInstance$4.invoke(Environments.kt:46)
+-jetbrains.exodus.env.Environments.prepare(Environments.kt:120)
+-jetbrains.exodus.env.Environments.newInstance(Environments.kt:46)
+-kotlinx.dnq.store.container.EntityStoreHelperKt.createTransientEntityStore(EntityStoreHelper.kt:40)
+-kotlinx.dnq.store.container.EntityStoreHelperKt.createTransientEntityStore(EntityStoreHelper.kt:31)
+-kotlinx.dnq.store.container.EntityStoreHelperKt.createTransientEntityStore$default(EntityStoreHelper.kt:30)
+-com.github.copilot.chat.session.persistence.xodus.XdChatSessionPersistenceService.initStore(XdChatSessionPersistenceService.kt:115)
+-com.github.copilot.chat.session.persistence.xodus.XdChatSessionPersistenceService.<init>(XdChatSessionPersistenceService.kt:22)
+-com.github.copilot.chat.session.persistence.xodus.XdChatSessionPersistenceService.<init>(XdChatSessionPersistenceService.kt:15)
+-com.github.copilot.chat.session.persistence.ChatSessionPersistenceServiceKt.ChatSessionPersistenceService(ChatSessionPersistenceService.kt:43)
+-com.github.copilot.chat.session.persistence.ChatSessionPersistenceServiceKt.chatSessionsPersistenceService(ChatSessionPersistenceService.kt:53)
+-com.github.copilot.chat.session.ChatSessionManager.<init>(ChatSessionManager.kt:45)
+-com.github.copilot.chat.session.ChatSessionManager.<init>(ChatSessionManager.kt:25)
+-com.github.copilot.chat.window.CopilotChatToolWindow.onCopilotReady(CopilotChatToolWindow.kt:133)
+-com.github.copilot.chat.window.CopilotChatToolWindow.access$onCopilotReady(CopilotChatToolWindow.kt:40)
+-com.github.copilot.chat.window.CopilotChatToolWindow$initCopilotStatusListener$1.invoke(CopilotChatToolWindow.kt:118)
+-com.github.copilot.chat.window.CopilotChatToolWindow$initCopilotStatusListener$1.invoke(CopilotChatToolWindow.kt:115)
+-com.github.copilot.status.CopilotAuthStatusKt.subscribeToCopilotAuthStatus$lambda$0(CopilotAuthStatus.kt:44)
+-com.intellij.util.messages.impl.MessageBusImplKt.invokeMethod(MessageBusImpl.kt:700)
+-com.intellij.util.messages.impl.MessageBusImplKt.invokeListener(MessageBusImpl.kt:664)
+-com.intellij.util.messages.impl.MessageBusImplKt.deliverMessage(MessageBusImpl.kt:423)
+-com.intellij.util.messages.impl.MessageBusImplKt.pumpWaiting(MessageBusImpl.kt:402)
+-com.intellij.util.messages.impl.MessageBusImplKt.access$pumpWaiting(MessageBusImpl.kt:1)
+-com.intellij.util.messages.impl.MessagePublisher.invoke(MessageBusImpl.kt:461)
+-jdk.proxy6/jdk.proxy6.$Proxy165.onCopilotStatus(Unknown Source)
+-com.github.copilot.status.CopilotStatusService.notifyApplication(CopilotStatusService.java:76)
+-com.github.copilot.status.CopilotStatusService.notifyApplication(CopilotStatusService.java:64)
+-com.github.copilot.github.GitHubAuthStartupActivity.handleAuthNotifications(GitHubAuthStartupActivity.java:54)
+-com.github.copilot.github.GitHubAuthStartupActivity.execute(GitHubAuthStartupActivity.java:35)
+-com.intellij.ide.startup.impl.StartupManagerImplKt$launchActivity$1.invokeSuspend(StartupManagerImpl.kt:482)
+-kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+-kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:108)
+-kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:584)
+-kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:793)
+-kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:697)
+-kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:684)

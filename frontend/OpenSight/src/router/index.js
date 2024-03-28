@@ -21,7 +21,9 @@ import TransactionsView from '@/views/transactions/Transactions.vue';
 import TransferView from '@/views/transfer/Transfer.vue'
 import TransferConfirmView from '@/views/transfer/TransferConfirm.vue'
 import TransferCompleteView from '@/views/transfer/TransferComplete.vue'
+import TransferVerifyView from '@/views/transfer/TransferVerify.vue';
 import ChatbotView from '@/views/Chatbot.vue';
+
 
 
 const router = createRouter({
@@ -136,6 +138,11 @@ const router = createRouter({
       path: '/transfer/complete',
       name: 'TransferComplete',
       component: TransferCompleteView
+    },
+    {
+      path: '/transfer/verify',
+      name: 'TransferVerify',
+      component: TransferVerifyView
     },
     {
       path: '/chatbot',

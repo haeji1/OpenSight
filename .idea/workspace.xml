@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39af7728-0f89-4c7b-a288-738856df33d8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/user/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/user/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +20,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -37,7 +38,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "feature/BE-faceLogin",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -81,6 +82,7 @@
       <workItem from="1710982214628" duration="254000" />
       <workItem from="1711328540246" duration="389000" />
       <workItem from="1711328938255" duration="132000" />
+      <workItem from="1711629668081" duration="168000" />
     </task>
     <servers />
   </component>
