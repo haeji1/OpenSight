@@ -21,6 +21,13 @@ export const useAuthStore = defineStore('authStore', () => {
     }
   })
 
+  const setLogin = function (payload) {
+    alert('로그인 되었습니다.');
+    sessionStorage.setItem('userId', payload.data.id)
+    sessionStorage.setItem('accessToken', payload.data.accessToken)
+    sessionStorage.setItem('refreshToken', payload.data.refreshToken)
+  }
+
   const register = function (payload) {
     const { email, password, username, phonenumber, userImage } = payload
     axios({

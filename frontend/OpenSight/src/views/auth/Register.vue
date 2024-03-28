@@ -13,6 +13,21 @@ const phoneNumber = ref(null)
 const videoRef = ref(null);
 const canvasRef = ref(null);
 
+const isCameraReady = ref(false);
+
+const captureImageFilter = () =>{
+  if (isCameraReady.value === false){
+    setupCamera();
+    alert("카메라 준비 완료");
+    isCameraReady.value = true;
+    return;
+  }
+  else{
+    captureImage();
+    alert("사진 캡쳐 완료");
+  }
+}
+
 const setupCamera = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -33,11 +48,7 @@ const captureImage = () => {
 
 
 const register = async () => {
-  //await setupCamera();
-  //console.error("after Setup");
 
-  captureImage();
-  console.error("after captureImage");
 
   const now = new Date();
   const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
@@ -54,7 +65,8 @@ const register = async () => {
 
 
     try {
-      const response = await axios.post('localhost:8080/api/users/register', formData, {
+      const requestUrl = 'http://backend:8080/api/users/register';
+      const response = await axios.post(requestUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -127,13 +139,13 @@ const register = async () => {
 
         <video ref="videoRef" autoplay style="display:none;"></video>
         <canvas ref="canvasRef" style="display:none;"></canvas>
-        <button type="button" @click="setupCamera">Enable Camera</button>
-        <button type="submit" @click.prevent="register">Register</button>
+        <button type="button" @click="captureImageFilter">사진 찍기</button>
+        <button type="submit" @click.prevent="register">가입 하기</button>
 
 
         
 
-        <button type="submit">회원가입</button>
+        <!--<button type="submit">회원가입</button>-->
       </form>
     </div>
   </div>

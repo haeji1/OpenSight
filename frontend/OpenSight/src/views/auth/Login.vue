@@ -8,9 +8,72 @@ const router = useRouter()
 const authStore = useAuthStore()
 const username = ref(null)
 const password = ref(null)
+
+
 const videoRef = ref(null);
-const canvasRef = ref(document.createElement('canvas'));
-const cameraEnabled = ref(false); // State to track if the camera is enabled
+const canvasRef = ref(null);
+
+const isCameraReady = ref(false);
+
+const captureImageFilter = () =>{
+  if (isCameraReady.value === false){
+    setupCamera();
+    alert("카메라 준비 완료 다시 버튼을 눌러주세요");
+    isCameraReady.value = true;
+    return;
+  }
+  else{
+    captureImage();
+    alert("사진 캡쳐 완료");
+
+    const now = new Date();
+    const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+    const uniqueFilename = `capturedImage_${dateTimeStr}.jpg`;
+
+    canvasRef.value.toBlob(async (blob) => {
+      const formData = new FormData();
+      formData.append('requestImage', blob, uniqueFilename);
+
+      try {
+        const response = await axios.post('backend:8080/api/users/face-login', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('face login successful:', response.data);
+        // Handle success, e.g., redirect or show a success message
+
+  
+
+        sessionStorage.setItem('userId', response.data.data.id);
+        sessionStorage.setItem('accessToken', response.data.data.accessToken);
+        sessionStorage.setItem('refreshToken', response.data.data.refreshToken);
+      } catch (error) {
+        console.error('face login failed:', error);
+        // Handle error, e.g., show an error message
+      }
+    }, 'image/jpeg');
+  }
+}
+
+const setupCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    videoRef.value.srcObject = stream;
+    console.error("Setup camera successful");
+  } catch (error) {
+    console.error("Error accessing the camera", error);
+  }
+};
+
+
+const captureImage = () => {
+  canvasRef.value.width = videoRef.value.videoWidth;
+  canvasRef.value.height = videoRef.value.videoHeight;
+  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
+};
+
+
 
 const logIn = function () {
   const payload = {
@@ -20,48 +83,7 @@ const logIn = function () {
   authStore.login(payload)
 }
 
-const setupCamera = async () => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    videoRef.value.srcObject = stream;
-  } catch (error) {
-    console.error("Error accessing the camera", error);
-  }
-};
 
-const captureImage = async () => {
-  canvasRef.value.width = videoRef.value.videoWidth;
-  canvasRef.value.height = videoRef.value.videoHeight;
-  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
-};
-
-
-const faceLogin = async () => {
-  setupCamera();
-  captureImage();
-
-  const now = new Date();
-  const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
-  const uniqueFilename = `capturedImage_${dateTimeStr}.jpg`;
-
-  canvasRef.value.toBlob(async (blob) => {
-    const formData = new FormData();
-    formData.append('requestImage', blob, uniqueFilename);
-
-    try {
-      const response = await axios.post('backend:8080/api/users/face-login', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log('face login successful:', response.data);
-      // Handle success, e.g., redirect or show a success message
-    } catch (error) {
-      console.error('face login failed:', error);
-      // Handle error, e.g., show an error message
-    }
-  }, 'image/jpeg');
-};
 
 
 function naverSocialLogin() {
@@ -92,7 +114,7 @@ function naverSocialLogin() {
           <video ref="videoRef" autoplay style="display:none;"></video>
           <canvas ref="canvasRef" style="display:none;"></canvas>
 
-          <img class="login-face" src="../../assets/img/faceid.png" alt="얼굴인식 로그인하기" @click="faceLogin">
+          <img class="login-face" src="../../assets/img/faceid.png" alt="얼굴인식 로그인하기" @click="captureImageFilter">
           <img class="login-naver" src="../../assets/img/naver.png" alt="네이버 소셜로그인 하기" @click="naverSocialLogin">
         </div>
         <a href="#" class="help-link" @click="router.push('/register')">회원이 아니신가요? <span class="link-highlight" @click="router.push('/register')">회원가입</span></a>
