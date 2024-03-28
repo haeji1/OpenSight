@@ -16,6 +16,28 @@ const messages = ref([
   { id: 4, text: '안녕하세요, 어떻게 도와드릴까요?', isUser: true },
 ])
 
+  const processCommand = () => {
+    if (store.django.command_id === 1) {
+      // command_id가 1인 경우에만 로직 실행
+      const { bank, account, money } = store.django; // django 객체에서 bank, account, money를 추출
+
+      console.log("Bank:", bank);
+      console.log("Account:", account);
+      console.log("Money:", money);
+
+      // 이제 이 값을 이용하여 다른 작업을 수행할 수 있습니다.
+
+      const transferInfo = {
+        bank: bank,
+        account: account,
+        money: money
+      }
+
+      // 서버에 계좌 이체 정보 전달
+      store.sendTransferInfo(transferInfo);
+    }
+  }
+
 </script>
 
 <template>
@@ -31,6 +53,10 @@ const messages = ref([
       :message="msg"
       :isUser="msg.isUser" />
     </div>
+
+    {{ store.getDjango.money }}
+    {{store.django.command_id}}
+    processCo
 
     <div class="input-text">
       <input type="text" name="textMessage" id="textMessage"

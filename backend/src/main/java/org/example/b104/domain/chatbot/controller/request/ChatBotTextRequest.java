@@ -8,7 +8,7 @@ public class ChatBotTextRequest {
 
     private Long command_id;
     private String message;
-    private String name;
+    private String bank;
     private String account;
     private Long money;
 
@@ -16,7 +16,7 @@ public class ChatBotTextRequest {
         return ChatBotTextCommand.builder()
                 .command_id(command_id)
                 .message(message)
-                .name(name)
+                .bank(bank)
                 .account(account)
                 .money(money)
                 .build();

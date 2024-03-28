@@ -1,11 +1,48 @@
 <script setup>
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { ref } from 'vue';
 
+const newPassword = ref("");
+
+const store = useAuthStore();
+
+const updatePassword = function() {
+  console.log("=======시작=========")
+  store.updatePassword(newPassword.value);
+}
 </script>
 
 <template>
 <div class="container">
+<<<<<<< HEAD
   <div class="header">
     <p class="title2">&lt;</p><p class="title2">비밀번호 찾기</p>
+=======
+    
+    <div class="content">
+      <div>&lt; 비밀번호 찾기</div>
+      <form class="form" @submit.prevent="updatePassword">
+
+        <label for="password">새로운 비밀번호를 입력하세요</label>
+        <input type="password" id="password" placeholder="비밀번호" required>
+        <p>비밀번호는 다음과 같은 조건을 만족해야 합니다</p>
+        <div class="pwd-check1">
+          <span v-if="isLengthValid" class="checkmark">✔</span>
+          <span v-else>✔</span>
+          <p>비밀번호는 공백없이 10자리 이상 30자 이하여야 합니다</p>
+        </div>
+        <div class="pwd-check2">
+          <span v-if="hasAllRequiredCharacters" class="checkmark">✔</span>
+          <span v-else>✔</span>
+          <p>영어 대문자, 영어 소문자, 특수문자를 최소 한 글자 이상 포함한 문자 조합이어야 합니다.</p>
+        </div>
+        <label for="passwordConfirm">비밀번호를 확인해주세요</label>
+        <input type="password" id="passwordConfirm" v-model="newPassword" placeholder="비밀번호 확인" required>
+        <button type="submit" >비밀번호 변경</button>
+      </form>
+    </div>
+>>>>>>> fad3ccaa1b703cf77565da2a9d9852e8308ee35b
   </div>
   <div class="content">
     <form class="form">

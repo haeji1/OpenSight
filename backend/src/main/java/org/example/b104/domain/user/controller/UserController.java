@@ -58,7 +58,6 @@ public class UserController {
             //@RequestParam(name = "profileImage", required = false)  MultipartFile profileImage
     ) {
 
-
         CreateUserResponse createUserResponse;
         if (request.getProfileImage() != null){
             createUserResponse = userService.createUserWithProfileImage(request.toCreateUserCommand(), request.getProfileImage());
@@ -114,7 +113,10 @@ public class UserController {
             @RequestHeader("Authorization") String token,
             @RequestBody UpdatePasswordRequest passwordRequest
     ) {
+        System.out.println("========="+token);
         String decryptedToken = jwtTokenProvider.getPayload(token);
+        System.out.println(decryptedToken);
+        System.out.println("======================="+extractUserIdFromToken(token));
         Long userId = Long.parseLong(decryptedToken);
 
         // 비밀번호 수정

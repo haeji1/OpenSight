@@ -1,5 +1,12 @@
 <script setup>
 import router from '@/router';
+
+import { useAccountStore } from '@/stores/account';
+
+const AccountStore = useAccountStore();
+
+
+
 </script>
 
 <template>
@@ -14,11 +21,11 @@ import router from '@/router';
       <div class="content-box">
         <div class="bank-name">
           <p class="title3">은행명</p>
-          <p class="title3">한국은행</p>
+          <p class="title3">{{AccountStore.openAccountResult.bankCode}}</p>
         </div>
         <div class="bank-number">
           <p class="title3">계좌번호</p>
-          <p class="title3">00151029380298</p>
+          <p class="title3">{{AccountStore.openAccountResult.accountNo}}</p>
         </div>
         
       </div>
