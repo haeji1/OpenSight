@@ -10,7 +10,7 @@ const AccountStore = useAccountStore();
 
 const openAccount = () => {
   
-
+  AccountStore.openAccount();
   router.push('/account/open/complete')
   //router.push('/account/open/terms');
 }

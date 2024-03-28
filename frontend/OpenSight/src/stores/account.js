@@ -6,16 +6,10 @@ import { useRouter } from 'vue-router';
 
 export const useAccountStore = defineStore('AccountStore', () => {
     const accountBaseURL = "http://127.0.0.1:8080/api/accounts";
-
-    /*
-
-    성욱이 알아?
-
-     */
     
     const accountTypes = ref([]);
     const selectedAccountType = ref(null);
-
+    const openAccountResult = ref(null);
 
     const inqureBankAccountListType = async function (){
         await axios({
@@ -35,16 +29,24 @@ export const useAccountStore = defineStore('AccountStore', () => {
       }
 
       const openAccount = async function(){
+        const accessToken = sessionStorage.getItem('accessToken');
+        
         await axios({
           method: 'post',
           url : `${accountBaseURL}/open-account`,
+          headers: {
+            'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+          },
           data : {
-            accountType: selectedAccountType.value
+            accountTypeUniqueNo: selectedAccountType.value.accountTypeUniqueNo
           }
+        }) .then((res) => {  
+            openAccountResult.value = res.data.data;
+            console.log(res);
         })
       }
 
 
 
-    return {accountTypes,selectedAccountType, inqureBankAccountListType};
+    return {accountTypes,selectedAccountType,openAccountResult, inqureBankAccountListType,openAccount};
 });
