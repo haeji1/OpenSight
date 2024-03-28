@@ -2,7 +2,6 @@ package org.example.b104.domain.chatbot.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.account.controller.record.SingleAccountTransactionHistory;
-import org.example.b104.domain.account.controller.response.AccountTransferResponse;
 import org.example.b104.domain.account.controller.response.InquireAccountBalanceResponse;
 import org.example.b104.domain.account.controller.response.InquireAccountTransactionHistoryResponse;
 import org.example.b104.domain.account.service.AccountService;
@@ -18,11 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import software.amazon.awssdk.awscore.util.SignerOverrideUtils;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -41,11 +38,24 @@ public class ChatBotService {
     @Transactional(readOnly = true)
     public String ReceiveTextRequest(String token, ChatBotTextCommand command) {
 
+
+        String bankCode = "";
+        // 은행 이름 분류
+        if (command.getBank().equals("001"))  {
+            bankCode = "한국은행";
+        } else if (command.getBank().equals("002")) {
+            bankCode = "산업은행";
+        } else if (command.getBank().equals("003")) {
+            bankCode = "기업은행";
+        } else if (command.getBank().equals("004")) {
+            bankCode = "국민은행";
+        }
+
         Long commandId = command.getCommand_id();
         String userKey = getUserKeyFromToken(token);
         User user = getUserFromToken(token);
-        String accountNo = user.getAccountNo();
-        String bankCode = user.getBankCode();
+        String accountNo = command.getAccount();
+
 
         LocalDate currentDate = LocalDate.now();
         String startDate = currentDate.toString();
@@ -53,38 +63,57 @@ public class ChatBotService {
         String endDate = oneYearLater.toString();
 
         if (commandId == 1) {
-            // 서비스에 보내기 위한 command
-            AccountTransferCommand accountTransferCommand = AccountTransferCommand.builder()
-                    .depositBankCode(user.getBankCode())
-                    .depositAccountNo(user.getAccountNo())
-                    .transactionBalance(command.getMoney())
-                    .withdrawalBankCode(bankCode)
-                    .withdrawalAccountNo(accountNo)
-                    .depositTransactionSummary("입금이체 계좌")
-                    .withdrawalTransactionSummary("출금이체 계좌")
-                    .userKey(userKey)
-                    .build();
-
+            
+            // 빈 정보가 없는지 확인
             // 계좌이체 정보 맞는지 확인
-            JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("text1","계좌이체를 시작합니다.");
-            jsonResponse.put("name",command.getName());
-            jsonResponse.put("account",accountTransferCommand.getWithdrawalAccountNo());
-            jsonResponse.put("money", accountTransferCommand.getTransactionBalance());
-            jsonResponse.put("text2", "계좌이체 하려는 정보가 맞는지 확인해주세요");
-            jsonResponse.put("isChatBot",1);
+            boolean isValidAccountTransfer = checkIfAccountTransferIsCorrect(command, user, bankCode, accountNo, userKey);
+
+            if (isValidAccountTransfer) {
+
+                // 서비스에 보내기 위한 command
+                AccountTransferCommand accountTransferCommand = AccountTransferCommand.builder()
+                        .depositBankCode(user.getBankCode())
+                        .depositAccountNo(user.getAccountNo())
+                        .transactionBalance(command.getMoney())
+                        .withdrawalBankCode(bankCode)
+                        .withdrawalAccountNo(accountNo)
+                        .depositTransactionSummary("입금이체 계좌")
+                        .withdrawalTransactionSummary("출금이체 계좌")
+                        .userKey(userKey)
+                        .build();
+
+                // 계좌이체 정보 맞는지 확인
+//                JSONObject jsonResponse = new JSONObject();
+//                jsonResponse.put("text1","계좌이체를 시작합니다.");
+//                jsonResponse.put("bank",command.getBank());
+//                jsonResponse.put("account",accountTransferCommand.getWithdrawalAccountNo());
+//                jsonResponse.put("money", accountTransferCommand.getTransactionBalance());
+//                jsonResponse.put("text2", "계좌이체 하려는 정보가 맞는지 확인해주세요");
+//                jsonResponse.put("isChatBot",1);
+
+                // 여기서 다시 예 아니오 요청 받아서 처리
+
+                // 계좌 이체 수행
+                accountService.accountTransfer(accountTransferCommand);
+
+
+            }
+
+            else {
+                // 계좌이체 정보가 틀린 경우
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("text1", "다시 요청해주세요");
+                return jsonResponse.toString();
+            }
+
+
 
             // 분기처리
-            // if 맞으면 accountService.accountTransfer(accountTransferCommand);
+//             if 맞으면 accountService.accountTransfer(accountTransferCommand);
             // else
             /**
              * JSONObject jsonResponse = new JSONObject();
-             jsonResponse.put("text1","다시 요청해주세요");
-
-             // 다시 요청 메시지 전송 후 리디렉션 처리
-             String redirectUrl = "http://192.168.31.38:5173/api/chatbot/request"; // 리디렉션할 URL
-             jsonResponse.put("redirectUrl", redirectUrl);
-             jsonResponse.put("isChatBot", 1);
+             jsonResponse.put("","다시 요청해주세요");
              return jsonResponse;
              *
              */
@@ -160,6 +189,15 @@ public class ChatBotService {
         JSONObject response = new JSONObject();
         response.put("text", "다시 요청해주세요");
         return response.toString();
+    }
+
+    private boolean checkIfAccountTransferIsCorrect(ChatBotTextCommand command, User user, String bankCode, String accountNo, String userKey) {
+        if (command != null && user != null && bankCode != null && !bankCode.isEmpty() &&
+                accountNo != null && !accountNo.isEmpty() && userKey != null && !userKey.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private String getUserKeyFromToken(String token) {

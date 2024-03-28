@@ -9,9 +9,8 @@ public class ChatBotTextCommand {
 
     private Long command_id;
     private String message;
-    private String name;
+    private String bank;
     private String account;
-    private String bankCode;
     private Long money;
-
+    private Long is_chatbot;
 }
