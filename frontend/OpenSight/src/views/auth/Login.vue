@@ -35,7 +35,7 @@ const captureImageFilter = () =>{
       formData.append('requestImage', blob, uniqueFilename);
 
       try {
-        const response = await axios.post('http://backend:8080/api/users/face-login', formData, {
+        const response = await axios.post('http://127.0.0.1:8080/api/users/face-login', formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

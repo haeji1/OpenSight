@@ -5,8 +5,9 @@ import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('authStore', () => {
   // const API_URL = 'https://j10b104.p.ssafy.io:8080'
-   const API_URL = 'http://192.168.31.168:8080'
-  const router = useRouter()
+  // const API_URL = 'http://192.168.31.168:8080'
+  const API_URL = 'http://127.0.0.1:8080'
+      const router = useRouter()
   let id = ref(null)
   let name = ref(null)
   let email = ref(null)
@@ -127,7 +128,42 @@ export const useAuthStore = defineStore('authStore', () => {
     })
   }
 
+  const updatePassword = function (payload) {
+    console.log("in auth.js");
+    console.log(payload);
+
+    const { password }= payload
+
+    const accessToken = sessionStorage.getItem('accessToken');
+    console.log("================"+accessToken)
+
+    // access token이 존재하는지 확인하고, 존재하면 HTTP 요청 헤더에 포함하여 요청 보냄
+    if (accessToken) {
+      axios({
+        method:'post',
+        url:`${API_URL}/api/users/update-pw`,
+        headers: {
+          'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+        },
+        data: {
+          code: 'updatepw',
+          password
+        }
+      })
+          .then((res) => {
+            console.log("========비밀번호 변경 성공======="+res)
+          })
+          .catch((err) => {
+            console.log(err)
+          });
+    } else {
+      console.log(sessionStorage.getItem("accessToken"))
+      console.log('Access token이 없습니다.');
+      // access token이 없는 경우에 대한 처리
+    }
+  }
+
   return {
-    accessToken, refreshToken, isLogin, register, login, logout, findEmail, findPassword
+    accessToken, refreshToken, isLogin, register, login, logout, findEmail, findPassword,updatePassword
   }
 })
