@@ -42,7 +42,7 @@ networks:
   default:
     external: true
   app-network:
-    name: bridge
+    name: docker-network
     driver: bridge
 
 volumes:
