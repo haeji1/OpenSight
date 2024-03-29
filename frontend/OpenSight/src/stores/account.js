@@ -28,10 +28,6 @@ export const useAccountStore = defineStore('AccountStore', () => {
         })
       }
 
-<<<<<<< HEAD
-
-    return {inqureBankAccountListType};
-=======
       const openAccount = async function(){
         const accessToken = sessionStorage.getItem('accessToken');
         
@@ -53,5 +49,4 @@ export const useAccountStore = defineStore('AccountStore', () => {
 
 
     return {accountTypes,selectedAccountType,openAccountResult, inqureBankAccountListType,openAccount};
->>>>>>> 46796473d9bf6f29a60300546d3eb58f03c2d646
 });

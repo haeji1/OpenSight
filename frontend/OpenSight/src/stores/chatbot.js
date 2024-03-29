@@ -121,9 +121,15 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
   }
 
   const sendCommand = ({commandId, message, bank, account, money, isChatbot}) => {
+
+    const accessToken = sessionStorage.getItem('accessToken')
+
     axios({
-      url: `/api/chatbot/request`,
+      url: `http://192.168.31.25:8080/api/chatbot/request`,
       method: "POST",
+      headers : {
+        'Authorization': `${accessToken}`
+      },
       data: {
         commandId,
         message,
