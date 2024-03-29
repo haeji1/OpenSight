@@ -127,7 +127,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
     console.log('!@#', commandId, message, bank, account, money, isChatbot, '!@#')
 
     axios({
-      url: `http://192.168.31.25:8080/api/chatbot/request`,
+      url: `http://localhost:8080/api/chatbot/request`,
       method: "POST",
       headers : {
         'Authorization': `${accessToken}`
