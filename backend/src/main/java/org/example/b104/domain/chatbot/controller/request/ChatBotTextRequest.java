@@ -11,6 +11,7 @@ public class ChatBotTextRequest {
     private String bank;
     private String account;
     private Long money;
+    private Long ischatbot;
 
     public ChatBotTextCommand toChatBotTextCommand() {
         return ChatBotTextCommand.builder()
@@ -19,6 +20,7 @@ public class ChatBotTextRequest {
                 .bank(bank)
                 .account(account)
                 .money(money)
+                .is_chatbot(ischatbot)
                 .build();
     }
 }
