@@ -65,7 +65,7 @@ const register = async () => {
 
 
     try {
-      const requestUrl = 'http://backend:8080/api/users/register';
+      const requestUrl = 'http://192.168.31.168:8080/api/users/register';
       const response = await axios.post(requestUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
