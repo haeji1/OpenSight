@@ -82,6 +82,8 @@ public class ChatBotService {
                         .userKey(userKey)
                         .build();
 
+
+
                 // 계좌이체 정보 맞는지 확인
 //                JSONObject jsonResponse = new JSONObject();
 //                jsonResponse.put("text1","계좌이체를 시작합니다.");
@@ -95,7 +97,9 @@ public class ChatBotService {
 
                 // 계좌 이체 수행
                 accountService.accountTransfer(accountTransferCommand);
-
+                JSONObject jsonResponse = new JSONObject();
+                jsonResponse.put("text", "완료되었습니다.");
+                return jsonResponse.toString();
 
             }
 
