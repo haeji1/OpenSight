@@ -1,10 +1,16 @@
 <script setup>
-defineProps(['message', 'isUser'])
+import { defineProps } from 'vue';
+
+const props = defineProps({
+  message : Object
+})
 </script>
 
 <template>
-  <div class="chat-message" :class="{'user-message': isUser, 'bot-message': !isUser}">
-    {{ message.text }}
+  <div class="chat-message" 
+  :class="{'user-message': !message.isChatbot,
+  'bot-message': message.isChatbot}">
+    {{ message.message }}
   </div>
 </template>
 

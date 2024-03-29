@@ -31,38 +31,36 @@ const banks = ref([
       </div>
 
       <form class="transfer-form">
-        <section class="input-group">
-          <select class="select-bank" name="bank" id="bank">
-            <option value="">은행선택</option>
-            <option v-for="bank in banks" :key="bank.bankCode" :value="bank.bankCode">
-              {{ bank.bankName }}
-            </option>
-          </select>
-        </section>
+        <select class="select-bank" name="bank" id="bank">
+          <option value="">은행선택</option>
+          <option v-for="bank in banks" :key="bank.bankCode" :value="bank.bankCode">
+            {{ bank.bankName }}
+          </option>
+        </select>
+        
+        <div class="input-text">
+          <p class="caption1">계좌번호</p>
+        </div>
+        <input class="input" type="number"/>
 
-        <section class="input-group">
-          <label>계좌번호</label>
-          <input type="text"/>
-        </section>
+        <div class="input-text">
+          <p class="caption1">보낼금액</p>
+        </div>
+        <input class="input" type="number"  />
 
-        <section class="input-group">
-          <label>보낼금액</label>
-          <input type="text"  />
-        </section>
+        <div class="input-text">
+          <p class="caption1">받는 계좌에 표시</p>
+        </div>
+        <input class="input" type="text" placeholder="미입력시 보낸 분 이름 표시" />
 
-        <section class="input-group">
-          <label>받는계좌에 표시</label>
-          <input type="text" placeholder="미입력시 보낸 분 이름 표시" />
-        </section>
-
-        <section class="input-group">
-          <label>내계좌에 표시</label>
-          <input type="text" placeholder="미입력시 받는 분 이름 표시" />
-        </section>
+        <div class="input-text">
+          <p class="caption1">내 계좌에 표시</p>
+        </div>
+        <input class="input" type="text" placeholder="미입력시 받는 분 이름 표시" />
 
         <div class="button-group">
-          <button type="button" @click="cancel">취소</button>
-          <button type="submit" @click="submit">다음</button>
+          <button class="button-cancel" type="button" @click="cancel">취소</button>
+          <button class="button-confirm" type="submit" @click="submit">다음</button>
         </div>
       </form>
     </div>
@@ -84,6 +82,18 @@ const banks = ref([
   margin-left: 20px;
 }
 
+.account-info {
+  border: 1px solid #EDEDED;
+  border-radius: 15px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 30px rgba(54, 41, 183, 0.07);
+}
+
+.current-balance, .available-balance {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 /* 여기에 추가적인 CSS 스타일을 정의하시면 됩니다 */
 /* 예시 */
@@ -94,27 +104,86 @@ const banks = ref([
   margin-bottom: 16px;
 }
 
-.input-group label {
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.input-text {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-left: 30px;
+}
+
+.input {
   display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 340px;
+  height: 30px;
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
 }
 
-.input-group input,
-.input-group select {
-  width: 100%;
+.select-bank {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 340px;
+  height: 50px;
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #dcdfe6;
+  border-radius: 4px;
 }
 
-.button-group button {
-  width: 48%;
-  margin-right: 4%;
+
+
+.title2 {
+  margin-right: 10px;
 }
-
-.button-group button:last-child {
-  margin-right: 0;
-}
-
-
 
 .body1, .body3 {
   margin: 0;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.button-cancel {
+  margin-top: 30px;
+  width: 160px;
+  height: 45px; 
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #e0e0e0;
+  color: #000000;
+  border-radius: 10px;
+  border: none;
+  margin-right: 10px;
+}
+
+.button-confirm {
+  margin-top: 30px;
+  width: 160px;
+  height: 45px; 
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #1B3C62;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
+.caption1 {
+  margin: 5px 0px;
 }
 </style>

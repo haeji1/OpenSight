@@ -2,17 +2,28 @@
 import { useRouter } from 'vue-router';
 import { useAccountStore } from '@/stores/account';
 import { onMounted } from 'vue';
+import { ref } from 'vue';
 
 const router = useRouter()
 const AccountStore = useAccountStore();
+
+
 onMounted(async () => {
   try {
-    let res = await AccountStore.inqureBankAccountListType();
-    console.log("res : ", res);
+    await AccountStore.inqureBankAccountListType();
+    
+    console.log("AccountStore : " , AccountStore.accountTypes.value);
   } catch (error) {
     console.error("Error fetching bank account list:", error);
   }
+  
 });
+
+const movePage = (item) => {
+  console.log("item : ", item);
+  AccountStore.selectedAccountType = item;
+  router.push('/account/open/terms');
+}
 
 
 // const express = require('express');
@@ -30,19 +41,24 @@ onMounted(async () => {
 
 </script>
 
-<template>
-  <div class="container">
-    <div class="header">
-      <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">비대면계좌 개설</p>
+  <template>
+    <div class="container">
+      <div class="header">
+        <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">비대면계좌 개설</p>
+      </div>
+      <div class="select-bank">
+        <div v-for="item in AccountStore.accountTypes":key="item.id">
+          <button class="button title2" @click="movePage(item)"> {{item.accountName}} </button>
+        </div>
+        <!--
+        <button class="button title2" >한국은행</button>
+        <button class="button title2" >산업은행</button>
+        <button class="button title2" >기업은행</button>
+        <button class="button title2" >국민은행</button>
+        -->
+      </div>
     </div>
-    <div class="select-bank">
-      <button class="button title2" >한국은행</button>
-      <button class="button title2" >산업은행</button>
-      <button class="button title2" >기업은행</button>
-      <button class="button title2" >국민은행</button>
-    </div>
-  </div>
-</template>
+  </template>
 
 <style scoped>
 .container {

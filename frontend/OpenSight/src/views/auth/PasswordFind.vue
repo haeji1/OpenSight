@@ -1,73 +1,87 @@
- 
 <script setup>
-import { ref } from 'vue';
-const verificationCode = ref('');
-const invalidCode = ref(false);
-// const checkVerificationCode = () => {
-//   // 인증번호 유효성 검사 로직
-//   // 예시로, 만약 verificationCode의 길이가 6 미만이면 invalidCode를 true로 설정
-//   invalidCode.value = verificationCode.value.length < 6;
-// };
-// const submitVerificationCode = () => {
-//   // 인증번호 제출 로직
-//   // 여기에 서버로 데이터를 보내고 결과를 처리하는 코드를 작성하면 됩니다.
-//   if (!invalidCode.value) {
-//     // 서버로 verificationCode.value를 전송하는 로직
-//   }
-// };
+
 </script>
+
 <template>
-  <div>
-    <div class="verification-container">
-      <p>이메일 찾기</p>
+  <div class="container">
+    <div class="header">
+      <p class="title2">&lt;</p><p class="title2">비밀번호 찾기</p>
+    </div>
+    <p class="caption1">회원가입 시 입력한 전화번호를 입력해주세요</p>
+    <div class="verification-container"> 
       <div class="input-group">
-        <p>회원가입 시 입력한 전화번호를 입력해주세요</p>
         <input
-          v-model="verificationCode"
+          class="input"
           type="text"
           placeholder="전화번호"
-          @input="checkVerificationCode"
         />
-        <p>비밀번호를 찾고자 하는 이메일을 입력해주세요</p>
+      </div>
+    </div>
+    <p class="caption1">비밀번호를 찾고자 하는 이메일을 입력해주세요</p>
+    <div class="verification-container">
+      <div class="input-group">
         <input
-          v-model="verificationCode"
+          class="input"
           type="email"
           placeholder="이메일"
-          @input="checkVerificationCode"
         />
-        <!-- <p v-if="invalidCode">유효하지 않은 인증번호입니다.</p> -->
       </div>
-      <button @click="submitVerificationCode">비밀번호 찾기</button>
+      <button class="button" @click="">비밀번호 찾기</button>
     </div>
   </div>
 </template>
+
 <style scoped>
+.container {
+  background-color: #ffffff;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  padding-left: 30px;
+  justify-content: left;
+  text-align: left;
+}
+
+
 .verification-container {
-  background-color: #f5f7fa;
-  padding: 20px;
+  justify-content: center;
+  align-items: center;
   text-align: center;
 }
+
 .input-group {
   margin: 20px 0;
+  text-align: center;
 }
-input {
-  width: 100%;
+
+.input {
+  width: 340px;
+  height: 30px;
   padding: 10px;
   margin-bottom: 5px;
   border: 1px solid #dcdfe6;
   border-radius: 4px;
 }
-button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #409eff;
-  color: white;
+
+.button {
+  margin-top: 350px;
+  width: 327px;
+  height: 45px; 
   font-size: 16px;
-  cursor: pointer;
+  font-weight: 500;
+  background-color: #1B3C62;
+  color: #ffffff;
+  border-radius: 10px;
 }
-button:hover {
-  background-color: #66b1ff;
+
+.title2 {
+  margin-right: 10px;
+}
+
+.caption1 {
+  margin-left: 30px;
+  margin-top: 20px;
 }
 </style>
