@@ -38,6 +38,7 @@ deploy:
     # - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_SLUG
     # - cd ..
     # - docker-compose down
+    # 123
     - docker-compose up -d
   only:
     - develop
