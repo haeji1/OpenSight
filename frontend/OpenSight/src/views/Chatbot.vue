@@ -15,7 +15,9 @@ const messages = ref([
     isChatbot: 1 },
 ])
 
-// 사용자 혹은 챗봇이 답변할 때마다 messages에 새로운 메세지 push
+const check = ref(null)
+
+// 사용자가 요청할 때마다 messages에 새로운 메세지 push
 watch(() => store.getDjango, (newMessage) => {
 
   // 계좌이체일 경우 분기처리를 위해 별도로 추가 정보 저장
@@ -45,6 +47,9 @@ watch(() => store.getDjango, (newMessage) => {
           isChatbot : 1
         }
       )
+
+      // 네, 아니오로 대답을 받도록 요청 유무를 구분
+      check.value = 1
     }
 
     // 아니라면 다시 정보를 요청한다는 메세지 전달
@@ -59,6 +64,26 @@ watch(() => store.getDjango, (newMessage) => {
     }
   }
 
+  else if (newMessage.command_id == 2 || newMessage.command_id == 3 || newMessage.command_id == 4) {
+
+    const commandId = newMessage.command_id
+    const message = newMessage.message
+    const bank = newMessage.bank
+    const account = newMessage.account
+    const money = newMessage.money
+    const isChatbot = newMessage.isChatbot
+
+    store.sendCommand({
+      commandId,
+      message,
+      bank,
+      account,
+      money,
+      isChatbot,
+    })
+
+  }
+
   // 계좌이체 답변에 대한 분기처리
   // 만약 정보가 맞다면 이전 메세지에 접근하여 그 값을 spring에 전달
   else if (newMessage.command_id == 200) {
@@ -66,7 +91,7 @@ watch(() => store.getDjango, (newMessage) => {
     // 이전 메세지에 접근하여 그 값을 spring으로 전달
     const lastMessage = messages.value[messages.value.length - 3]
 
-    const commandId = lastMessage.command_id
+    const commandId = 1
     const message = lastMessage.message
     const bank = lastMessage.bank
     const account = lastMessage.account
@@ -94,6 +119,70 @@ watch(() => store.getDjango, (newMessage) => {
     )
   }
 })
+
+// 챗봇이 답변할 때마다 messages에 새로운 메세지 push
+watch(() => store.getSpring, (newMessage) => {
+
+  // 요청에 따라 오는 응답이 다르므로 분기처리
+  if (newMessage.command_id == 1) {
+    messages.value.push(
+      {
+        // 완료된 계좌이체 페이지로 이동
+      }
+    )
+  }
+
+  else if (newMessage.command_id == 2) {
+    messages.value.push(
+      {
+        command_id : newMessage.command_id,
+        message : newMessage.text1 + newMessage.money + newMessage.text2,
+        isChatbot : 1
+      }
+    )
+  }
+
+  else if (newMessage.command_id == 3) {
+    messages.value.push(
+      {
+        command_id : newMessage.command_id,
+        message :
+        newMessage.text1 + '\n' +
+        newMessage.history1 + '\n' +
+        newMessage.history2 + '\n' +
+        newMessage.history3 + '\n' +
+        newMessage.history4 + '\n' +
+        newMessage.history5 + '\n' +
+        newMessage.text2,
+        isChatbot : 1
+      }
+    )
+  }
+
+  else if (newMessage.command_id == 4) {
+    messages.value.push(
+      {
+        command_id : newMessage.command_id,
+        message :
+        newMessage.text1 + '\n' +
+        newMessage.url + '\n' +
+        newMessage.text2,
+        isChatbot : 1
+      }
+    )
+  }
+
+  else {
+    messages.value.push(
+      {
+        command_id : 0,
+        message : newMessage.text,
+        isChatbot : 1
+      }
+    )
+  }
+  }
+)
 </script>
 
 <template>
@@ -108,22 +197,26 @@ watch(() => store.getDjango, (newMessage) => {
       :isChatbot="message.isChatbot" />
     </div>
 
-    {{ store.getDjango.money }}
-    {{store.django.command_id}}
-    processCo
-
     <div class="input-text">
       <input type="text" name="textMessage" id="textMessage"
       v-model="textMessage" placeholder="옆 버튼을 눌러 음성으로 말하거나 보실 은행 업무를 입력해주세요.">
 
       <div v-if="textMessage">
-        <div class="button" @click="store.textCommand(textMessage)">
+        <div v-if="check" class="button" @click="store.textCheckCommand(textMessage)">
+          <img class="speech" src="../assets/img/send.png" alt=""> 
+        </div>
+
+        <div v-else class="button" @click="store.textCommand(textMessage)">
           <img class="speech" src="../assets/img/send.png" alt=""> 
         </div>
       </div>
 
       <div v-else>
-        <div class="button" @click="store.micCommand">
+        <div v-if="check" class="button" @click="store.micCheckCommand">
+          <img class="speech" src="../assets/img/waves.png" alt=""> 
+        </div>
+
+        <div v-else class="button" @click="store.micCommand">
           <img class="speech" src="../assets/img/waves.png" alt=""> 
         </div>
       </div>

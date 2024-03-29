@@ -78,7 +78,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCommand = (text) => {
     axios({
-      url: `http://192.168.31.203:8000/text/`,
+      url: `http://127.0.0.1:8000/text/`,
       method: "POST",
       data: {
         text
