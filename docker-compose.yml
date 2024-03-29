@@ -39,11 +39,12 @@ services:
     container_name: frontend
 
 networks:
-  default:
-    external: true
-  app-network:
-    name: docker-network
+  docker-network:
+    external:
+      name: docker-network
     driver: bridge
+    labels:
+      com.docker.compose.network: "true"
 
 volumes:
   mysql-data:
