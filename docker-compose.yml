@@ -13,7 +13,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: SSAFY
       # Add other environment variables here
     networks:
-      - app-network
+      - docker-network
 
   mysql:
     image: chiseungoh/mysql:latest # Replace with your actual MySQL Docker image tag
@@ -26,14 +26,14 @@ services:
       - mysql-data:/var/lib/mysql
     container_name: mysql
     networks:
-      - app-network
+      - docker-network
 
   frontend:
     image: chiseungoh/frontend:latest # Replace with your actual frontend Docker image tag
     ports:
       - "8081:80"
     networks:
-      - app-network
+      - docker-network
     depends_on:
       - app
     container_name: frontend
