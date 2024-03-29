@@ -1,4 +1,4 @@
-version: '2.25'
+# version: '2.25'
 services:
   app:
     image: chiseungoh/backend:latest # Replace with your actual Spring Boot Docker image tag
@@ -39,6 +39,8 @@ services:
     container_name: frontend
 
 networks:
+  default:
+    external: true
   app-network:
     name: docker-network
     driver: bridge
