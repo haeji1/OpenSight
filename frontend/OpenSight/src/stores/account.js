@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router';
 
 
 export const useAccountStore = defineStore('AccountStore', () => {
-    const accountBaseURL = "http://127.0.0.1:8080/api/accounts";
+    const accountBaseURL = `${import.meta.env.VITE_REST_API}/accounts`;
     
     const accountTypes = ref([]);
     const selectedAccountType = ref(null);

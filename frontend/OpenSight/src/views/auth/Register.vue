@@ -65,7 +65,7 @@ const register = async () => {
 
 
     try {
-      const requestUrl = 'http://192.168.31.25:8080/api/users/register';
+      const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
       const response = await axios.post(requestUrl, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
