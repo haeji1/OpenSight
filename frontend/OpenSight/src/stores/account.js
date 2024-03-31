@@ -10,6 +10,15 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const accountTypes = ref([]);
     const selectedAccountType = ref(null);
     const openAccountResult = ref(null);
+    const myAccountList = ref([]);
+    const myAccountBalance = ref(null);
+
+    const selectedBank = ref();
+    const selectedBankName = ref();
+    const accountNumber = ref();
+    const amount = ref();
+    const recipientName = ref();
+    const senderName = ref();
 
     const inqureBankAccountListType = async function (){
         await axios({
@@ -17,16 +26,18 @@ export const useAccountStore = defineStore('AccountStore', () => {
           url : `${accountBaseURL}/inquire-bank-account-list-type`
         })
         .then((res) => {  
-        //   console.log(res);
+           console.log(res);
           for(let i = 0; i < res.data.data.rec.length; i++){
             accountTypes.value.push(res.data.data.rec[i]);
           }
-          console.log("acciountType: ", accountTypes.value);
+            console.log("accountType: ", accountTypes.value);
+
           })
         .catch((err) => {
           console.log(err)
         })
       }
+
 
       const openAccount = async function(){
         const accessToken = sessionStorage.getItem('accessToken');
@@ -46,7 +57,57 @@ export const useAccountStore = defineStore('AccountStore', () => {
         })
       }
 
+      const inquireAccountList = async function() {
+        const accessToken = sessionStorage.getItem('accessToken');
+        console.log("inquireAccountList========================")
+        await axios({
+          method: 'post',
+          url : `${accountBaseURL}/inquire-account-list`,
+          headers: {
+            'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+          },
+          data : {
+          }
+        }) .then((res) => {
+            console.log(res);
+
+            for(let i = 0; i < res.data.data.rec.length; i++){
+                myAccountList.value.push(res.data.data.rec[i]);
+            }
+            console.log("+++++++++++"+myAccountList.value);
+        }) .catch((error) =>  {
+          console.log(error)
+        })
+
+      }
+
+      const inquireBalance = async function(bankCode, accountNo) {
+          const accessToken = sessionStorage.getItem('accessToken');
+          console.log("=====================inquireAccountBalance========================")
+          await axios({
+              method: 'post',
+              url : `${accountBaseURL}/inquire-account-balance`,
+              headers: {
+                  'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+              },
+              data : {
+                  "bankCode" : bankCode,
+                  "accountNo" : accountNo
+              }
+          }) .then((res) => {
+              console.log(bankCode, accountNo)
+              console.log(res);
+              myAccountBalance.value = res.data.data.rec.accountBalance;
+          }) .catch((error) =>  {
+              console.log(error)
+          })
+
+      }
 
 
-    return {accountTypes,selectedAccountType,openAccountResult, inqureBankAccountListType,openAccount};
+
+    const matchedBank = computed(() => matchBank(selectedBank.value));
+
+
+    return {myAccountList, accountTypes,selectedAccountType,openAccountResult,selectedBank,myAccountBalance,accountNumber,amount,recipientName,senderName,selectedBankName, inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance};
 });

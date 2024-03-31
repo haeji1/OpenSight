@@ -440,6 +440,9 @@ public class AccountService {
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
 
         if (httpResponse == null) return null;
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
+
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))
             return InquireAccountBalanceResponse.builder()
                     .result("error")
