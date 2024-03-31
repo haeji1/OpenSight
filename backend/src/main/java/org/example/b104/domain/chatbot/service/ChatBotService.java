@@ -383,6 +383,7 @@ public class ChatBotService {
                 .endDate(endDate)
                 .transactionType("A")
                 .orderByType("DESC")
+                .userKey(userKey)
                 .build();
         InquireAccountTransactionHistoryResponse inquireAccountTransactionHistoryResponse = accountService.inquireAccountTransactionHistory(inquireAccountHistoryTransactionCommand);
         Integer length = inquireAccountTransactionHistoryResponse.getREC().totalCount();
