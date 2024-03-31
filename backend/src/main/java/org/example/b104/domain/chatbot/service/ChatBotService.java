@@ -37,186 +37,186 @@ public class ChatBotService {
      * 3. response 로 알맞는 url 보내주기
      */
 
-    @Transactional(readOnly = true)
-    public String ReceiveTextRequest(String token, ChatBotTextCommand command) {
-
-        System.out.println("======시작======"+token);
-        System.out.println("======커맨드===="+command.getCommand_id());
-        String bankCode = "";
-        String bankName = "";
-        if (command.getBank() != null) {
-            bankName = command.getBank();
-        } else {
-            System.out.println("null");
-        }
-        // 은행 이름 분류
-        if (bankName.equals("한국은행"))  {
-            bankCode = "001";
-        } else if (bankName.equals("산업은행")) {
-            bankCode = "002";
-        } else if (bankName.equals("기업은행")) {
-            bankCode = "003";
-        } else if (bankName.equals("국민은행")) {
-            bankCode = "004";
-        }
-
-        Integer commandId = command.getCommand_id();
-        String userKey = getUserKeyFromToken(token);
-        User user = getUserFromToken(token);
-        String accountNo = command.getAccount();
-
-
-        LocalDate currentDate = LocalDate.now();
-        String startDate = currentDate.toString();
-        LocalDate oneYearLater = currentDate.plusYears(1);
-        String endDate = oneYearLater.toString();
-
-        if (commandId == 1) {
-
-            // 빈 정보가 없는지 확인
-            // 계좌이체 정보 맞는지 확인
-            boolean isValidAccountTransfer = checkIfAccountTransferIsCorrect(command, user, bankCode, accountNo, userKey);
-
-            System.out.println("++++user"+user);
-            System.out.println("+++bankCode"+bankCode);
-            System.out.println("+++acountNo"+accountNo);
-            System.out.println("+++userKey"+userKey);
-
-            if (isValidAccountTransfer) {
-
-                // 서비스에 보내기 위한 command
-                AccountTransferCommand accountTransferCommand = AccountTransferCommand.builder()
-                        .depositBankCode(user.getBankCode())
-                        .depositAccountNo(user.getAccountNo())
-                        .transactionBalance(command.getMoney())
-                        .withdrawalBankCode(bankCode)
-                        .withdrawalAccountNo(accountNo)
-                        .depositTransactionSummary("입금이체 계좌")
-                        .withdrawalTransactionSummary("출금이체 계좌")
-                        .userKey(userKey)
-                        .build();
-
-
-
-                // 계좌이체 정보 맞는지 확인
+//    @Transactional(readOnly = true)
+//    public String ReceiveTextRequest(String token, ChatBotTextCommand command) {
+//
+//        System.out.println("======시작======"+token);
+//        System.out.println("======커맨드===="+command.getCommand_id());
+//        String bankCode = "";
+//        String bankName = "";
+//        if (command.getBank() != null) {
+//            bankName = command.getBank();
+//        } else {
+//            System.out.println("null");
+//        }
+//        // 은행 이름 분류
+//        if (bankName.equals("한국은행"))  {
+//            bankCode = "001";
+//        } else if (bankName.equals("산업은행")) {
+//            bankCode = "002";
+//        } else if (bankName.equals("기업은행")) {
+//            bankCode = "003";
+//        } else if (bankName.equals("국민은행")) {
+//            bankCode = "004";
+//        }
+//
+//        Integer commandId = command.getCommand_id();
+//        String userKey = getUserKeyFromToken(token);
+//        User user = getUserFromToken(token);
+//        String accountNo = command.getAccount();
+//
+//
+//        LocalDate currentDate = LocalDate.now();
+//        String startDate = currentDate.toString();
+//        LocalDate oneYearLater = currentDate.plusYears(1);
+//        String endDate = oneYearLater.toString();
+//
+//        if (commandId == 1) {
+//
+//            // 빈 정보가 없는지 확인
+//            // 계좌이체 정보 맞는지 확인
+//            boolean isValidAccountTransfer = checkIfAccountTransferIsCorrect(command, user, bankCode, accountNo, userKey);
+//
+//            System.out.println("++++user"+user);
+//            System.out.println("+++bankCode"+bankCode);
+//            System.out.println("+++acountNo"+accountNo);
+//            System.out.println("+++userKey"+userKey);
+//
+//            if (isValidAccountTransfer) {
+//
+//                // 서비스에 보내기 위한 command
+//                AccountTransferCommand accountTransferCommand = AccountTransferCommand.builder()
+//                        .depositBankCode(user.getBankCode())
+//                        .depositAccountNo(user.getAccountNo())
+//                        .transactionBalance(command.getMoney())
+//                        .withdrawalBankCode(bankCode)
+//                        .withdrawalAccountNo(accountNo)
+//                        .depositTransactionSummary("입금이체 계좌")
+//                        .withdrawalTransactionSummary("출금이체 계좌")
+//                        .userKey(userKey)
+//                        .build();
+//
+//
+//
+//                // 계좌이체 정보 맞는지 확인
+////                JSONObject jsonResponse = new JSONObject();
+////                jsonResponse.put("text1","계좌이체를 시작합니다.");
+////                jsonResponse.put("bank",command.getBank());
+////                jsonResponse.put("account",accountTransferCommand.getWithdrawalAccountNo());
+////                jsonResponse.put("money", accountTransferCommand.getTransactionBalance());
+////                jsonResponse.put("text2", "계좌이체 하려는 정보가 맞는지 확인해주세요");
+////                jsonResponse.put("isChatBot",1);
+//
+//                // 여기서 다시 예 아니오 요청 받아서 처리
+//
+//                // 계좌 이체 수행
+//                accountService.accountTransfer(accountTransferCommand);
 //                JSONObject jsonResponse = new JSONObject();
-//                jsonResponse.put("text1","계좌이체를 시작합니다.");
-//                jsonResponse.put("bank",command.getBank());
-//                jsonResponse.put("account",accountTransferCommand.getWithdrawalAccountNo());
-//                jsonResponse.put("money", accountTransferCommand.getTransactionBalance());
-//                jsonResponse.put("text2", "계좌이체 하려는 정보가 맞는지 확인해주세요");
-//                jsonResponse.put("isChatBot",1);
-
-                // 여기서 다시 예 아니오 요청 받아서 처리
-
-                // 계좌 이체 수행
-                accountService.accountTransfer(accountTransferCommand);
-                JSONObject jsonResponse = new JSONObject();
-                jsonResponse.put("text", "완료되었습니다.");
-                return jsonResponse.toString();
-
-            }
-
-            else {
-                // 계좌이체 정보가 틀린 경우
-                JSONObject jsonResponse = new JSONObject();
-                jsonResponse.put("text1", "다시 요청해주세요");
-                return jsonResponse.toString();
-            }
-
-
-
-            // 분기처리
-//             if 맞으면 accountService.accountTransfer(accountTransferCommand);
-            // else
-            /**
-             * JSONObject jsonResponse = new JSONObject();
-             jsonResponse.put("","다시 요청해주세요");
-             return jsonResponse;
-             *
-             */
-        } else if (commandId == 2) {
-            System.out.println("======2번 시작========");
-            InquireAccountBalanceCommand inquireAccountBalanceCommand = InquireAccountBalanceCommand.builder()
-                    .bankCode(bankCode)
-                    .accountNo(accountNo)
-                    .userKey(userKey)
-                    .build();
-            System.out.println("======command 완료=========");
-            InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance(inquireAccountBalanceCommand);
-            int balance = inquireAccountBalanceResponse.getREC().accountBalance();
-            JSONObject jsonResponse = new JSONObject();
-            jsonResponse.put("text1", "귀하의 잔액은");
-            jsonResponse.put("money", balance);
-            jsonResponse.put("text2", "원입니다. 다시 듣기를 원하시면…");
-            jsonResponse.put("isChatBot",1);
-            return jsonResponse.toString();
-        } else if (commandId == 3) {
-            System.out.println("+++userKey"+userKey);
-            InquireAccountHistoryTransactionCommand inquireAccountHistoryTransactionCommand = InquireAccountHistoryTransactionCommand.builder()
-                    .bankCode(bankCode)
-                    .accountNo(accountNo)
-                    .startDate(startDate)
-                    .endDate(endDate)
-                    .transactionType("A")
-                    .orderByType("DESC")
-                    .build();
-            System.out.println("========테스트======="+commandId);
-            System.out.println("message"+command.getMessage());
-            System.out.println("ischatbot"+command.getIs_chatbot());
-            InquireAccountTransactionHistoryResponse inquireAccountTransactionHistoryResponse = accountService.inquireAccountTransactionHistory(inquireAccountHistoryTransactionCommand);
-            Integer length = inquireAccountTransactionHistoryResponse.getREC().totalCount();
-
-            JSONObject jsonObject = new JSONObject();
-            JSONArray transactionsList = new JSONArray();
-
-            jsonObject.put("command_id",commandId);
-            jsonObject.put("len",length);
-            if (length < 5) {
-                jsonObject.put("text1", "최근 " + length + "개의 거래내역을 보여드리겠습니다.");
-            } else {
-                jsonObject.put("text1", "최근 5개의 거래내역을 보여드리겠습니다.");
-            }
-
-            SingleAccountTransactionHistory[] list = inquireAccountTransactionHistoryResponse.getREC().transactionHistory();
-//            System.out.println(list);
-
-            for (int i = 0; i < Math.min(length, 5); i++) {
-                SingleAccountTransactionHistory currentTransaction = list[i];
-
-                JSONObject transaction = new JSONObject();
-                transaction.put("transactionDate", currentTransaction.transactionDate());
-                transaction.put("transactionSummary", currentTransaction.transactionSummary());
-                transaction.put("transactionBalance", currentTransaction.transactionBalance());
-                transaction.put("transactionTypeName", currentTransaction.transactionTypeName());
-
-                transactionsList.put(transaction);
-            }
-
-            for (int i = 0; i < 5; i++) {
-                if (i < transactionsList.length()) {
-                    jsonObject.put("history" + (i + 1), transactionsList.getJSONObject(i));
-                } else {
-                    jsonObject.put("history" + (i + 1), JSONObject.NULL);
-                }
-            }
-            jsonObject.put("text2", "추가 텍스트");
-            jsonObject.put("isChatBot",1);
-            return jsonObject.toString();
-        }
-        else if (commandId == 4) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("command_id",commandId);
-            jsonObject.put("text1", "비대면계좌개설로 이동할 수 있는 경로는");
-            jsonObject.put("url", "/api/accounts/open-account");
-            jsonObject.put("text2", "입니다. 잠시만 기다려주세요");
-            jsonObject.put("isChatBot",1);
-            return jsonObject.toString();
-        }
-        JSONObject response = new JSONObject();
-        response.put("text", "다시 요청해주세요");
-        return response.toString();
-    }
+//                jsonResponse.put("text", "완료되었습니다.");
+//                return jsonResponse.toString();
+//
+//            }
+//
+//            else {
+//                // 계좌이체 정보가 틀린 경우
+//                JSONObject jsonResponse = new JSONObject();
+//                jsonResponse.put("text1", "다시 요청해주세요");
+//                return jsonResponse.toString();
+//            }
+//
+//
+//
+//            // 분기처리
+////             if 맞으면 accountService.accountTransfer(accountTransferCommand);
+//            // else
+//            /**
+//             * JSONObject jsonResponse = new JSONObject();
+//             jsonResponse.put("","다시 요청해주세요");
+//             return jsonResponse;
+//             *
+//             */
+//        } else if (commandId == 2) {
+//            System.out.println("======2번 시작========");
+//            InquireAccountBalanceCommand inquireAccountBalanceCommand = InquireAccountBalanceCommand.builder()
+//                    .bankCode(bankCode)
+//                    .accountNo(accountNo)
+//                    .userKey(userKey)
+//                    .build();
+//            System.out.println("======command 완료=========");
+//            InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance(inquireAccountBalanceCommand);
+//            int balance = inquireAccountBalanceResponse.getREC().accountBalance();
+//            JSONObject jsonResponse = new JSONObject();
+//            jsonResponse.put("text1", "귀하의 잔액은");
+//            jsonResponse.put("money", balance);
+//            jsonResponse.put("text2", "원입니다. 다시 듣기를 원하시면…");
+//            jsonResponse.put("isChatBot",1);
+//            return jsonResponse.toString();
+//        } else if (commandId == 3) {
+//            System.out.println("+++userKey"+userKey);
+//            InquireAccountHistoryTransactionCommand inquireAccountHistoryTransactionCommand = InquireAccountHistoryTransactionCommand.builder()
+//                    .bankCode(bankCode)
+//                    .accountNo(accountNo)
+//                    .startDate(startDate)
+//                    .endDate(endDate)
+//                    .transactionType("A")
+//                    .orderByType("DESC")
+//                    .build();
+//            System.out.println("========테스트======="+commandId);
+//            System.out.println("message"+command.getMessage());
+//            System.out.println("ischatbot"+command.getIs_chatbot());
+//            InquireAccountTransactionHistoryResponse inquireAccountTransactionHistoryResponse = accountService.inquireAccountTransactionHistory(inquireAccountHistoryTransactionCommand);
+//            Integer length = inquireAccountTransactionHistoryResponse.getREC().totalCount();
+//
+//            JSONObject jsonObject = new JSONObject();
+//            JSONArray transactionsList = new JSONArray();
+//
+//            jsonObject.put("command_id",commandId);
+//            jsonObject.put("len",length);
+//            if (length < 5) {
+//                jsonObject.put("text1", "최근 " + length + "개의 거래내역을 보여드리겠습니다.");
+//            } else {
+//                jsonObject.put("text1", "최근 5개의 거래내역을 보여드리겠습니다.");
+//            }
+//
+//            SingleAccountTransactionHistory[] list = inquireAccountTransactionHistoryResponse.getREC().transactionHistory();
+////            System.out.println(list);
+//
+//            for (int i = 0; i < Math.min(length, 5); i++) {
+//                SingleAccountTransactionHistory currentTransaction = list[i];
+//
+//                JSONObject transaction = new JSONObject();
+//                transaction.put("transactionDate", currentTransaction.transactionDate());
+//                transaction.put("transactionSummary", currentTransaction.transactionSummary());
+//                transaction.put("transactionBalance", currentTransaction.transactionBalance());
+//                transaction.put("transactionTypeName", currentTransaction.transactionTypeName());
+//
+//                transactionsList.put(transaction);
+//            }
+//
+//            for (int i = 0; i < 5; i++) {
+//                if (i < transactionsList.length()) {
+//                    jsonObject.put("history" + (i + 1), transactionsList.getJSONObject(i));
+//                } else {
+//                    jsonObject.put("history" + (i + 1), JSONObject.NULL);
+//                }
+//            }
+//            jsonObject.put("text2", "추가 텍스트");
+//            jsonObject.put("isChatBot",1);
+//            return jsonObject.toString();
+//        }
+//        else if (commandId == 4) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("command_id",commandId);
+//            jsonObject.put("text1", "비대면계좌개설로 이동할 수 있는 경로는");
+//            jsonObject.put("url", "/api/accounts/open-account");
+//            jsonObject.put("text2", "입니다. 잠시만 기다려주세요");
+//            jsonObject.put("isChatBot",1);
+//            return jsonObject.toString();
+//        }
+//        JSONObject response = new JSONObject();
+//        response.put("text", "다시 요청해주세요");
+//        return response.toString();
+//    }
 
 
     public AccountTransferChatBotResponse accountTransfer(String token, ChatBotTextCommand command) {
