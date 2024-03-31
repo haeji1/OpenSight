@@ -8,13 +8,13 @@ import org.example.b104.domain.chatbot.service.command.ChatBotTextCommand;
 public class ChatBotTextRequest {
 
     @JsonProperty("command_id")
-    private Long command_id;
+    private Integer command_id;
     private String message;
     private String bank;
     private String account;
-    private Long money;
+    private Integer money;
     @JsonProperty("ischatbot")
-    private Long ischatbot;
+    private Integer ischatbot;
 
     public ChatBotTextCommand toChatBotTextCommand() {
         return ChatBotTextCommand.builder()

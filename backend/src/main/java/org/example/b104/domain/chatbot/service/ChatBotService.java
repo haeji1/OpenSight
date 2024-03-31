@@ -9,8 +9,7 @@ import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.account.service.command.AccountTransferCommand;
 import org.example.b104.domain.account.service.command.InquireAccountBalanceCommand;
 import org.example.b104.domain.account.service.command.InquireAccountHistoryTransactionCommand;
-import org.example.b104.domain.chatbot.controller.response.AccountTransferChatBotResponse;
-import org.example.b104.domain.chatbot.controller.response.BalanceInquiryResponse;
+import org.example.b104.domain.chatbot.controller.response.*;
 import org.example.b104.domain.chatbot.service.command.ChatBotTextCommand;
 import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.user.entity.User;
@@ -61,7 +60,7 @@ public class ChatBotService {
             bankCode = "004";
         }
 
-        Long commandId = command.getCommand_id();
+        Integer commandId = command.getCommand_id();
         String userKey = getUserKeyFromToken(token);
         User user = getUserFromToken(token);
         String accountNo = command.getAccount();
@@ -219,9 +218,7 @@ public class ChatBotService {
         return response.toString();
     }
 
-//    public AccountTransferResponse accountTransfer(String token, ChatBotTextCommand command) {
-//
-//    }
+
     public AccountTransferChatBotResponse accountTransfer(String token, ChatBotTextCommand command) {
         System.out.println("======시작======" + token);
         System.out.println("======커맨드====" + command.getCommand_id());
@@ -243,7 +240,7 @@ public class ChatBotService {
             bankCode = "004";
         }
 
-        Long commandId = command.getCommand_id();
+//        Integer commandId = command.getCommand_id();
         String userKey = getUserKeyFromToken(token);
         User user = getUserFromToken(token);
         String accountNo = command.getAccount();
@@ -297,10 +294,131 @@ public class ChatBotService {
 
     }
 
-//    public BalanceInquiryResponse balanceInquiry(String token, ChatBotTextCommand command) {
-//        checkIfAccountTransferIsCorrect()
-//    }
+    public BalanceInquiryResponse balanceInquiry(String token, ChatBotTextCommand command) {
 
+        String bankCode = "";
+        String bankName = "";
+        if (command.getBank() != null) {
+            bankName = command.getBank();
+        } else {
+            System.out.println("null");
+        }
+        // 은행 이름 분류
+        if (bankName.equals("한국은행")) {
+            bankCode = "001";
+        } else if (bankName.equals("산업은행")) {
+            bankCode = "002";
+        } else if (bankName.equals("기업은행")) {
+            bankCode = "003";
+        } else if (bankName.equals("국민은행")) {
+            bankCode = "004";
+        }
+
+        Integer commandId = command.getCommand_id();
+        String userKey = getUserKeyFromToken(token);
+        User user = getUserFromToken(token);
+        String accountNo = command.getAccount();
+
+
+        LocalDate currentDate = LocalDate.now();
+        String startDate = currentDate.toString();
+        LocalDate oneYearLater = currentDate.plusYears(1);
+        String endDate = oneYearLater.toString();
+        System.out.println("======2번 시작========");
+        InquireAccountBalanceCommand inquireAccountBalanceCommand = InquireAccountBalanceCommand.builder()
+                .bankCode(bankCode)
+                .accountNo(accountNo)
+                .userKey(userKey)
+                .build();
+        System.out.println("======command 완료=========");
+        InquireAccountBalanceResponse inquireAccountBalanceResponse = accountService.inquireAccountBalance(inquireAccountBalanceCommand);
+        int balance = inquireAccountBalanceResponse.getREC().accountBalance();
+
+        BalanceInquiryResponse balanceInquiryResponse = BalanceInquiryResponse.builder()
+                .command_id(commandId)
+                .text1("귀하의 잔액은")
+                .money(balance)
+                .text2("원입니다.")
+                .ischatbot(1)
+                .build();
+        return balanceInquiryResponse;
+    }
+
+    public TransactionHistoryResponse transactionHistory(String token, ChatBotTextCommand command) {
+        System.out.println("======시작======"+token);
+        System.out.println("======커맨드===="+command.getCommand_id());
+        String bankCode = "";
+        String bankName = "";
+        if (command.getBank() != null) {
+            bankName = command.getBank();
+        } else {
+            System.out.println("null");
+        }
+        // 은행 이름 분류
+        if (bankName.equals("한국은행"))  {
+            bankCode = "001";
+        } else if (bankName.equals("산업은행")) {
+            bankCode = "002";
+        } else if (bankName.equals("기업은행")) {
+            bankCode = "003";
+        } else if (bankName.equals("국민은행")) {
+            bankCode = "004";
+        }
+
+        Integer commandId = command.getCommand_id();
+        String userKey = getUserKeyFromToken(token);
+        User user = getUserFromToken(token);
+        String accountNo = command.getAccount();
+
+
+        LocalDate currentDate = LocalDate.now();
+        String startDate = currentDate.toString();
+        LocalDate oneYearLater = currentDate.plusYears(1);
+        String endDate = oneYearLater.toString();
+
+        InquireAccountHistoryTransactionCommand inquireAccountHistoryTransactionCommand = InquireAccountHistoryTransactionCommand.builder()
+                .bankCode(bankCode)
+                .accountNo(accountNo)
+                .startDate(startDate)
+                .endDate(endDate)
+                .transactionType("A")
+                .orderByType("DESC")
+                .build();
+        InquireAccountTransactionHistoryResponse inquireAccountTransactionHistoryResponse = accountService.inquireAccountTransactionHistory(inquireAccountHistoryTransactionCommand);
+        Integer length = inquireAccountTransactionHistoryResponse.getREC().totalCount();
+        TransactionHistoryResponse transactionHistoryResponse = TransactionHistoryResponse.builder()
+                .command_id(commandId)
+                .len(length)
+                .text1("최근"+length+"개의 거래내역을 보여드레깄습니다.")
+                .history(inquireAccountTransactionHistoryResponse.getREC().transactionHistory())
+                .text2("추가 텍스트")
+                .ischarbot(1)
+                .build();
+        return transactionHistoryResponse;
+    }
+
+    public OpenAccountResponse openAccount(ChatBotTextCommand command) {
+        Integer commandId = command.getCommand_id();
+
+        OpenAccountResponse openAccountResponse = OpenAccountResponse.builder()
+                .command_id(commandId)
+                .text1("비대면계좌개설로 이동할 수 있는 경로는")
+                .url("/api/accounts/open-accunt")
+                .text2("입니다. 잠시만 기다려주세요.")
+                .ischatbot(1)
+                .build();
+        return openAccountResponse;
+    }
+
+    public NotValidChatBotResponse notValidChatBot(ChatBotTextCommand command) {
+        Integer commandId = command.getCommand_id();
+        NotValidChatBotResponse notValidChatBotResponse = NotValidChatBotResponse.builder()
+                .command_id(commandId)
+                .result("다시 요청해주세요.")
+                .is_chatbot(1)
+                .build();
+        return notValidChatBotResponse;
+    }
 
     private boolean checkIfAccountTransferIsCorrect(ChatBotTextCommand command, User user, String
             bankCode, String accountNo, String userKey) {

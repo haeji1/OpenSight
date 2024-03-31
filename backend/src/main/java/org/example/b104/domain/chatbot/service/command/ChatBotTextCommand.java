@@ -7,10 +7,10 @@ import lombok.Data;
 @Builder
 public class ChatBotTextCommand {
 
-    private Long command_id;
+    private Integer command_id;
     private String message;
     private String bank;
     private String account;
-    private Long money;
-    private Long is_chatbot;
+    private Integer money;
+    private Integer is_chatbot;
 }
