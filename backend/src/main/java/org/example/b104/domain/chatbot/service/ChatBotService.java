@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 
 @Service
@@ -385,13 +386,23 @@ public class ChatBotService {
                 .orderByType("DESC")
                 .userKey(userKey)
                 .build();
+
         InquireAccountTransactionHistoryResponse inquireAccountTransactionHistoryResponse = accountService.inquireAccountTransactionHistory(inquireAccountHistoryTransactionCommand);
         Integer length = inquireAccountTransactionHistoryResponse.getREC().totalCount();
+        SingleAccountTransactionHistory[] histories = inquireAccountTransactionHistoryResponse.getREC().transactionHistory();
+
+        SingleAccountTransactionHistory[] trimmedHistories;
+        if (histories.length >= 5) {
+            // 처음 5개 요소만 선택하여 새로운 배열 생성
+            trimmedHistories = Arrays.copyOf(histories, 5);
+        } else {
+            trimmedHistories = histories;
+        }
         TransactionHistoryResponse transactionHistoryResponse = TransactionHistoryResponse.builder()
                 .command_id(commandId)
                 .len(length)
                 .text1("최근"+length+"개의 거래내역을 보여드레깄습니다.")
-                .history(inquireAccountTransactionHistoryResponse.getREC().transactionHistory())
+                .history(trimmedHistories)
                 .text2("추가 텍스트")
                 .ischarbot(1)
                 .build();
