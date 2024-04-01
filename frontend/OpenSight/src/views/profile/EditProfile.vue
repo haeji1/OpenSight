@@ -18,7 +18,7 @@ function goComplete () {
 <template>
   <div class="container">
     <div class="header">
-      <p class="title2 white">&lt;</p><p class="title2 white">회원정보 수정</p>
+      <p @click="router.push('/main')" class="title2 white">&lt;</p><p class="title2 white">회원정보 수정</p>
     </div>
     <div class="content">
       <form class="form">

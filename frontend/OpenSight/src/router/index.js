@@ -23,6 +23,7 @@ import TransferConfirmView from '@/views/transfer/TransferConfirm.vue'
 import TransferCompleteView from '@/views/transfer/TransferComplete.vue'
 import TransferVerifyView from '@/views/transfer/TransferVerify.vue';
 import ChatbotView from '@/views/Chatbot.vue';
+import SimplePasswordSettingView from '@/views/account/SimplePasswordSetting.vue';
 
 
 
@@ -148,6 +149,11 @@ const router = createRouter({
       path: '/chatbot',
       name: 'Chatbot',
       component: ChatbotView
+    },
+    {
+      path: '/password/setting',
+      name: 'SimplePasswordSetting',
+      component: SimplePasswordSettingView
     }
   ]
 })

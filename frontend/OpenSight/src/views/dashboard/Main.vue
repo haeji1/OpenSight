@@ -3,30 +3,58 @@ import footer from '@/components/layout/Footer.vue'
 import { useRouter } from 'vue-router';
 import { onMounted } from 'vue';
 import { useAccountStore } from '@/stores/account'
-import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import { ref, watch } from 'vue';
 
 const router = useRouter();
+const authStore = useAuthStore();
 const accountStore = useAccountStore();
 const myAccountListCopy = ref([]);
 const isDataLoaded = ref(false);
+const currentIndex = ref(0);
 
-onMounted (async () => {
+// 선택된 계정의 잔액을 조회하는 함수
+async function fetchAccountBalance(index) {
   try {
-    console.log("=======시작======")
-    await accountStore.inquireAccountList();
-    await accountStore.inquireBalance(accountStore.myAccountList[0].bankCode, accountStore.myAccountList[0].accountNo);
-    isDataLoaded.value = true;
-    //myAccountListCopy.value = accountStore.myAccountList.value;
-    // myAccountList = accountStore.myAccountList;
-    // console.log(myAccountList.value)
-
-    
-    console.log(accountStore.myAccountList)
-
+    const account = accountStore.myAccountList[index];
+    await accountStore.inquireBalance(account.bankCode, account.accountNo);
   } catch (error) {
-    console.log(error)
+    console.error("잔액 조회 중 오류 발생:", error);
+  }
+}
+
+onMounted(async () => {
+  try {
+    console.log("=======시작======");
+    await accountStore.inquireAccountList();
+    await fetchAccountBalance(0); // 첫 번째 계정의 잔액 조회
+    isDataLoaded.value = true;
+    console.log(accountStore.myAccountList);
+  } catch (error) {
+    console.error(error);
   }
 });
+
+
+// currentIndex가 변경될 때마다 잔액을 다시 조회
+watch(currentIndex, async (newIndex) => {
+  await fetchAccountBalance(newIndex);
+});
+
+// 이전 계정으로 이동
+const prevAccount = () => {
+  if (currentIndex.value > 0) {
+    currentIndex.value--;
+  }
+};
+
+// 다음 계정으로 이동
+const nextAccount = () => {
+  if (currentIndex.value < accountStore.myAccountList.length - 1) {
+    currentIndex.value++;
+  }
+};
+
 
 </script>
 
@@ -34,31 +62,42 @@ onMounted (async () => {
   <div class="container">
     <div class="header">
       <p class="title1-white">안녕하세요, 김싸피 고객님.</p>
-      <img class="img" src="../../assets/img/signout.png" alt="로그아웃">
+      <div class="img-container">
+        <img class="img" src="../../assets/img/user.png" alt="프로필수정" @click="router.push('/profile/edit')">
+        <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호수정" @click="router.push('/password/setting')">
+        <img class="img" src="../../assets/img/signout.png" alt="로그아웃" @click="authStore.logout">
+      </div>
     </div>
     <div class="content">
-      <div class="account-container">
-        <div class="account">
-          <div class="account-content" v-if="isDataLoaded">
-            <p class="title1 title1-account">은행명 {{accountStore.myAccountList[0].bankName}}</p>
-            <p class="body3 body3-account">통장이름 {{accountStore.myAccountList[0].accountName}}</p>
-            <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[0].accountNo}}</p>
-            <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}</p>
+      <div class="change-account">
+        <p class="prev-next" @click="prevAccount">&lt;</p>
+        <div class="account-container">
+          <div class="account">
+            <div class="account-content" v-if="isDataLoaded">
+              <p class="title1 title1-account">{{accountStore.myAccountList[currentIndex].bankName}}</p>
+              <p class="body3 body3-account">{{accountStore.myAccountList[currentIndex].accountName}}</p>
+              <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
+              <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}원</p>
+            </div>
           </div>
+          <button class="button">이체하기</button>
+          <button class="button">거래내역 조회하기</button>
         </div>
-        <button class="button">이체하기</button>
-        <button class="button">거래내역 조회하기</button>
+        <p class="prev-next" @click="nextAccount">&gt;</p>
       </div>
       <div class="account-open">
-        <div class="account-text">
+        <div class="account-text" @click="router.push('/account/open/select-bank')">
           <p class="title2">비대면 자유입출금</p>
           <p class="title2">계좌 개설</p>
         </div>
         <img class="content-img" src="../../assets/img/accountimage.png" alt="">
       </div>
-      <div class="savings">
+      <div class="savings" @click="">
         <p class="title2">예적금 상품추천</p>
         <img class="content-img" src="../../assets/img/savings.png" alt="">
+      </div>
+      <div class="chat-bot" @click="router.push('/chatbot')">
+        <img class="chat-img" src="../../assets/img/whiterobot.png" alt="챗봇" @click="router.push('/chatbot')">
       </div>
     </div>
   </div>
@@ -93,7 +132,7 @@ onMounted (async () => {
   left: 50%; /* 가운데 정렬을 위해 */
   transform: translateX(-50%); /* 가운데 정렬을 위해 */
   height: calc(100vh - 50px); /* 상단부터 130px 위치부터 하단까지의 높이 설정 */
-  overflow: scroll; 
+  /* overflow: scroll;  */
   /* 나머지 스타일은 기존에 설정한 대로 유지 */
 }
 
@@ -203,5 +242,30 @@ onMounted (async () => {
   border-radius: 15px;
   background-color: #ffffff;
   box-shadow: 0px 4px 30px rgba(54, 41, 183, 0.07);
+}
+
+.change-account {
+  display: flex;
+  flex-direction: row;
+}
+
+.prev-next {
+  margin-top: 100px;
+}
+
+.chat-bot {
+  position: fixed;
+  right: 10px;  /* 또는 원하는 간격으로 조정 */
+  top: 700px; /* 또는 원하는 간격으로 조정 */
+  width: 50px;  /* 아이콘의 크기에 맞게 조정 */
+  height: 50px; /* 아이콘의 크기에 맞게 조정 */
+  z-index: 1000; /* 다른 요소들 위에 떠 있게 하려면 충분히 큰 값 */
+  background-color: #1B3C62;
+  border-radius: 50%;
+}
+
+.chat-img {
+  width: 40px;
+  height: 40px;
 }
 </style>

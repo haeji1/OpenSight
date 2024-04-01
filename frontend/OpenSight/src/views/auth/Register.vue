@@ -74,8 +74,10 @@ const register = async () => {
           }
         });
         console.log('Registration successful:', response.data);
+        router.push('/register/complete')
         // Handle success, e.g., redirect or show a success message
       } catch (error) {
+        alert('회원가입이 실패했습니다. 다시 시도해주세요.')
         console.error('Registration failed:', error);
         // Handle error, e.g., show an error message
       }
@@ -96,8 +98,10 @@ const register = async () => {
           }
         });
         console.log('Registration successful:', response.data);
+        router.push('/register/complete')
         // Handle success, e.g., redirect or show a success message
       } catch (error) {
+        alert('회원가입이 실패했습니다. 다시 시도해주세요.')
         console.error('Registration failed:', error);
       }
   }
@@ -131,7 +135,7 @@ const register = async () => {
 <template>
   <div class="container">
     <div class="header">
-      <p class="title2 white">&lt;</p><p class="title2 white">회원가입</p>
+      <p class="title2 white" @click="router.push('/login')">&lt;</p><p class="title2 white">회원가입</p>
     </div>
     <div class="content">
       <p class="title1">환영합니다</p>

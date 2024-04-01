@@ -101,7 +101,7 @@ function naverSocialLogin() {
         <p class="title1-blue">환영합니다</p>
         <p class="caption2">모두를 위한 금융서비스 OpenSight</p>
       </div>
-      <form @click.prevent="logIn" class="form">
+      <form @submit.prevent="logIn" class="form">
         <input type="email" v-model.trim="username" placeholder="이메일" class="login-input" />
         <input type="password" v-model.trim="password" placeholder="비밀번호" class="login-input" />
         <button type="submit" class="login-button">로그인</button>

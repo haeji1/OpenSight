@@ -30,7 +30,7 @@ const AccountStore = useAccountStore();
         
       </div>
       <div>
-        <button class="button" @click="router.push('/login')">메인 화면으로 돌아가기</button>
+        <button class="button" @click="router.push('/main')">메인 화면으로 돌아가기</button>
       </div>
     </div>
   </div>
