@@ -168,6 +168,18 @@ public class UserController {
         return null;
     }
 
+
+    @PostMapping ("/face-auth")
+    public ResponseEntity<ApiResponse<FaceAuthResponse>> faceAuth(
+            @RequestHeader("Authorization") String token,
+            @ModelAttribute FaceAuthRequest request
+    ){
+        String decryptedToken = jwtTokenProvider.getPayload(token);
+        Long userId = Long.parseLong(decryptedToken);
+        FaceAuthResponse result = userService.faceAuth(request.toFaceAuthCommand(), userId);
+        return ResponseEntity.ok(ApiResponse.createSuccess(result));
+    }
+
     // test
 
 

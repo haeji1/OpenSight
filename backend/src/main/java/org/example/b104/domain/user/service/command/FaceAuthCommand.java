@@ -8,6 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
-public class FaceLoginCommand {
+public class FaceAuthCommand {
     private MultipartFile requestImage;
 }
