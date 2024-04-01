@@ -22,58 +22,58 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const micCommand = function () {
 
-    // 1. 음성 캡처를 위한 마이크 권한 요청
-    navigator.mediaDevices.getUserMedia({ audio : true })
+    // 1-1. 음성 인식 권한이 있을 경우 실행
+    if ("webkitSpeechRecognition" in window) {
 
-    // 2-1. 마이크 권한 요청에 성공했을 경우 
-    .then((res) => {
-      const mediaRecorder = new MediaRecorder(res)
-      let audioChunks = []
+      // 2. 10초 간 녹음 후 자동으로 종료
+      const speech = new webkitSpeechRecognition
 
-      mediaRecorder.ondataavailable = event => {
-        audioChunks.push(event.data)
-      }
-
-      // 3.  5초 간 음성 녹음
-      mediaRecorder.start()
-
+      speech.start()
+      console.log('녹음 시작')
+      
       setTimeout(() => {
-        mediaRecorder.stop()
-      }, 5000)
+        speech.stop()
+        console.log('녹음 종료')
+      }, 10000)
 
-      mediaRecorder.onstop = function () {
-        const audioBlob = new Blob(audioChunks, { type : 'audio/wav' })
-        const formData = new FormData()
-        formData.append('audioFile', audioBlob, 'audio.wav')
+      // 3. 녹음된 음성을 텍스트로 변환
+      speech.addEventListener('result', (event) => {
 
-        // 4. 만들어진 오디오 파일을 axios 통신으로 전송
-        axios({
-          url: `http://127.0.0.1:8000/mic/`,
-          method: "POST",
-          data: formData,
+        const text = event['results'][0][0]['transcript']
+
+        // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
+        if (text) {
+          axios({
+            url: `http://127.0.0.1:8000/command/`,
+            method: "POST",
+            data: {
+              text
+            },
+          })
+
+          .then((res) => {
+            django.value = res.data
+            console.log(django.value)
+          })
+
+          .catch((err) => {
+            console.log(err)
+          })
         }
-        )
 
-        // 5-1. 성공했을 경우
-        .then((res) => {
-          django.value = res.data
-          console.log(django.value)
-        })
+        // 4-2. 녹음이 제대로 되지 않았을 경우 다시 시도해달라는 메세지 전달
+        else {
+          console.log('녹음 실패')
+          alert('음성 인식이 제대로 되지 않았습니다.\n조용한 환경에서 다시 시도해주시거나 큰소리로 말해주세요.')
+        }
 
+      })
+    }
 
-        // 5-2. 실패했을 경우
-        .catch((err) => {
-          alert('오디오 파일 전송 중 오류가 발생했습니다. 다시 시도해주세요.')
-          console.log(err)
-        })
-      }
-    })
-
-    // 2-2. 마이크 권한 요청에 실패했을 경우
-    .catch((err) => {
-      alert('마이크 권한 요청에 실패했습니다. 다시 시도해주세요.')
-      console.log(err)
-    })
+    // 1-2. 만약 권한이 없을 경우 음성 인식 종료    
+    else {
+      alert('음성 인식 기능이 지원되지 않은 브라우저입니다.\n다른 브라우저로 접근해주세요.')
+    }
   }
 
   const textCommand = (text) => {
@@ -97,7 +97,60 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
   }
 
   const micCheckCommand = function () {
-    // micCommand랑 동일하나 axios 주소가 mic_check로 감
+
+    // 1-1. 음성 인식 권한이 있을 경우 실행
+    if ("webkitSpeechRecognition" in window) {
+
+      // 2. 10초 간 녹음 후 자동으로 종료
+      const speech = new webkitSpeechRecognition
+
+      speech.start()
+      console.log('녹음 시작')
+      
+      setTimeout(() => {
+        speech.stop()
+        console.log('녹음 종료')
+      }, 10000)
+
+      // 3. 녹음된 음성을 텍스트로 변환
+      speech.addEventListener('result', (event) => {
+
+        const text = event['results'][0][0]['transcript']
+
+        // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
+        if (text) {
+          axios({
+            url: `http://127.0.0.1:8000/command/`,
+            method: "POST",
+            data: {
+              text
+            },
+          })
+
+          .then((res) => {
+            django.value = res.data
+            console.log(django.value)
+          })
+
+          .catch((err) => {
+            console.log(err)
+          })
+
+        }
+
+        // 4-2. 녹음이 제대로 되지 않았을 경우 다시 시도해달라는 메세지 전달
+        else {
+          console.log('녹음 실패')
+          alert('음성 인식이 제대로 되지 않았습니다.\n조용한 환경에서 다시 시도해주시거나 큰소리로 말해주세요.')
+        }
+
+      })
+    }
+
+    // 1-2. 만약 권한이 없을 경우 음성 인식 종료    
+    else {
+      alert('음성 인식 기능이 지원되지 않은 브라우저입니다.\n다른 브라우저로 접근해주세요.')
+    }
   }
 
   const textCheckCommand = (text) => {
@@ -123,8 +176,6 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
   const sendCommand = ({commandId, message, bank, account, money, isChatbot}) => {
 
     const accessToken = sessionStorage.getItem('accessToken')
-
-    console.log('!@#', commandId, message, bank, account, money, isChatbot, '!@#')
 
     axios({
       url: `http://localhost:8080/api/chatbot/request`,
