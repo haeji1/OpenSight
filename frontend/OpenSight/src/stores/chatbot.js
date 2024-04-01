@@ -120,7 +120,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
         // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
         if (text) {
           axios({
-            url: `http://127.0.0.1:8000/command/`,
+            url: `http://127.0.0.1:8000/check/`,
             method: "POST",
             data: {
               text
@@ -155,7 +155,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCheckCommand = (text) => {
     axios({
-      url: `http://127.0.0.1:8000/text_check/`,
+      url: `http://127.0.0.1:8000/check/`,
       method: "POST",
       data: {
         text
