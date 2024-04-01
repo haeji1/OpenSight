@@ -1,11 +1,14 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 </script>
 
 <template>
   <div class="container">
     <div class="header">
-      <p class="title2">&lt;</p><p class="title2">이메일 찾기</p>
+      <p class="title2" @click="router.push('/login')">&lt;</p><p class="title2">이메일 찾기</p>
     </div>
     <p class="caption1">회원가입 시 입력한 전화번호를 입력해주세요</p>
     <div class="verification-container">

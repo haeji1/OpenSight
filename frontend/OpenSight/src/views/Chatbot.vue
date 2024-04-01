@@ -1,5 +1,7 @@
 <script setup>
 import { ref, watch } from "vue"
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 import ChatMessage from '@/components/ChatMessage.vue'
 import { useChatBotStore } from '@/stores/chatbot'
@@ -195,7 +197,7 @@ watch(() => store.getSpring, (newMessage) => {
 <template>
 <div class="container">
   <div class="header">
-    <p class="title1">&lt;</p><p class="title1">챗봇</p>
+    <p class="title1" @click="router.push('/main')">&lt;</p><p class="title1">챗봇</p>
   </div>
   <div class="content">
     <div class="chat-container">
