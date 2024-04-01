@@ -426,6 +426,7 @@ public class UserService {
             }
             else
                 throw new EntityNotFoundException("얼굴인증 실패");
+
         }catch (Exception e) {
             e.printStackTrace();
             throw new EntityNotFoundException("로그인 실패");

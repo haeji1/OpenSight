@@ -14,4 +14,5 @@ public class FaceAuthRequest {
                 .requestImage(requestImage)
                 .build();
     }
+
 }

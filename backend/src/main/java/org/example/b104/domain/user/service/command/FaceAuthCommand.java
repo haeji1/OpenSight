@@ -10,4 +10,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class FaceAuthCommand {
     private MultipartFile requestImage;
+
 }
