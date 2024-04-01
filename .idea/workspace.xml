@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39af7728-0f89-4c7b-a288-738856df33d8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/00000000000.xd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/copilot/chatSessions/xd.lck" afterDir="false" />
+    <list default="true" id="39af7728-0f89-4c7b-a288-738856df33d8" name="Changes" comment=":spakles: feat: 얼굴인증 프론트 단 구성">
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/controller/record/InquireAccountHistoryRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/controller/record/InquireAccountHistoryRecord.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +44,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2023.3.2\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -83,7 +83,17 @@
       <workItem from="1711328540246" duration="389000" />
       <workItem from="1711328938255" duration="132000" />
       <workItem from="1711629668081" duration="168000" />
+      <workItem from="1711951005456" duration="811000" />
     </task>
+    <task id="LOCAL-00001" summary=":spakles: feat: 얼굴인증 프론트 단 구성">
+      <option name="closed" value="true" />
+      <created>1711951056919</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1711951056919</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,5 +121,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=":spakles: feat: 얼굴인증 프론트 단 구성" />
+    <option name="LAST_COMMIT_MESSAGE" value=":spakles: feat: 얼굴인증 프론트 단 구성" />
   </component>
 </project>
