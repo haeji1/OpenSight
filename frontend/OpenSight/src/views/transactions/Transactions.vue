@@ -2,11 +2,12 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import TransactionList from '@/components/transactinos/TransactionList.vue'
+// import PeriodSettingModal from '@/components/modal/PeriodSettingModal.vue';
 import Account from '@/components/layout/Account.vue'
 import axios from 'axios';
 
 const router = useRouter()
-
+// const isModalOpen = ref(false); // 모달 상태
 const transactions = ref([]) 
 const apiUrl = 'http://localhost:8080/api/accounts/inquire-account-transaction-history';
 
@@ -20,6 +21,15 @@ onMounted(async () => {
   }
 });
 
+// const openModal = () => {
+//   isModalOpen.value = true;
+// };
+
+// const closeModal = () => {
+//   isModalOpen.value = false;
+// };
+
+
 
 </script>
 
@@ -31,7 +41,9 @@ onMounted(async () => {
     <div class="content">
       <Account class="account" />
       <button class="button" @click="">이체하기</button>
+      <!-- <button class="">조회기간설정</button> -->
       <TransactionList :transactions="transactions" />
+      <!-- <DateRangeModal v-if="isModalOpen" @update="updateDateRange" @close="closeModal" /> -->
     </div>
   </div>
 </template>
@@ -63,6 +75,7 @@ onMounted(async () => {
 
 .button {
   margin-top: 10px;
+  margin-bottom: 10px;
   width: 327px;
   height: 45px; 
   font-size: 16px;
