@@ -1,8 +1,37 @@
 <script setup>
 import footer from '@/components/layout/Footer.vue'
 import { useRouter } from 'vue-router';
-const router = useRouter()
+import { onMounted } from 'vue';
+import { useAccountStore } from '@/stores/account'
+import { ref } from 'vue';
+import Transfer from '../transfer/Transfer.vue';
 
+const router = useRouter();
+const accountStore = useAccountStore();
+const myAccountListCopy = ref([]);
+const isDataLoaded = ref(false);
+
+onMounted (async () => {
+  try {
+    console.log("=======시작======")
+    await accountStore.inquireAccountList();
+    await accountStore.inquireBalance(accountStore.myAccountList[0].bankCode, accountStore.myAccountList[0].accountNo);
+    isDataLoaded.value = true;
+    //myAccountListCopy.value = accountStore.myAccountList.value;
+    // myAccountList = accountStore.myAccountList;
+    // console.log(myAccountList.value)
+
+    
+    console.log(accountStore.myAccountList)
+
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+function transferButtonClick() {
+  router.push({name:"Transfer"})
+}
 
 </script>
 
@@ -15,14 +44,14 @@ const router = useRouter()
     <div class="content">
       <div class="account-container">
         <div class="account">
-          <div class="account-content">
-            <p class="title1 title1-account">은행명</p>
-            <p class="body3 body3-account">통장이름</p>
-            <p class="body2 body2-account">계좌번호</p>
-            <p class="title2 title2-account">잔액</p>
+          <div class="account-content" v-if="isDataLoaded">
+            <p class="title1 title1-account">은행명 {{accountStore.myAccountList[0].bankName}}</p>
+            <p class="body3 body3-account">통장이름 {{accountStore.myAccountList[0].accountName}}</p>
+            <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[0].accountNo}}</p>
+            <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}</p>
           </div>
         </div>
-        <button class="button">이체하기</button>
+        <button class="button" @click="transferButtonClick">이체하기</button>
         <button class="button">거래내역 조회하기</button>
       </div>
       <div class="account-open">

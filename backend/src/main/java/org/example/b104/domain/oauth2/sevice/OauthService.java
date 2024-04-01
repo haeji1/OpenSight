@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -112,7 +113,9 @@ public class OauthService {
         }
 
         else {
+            System.out.println("======email이 null이 아님======");
             User user = saveOrUpdate(userProfile);
+            System.out.println("**********saveOrUpdate로직 끝**************");
             // JWT 토큰 만들기
             String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
             String refreshToken = jwtTokenProvider.createRefreshToken();
@@ -123,6 +126,8 @@ public class OauthService {
                     .build();
 
             saveOrUpdate(auth, user);
+
+//            saveOrUpdate(auth.getUser());
 
 //        System.out.println("jwt토큰"+jwtToken);
             return SocialLoginResponse.builder()
@@ -187,13 +192,28 @@ public class OauthService {
         return formData;
     }
 
-    private User saveOrUpdate(UserProfile userProfile) {
-        User user = userRepository.findByOauthId(userProfile.getOauthId())
-                .map(entity -> entity.update(
-                        userProfile.getName(), userProfile.getEmail()))
-                .orElseGet(userProfile::toUser);
-    return userRepository.save(user);
+//    private User saveOrUpdate(UserProfile userProfile) {
+//        User user = userRepository.findByOauthId(userProfile.getOauthId())
+//                .map(entity -> entity.update(
+//                        userProfile.getName(), userProfile.getEmail()))
+//                .orElseGet(userProfile::toUser);
+//    return userRepository.save(user);
+//    }
+private User saveOrUpdate(UserProfile userProfile) {
+    // 이메일을 기준으로 사용자를 조회
+    User existingUser = userRepository.findByEmail(userProfile.getEmail());
+
+    if (existingUser != null) {
+        // 이미 존재하는 이메일인 경우, 해당 사용자의 정보를 업데이트
+        User user = existingUser;
+        user.update(userProfile.getName(), userProfile.getEmail());
+        return userRepository.save(user);
+    } else {
+        // 존재하지 않는 경우, 새로운 사용자 생성
+        User newUser = userProfile.toUser();
+        return userRepository.save(newUser);
     }
+}
 
     private User saveOrUpdate(User newUser) {
         User user = userRepository.findByEmail(newUser.getEmail());
@@ -202,11 +222,26 @@ public class OauthService {
     }
 
     private Auth saveOrUpdate(Auth authorization, User user) {
+
         Auth auth = authRepository.findByUserUserId(user.getUserId())
                 .orElse(Auth.builder().user(user).build()); // 사용자를 찾지 못하면 새로운 Auth 엔티티 생성
         auth.updateRefresh(authorization.getRefreshToken()); // 새로운 refresh token으로 갱신
         return authRepository.save(auth);
     }
+//
+////        Optional<Auth> optionalAuth = authRepository.findByUserUserId(user.getUserId());
+////        if (optionalAuth.isPresent()) {
+////            Auth auth = optionalAuth.get();
+////            auth.updateRefresh(authorization.getRefreshToken());
+////            return authRepository.save(auth);
+////        } else {
+////            Auth auth = Auth.builder()
+////                    .user(user)
+////                    .refreshToken(authorization.getRefreshToken())
+////                    .build();
+////            return authRepository.save(auth);
+////        }
+//    }
 
     @Data
     static class MemberRequest {

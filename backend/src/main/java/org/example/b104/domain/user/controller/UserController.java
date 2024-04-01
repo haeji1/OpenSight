@@ -7,12 +7,14 @@ import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.user.controller.request.*;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.service.UserService;
+import org.example.b104.domain.user.service.command.ConfirmSimplePasswordCommand;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -77,8 +79,6 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(registerAccountResponse));
     }
 
-
-
     @PostMapping("/update-info")
     public ResponseEntity<ApiResponse<UpdateUserResponse>> updateUser(
             @RequestBody UpdateUserRequest request
@@ -124,6 +124,25 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(updatePasswordResponse));
     }
 
+    @PostMapping("/register/simple-password")
+    public ResponseEntity<ApiResponse<RegisterSimplePasswordResponse>> registerSimplePassword(
+            @RequestHeader("Authorization") String token,
+            @RequestBody RegisterSimplePasswordRequest request
+    ) {
+        RegisterSimplePasswordResponse registerSimplePasswordResponse = userService.registerSimplePassword(token, request.toRegisterSimplePasswordCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(registerSimplePasswordResponse));
+    }
+
+    @PostMapping("/check/simple-password")
+    public ResponseEntity<ApiResponse<ConfirmSimplePasswordResponse>> confirmSimplePassword(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ConfirmSimplePasswordRequest request
+    ) {
+        System.out.println("request 비밀번호"+request.getSimplePassword());
+        ConfirmSimplePasswordResponse confirmSimplePasswordResponse = userService.confirmSimplePassword(token, request.toConfirmSimplePasswordCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(confirmSimplePasswordResponse));
+    }
+
     @GetMapping("/find-email")
     public ResponseEntity<ApiResponse<FindEmailResponse>> findEmail(
             @RequestBody FindEmailRequest request
@@ -166,6 +185,18 @@ public class UserController {
             }
         }
         return null;
+    }
+
+
+    @PostMapping ("/face-auth")
+    public ResponseEntity<ApiResponse<FaceAuthResponse>> faceAuth(
+            @RequestHeader("Authorization") String token,
+            @ModelAttribute FaceAuthRequest request
+    ){
+        String decryptedToken = jwtTokenProvider.getPayload(token);
+        Long userId = Long.parseLong(decryptedToken);
+        FaceAuthResponse result = userService.faceAuth(request.toFaceAuthCommand(), userId);
+        return ResponseEntity.ok(ApiResponse.createSuccess(result));
     }
 
     // test

@@ -23,18 +23,15 @@ const props = defineProps({
 }
 
 .user-message {
-  background-color: rgb(80, 80, 226);
+  background-color: #1b3c62;
+  color: #ffffff;
   align-self: flex-end;
 }
 
 .bot-message {
-  background-color: #ccc;
+  background-color: #DEEDFF;
   align-self: flex-start;
 }
 
-/* 이 부분은 ChatMessage 컴포넌트가 포함된 부모 컴포넌트의 스타일에 포함시켜야 합니다. */
-.chat-container {
-  display: flex;
-  flex-direction: column;
-}
+
 </style>

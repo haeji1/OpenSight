@@ -54,30 +54,53 @@ const register = async () => {
   const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
   const uniqueFilename = `profileImage_${dateTimeStr}.jpg`;
 
-  canvasRef.value.toBlob(async (blob) => {
-  const formData = new FormData();
-  formData.append('email', email.value);
-  formData.append('password', password.value);
-  formData.append('username', name.value);
-  formData.append('phone', phoneNumber.value);
-  // Append the image with a unique filename
-  formData.append('profileImage', blob, uniqueFilename);
 
+  if (isCameraReady.value === true){//사진 있을때
+    canvasRef.value.toBlob(async (blob) => {
+    const formData = new FormData();
+    formData.append('email', email.value);
+    formData.append('password', password.value);
+    formData.append('username', name.value);
+    formData.append('phone', phoneNumber.value);
+    // Append the image with a unique filename
+    formData.append('profileImage', blob, uniqueFilename);
+
+
+      try {
+        const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
+        const response = await axios.post(requestUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Registration successful:', response.data);
+        // Handle success, e.g., redirect or show a success message
+      } catch (error) {
+        console.error('Registration failed:', error);
+        // Handle error, e.g., show an error message
+      }
+    }, 'image/jpeg');
+  }
+  else {//사진 없을때
+    const formData = new FormData();
+    formData.append('email', email.value);
+    formData.append('password', password.value);
+    formData.append('username', name.value);
+    formData.append('phone', phoneNumber.value);
 
     try {
-      const requestUrl = 'http://192.168.31.25:8080/api/users/register';
-      const response = await axios.post(requestUrl, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log('Registration successful:', response.data);
-      // Handle success, e.g., redirect or show a success message
-    } catch (error) {
-      console.error('Registration failed:', error);
-      // Handle error, e.g., show an error message
-    }
-  }, 'image/jpeg');
+        const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
+        const response = await axios.post(requestUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Registration successful:', response.data);
+        // Handle success, e.g., redirect or show a success message
+      } catch (error) {
+        console.error('Registration failed:', error);
+      }
+  }
 };
 
 // Check if `userImage` is a file input and has a file selected
@@ -107,45 +130,42 @@ const register = async () => {
 
 <template>
   <div class="container">
-    <div class="back-button">&lt; 회원가입</div>
+    <div class="header">
+      <p class="title2 white">&lt;</p><p class="title2 white">회원가입</p>
+    </div>
     <div class="content">
-      <p>환영합니다</p>
+      <p class="title1">환영합니다</p>
       <form @submit.prevent="register" class="form">
-        <label for="email">이메일(필수)</label>
+        <label class="caption1" for="email">이메일(필수)</label>
         <input type="email" name="email" id="email" placeholder="이메일" v-model.trim="email" required>
 
-        <label for="password">비밀번호(필수)</label>
+        <label class="caption1" for="password">비밀번호(필수)</label>
         <input type="password" name="password" id="password" placeholder="비밀번호" v-model.trim="password" required>
 
-        <p>비밀번호는 다음과 같은 조건을 만족해야 합니다</p>
+        <p class="caption1">비밀번호는 다음과 같은 조건을 만족해야 합니다</p>
         <div class="pwd-check1">
-          <span v-if="isLengthValid" class="checkmark">✔</span>
-          <span v-else>✔</span>
-          <p>비밀번호는 공백없이 10자리 이상 30자 이하여야 합니다</p>
+          <p class="caption2">비밀번호는 공백없이 10자리 이상 30자 이하여야 합니다</p>
         </div>
         <div class="pwd-check2">
-          <span v-if="hasAllRequiredCharacters" class="checkmark">✔</span>
-          <span v-else>✔</span>
-          <p>영어 대문자, 영어 소문자, 특수문자를 최소 한 글자 이상 포함한 문자 조합이어야 합니다.</p>
+          <p class="caption2">영어 대문자, 영어 소문자, 특수문자를 최소 한 글자 이상 포함한 문자 조합이어야 합니다.</p>
         </div>
-        <label for="passwordConfirm">비밀번호 확인(필수)</label>
+        <label class="caption1" for="passwordConfirm">비밀번호 확인(필수)</label>
         <input type="password" name="passwordConfirm" id="passwordConfirm" placeholder="비밀번호 확인" v-model.trim="passwordConfirm" required>
 
-        <label for="name">이름(필수)</label>
+        <label class="caption1" for="name">이름(필수)</label>
         <input type="text" name="name" id="name" placeholder="이름" v-model.trim="name" required>
 
-        <label for="phoneNumber">전화번호(필수)</label>
+        <label class="caption1" for="phoneNumber">전화번호(필수)</label>
         <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="전화번호" v-model.trim="phoneNumber" required>
 
         <video ref="videoRef" autoplay style="display:none;"></video>
         <canvas ref="canvasRef" style="display:none;"></canvas>
-        <button type="button" @click="captureImageFilter">사진 찍기</button>
-        <button type="submit" @click.prevent="register">가입 하기</button>
+        <div class="button-container">
+          <button class="button" type="button" @click="captureImageFilter">사진 찍기</button>
+          <button class="button" type="submit" @click.prevent="register">가입 하기</button>
+        </div>
 
 
-        
-
-        <!--<button type="submit">회원가입</button>-->
       </form>
     </div>
   </div>
@@ -154,27 +174,40 @@ const register = async () => {
 
 <style scoped>
 .container {
-  font-family: 'Arial', sans-serif;
-  max-width: 360px;
-  margin: 0 auto;
-  overflow: auto;
   display: flex;
   flex-direction: column;
 }
 
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
 .content {
-  padding: 20px;
   background-color: #ffffff;
-  border-radius: 10px 10px 0 0;
+  border-radius: 20px 20px 0 0; /* 아래쪽 모서리는 둥글지 않음 */
+  width: 370px; /* 가로 크기 유지 */
+  padding: 20px;
+  margin: 0 auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  /* text-align: center; */
+  position: fixed; /* 화면에 고정 */
+  top: 70px; /* 상단으로부터 130px 떨어진 위치에 배치 */
+  left: 50%; /* 가운데 정렬을 위해 */
+  transform: translateX(-50%); /* 가운데 정렬을 위해 */
+  height: calc(100vh - 50px); 
+  overflow: auto; 
+  /* 나머지 스타일은 기존에 설정한 대로 유지 */
 }
 
 .form {
   display: flex;
   flex-direction: column;
+  padding-bottom: 100px;
 }
 
 .form label {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .form input {
@@ -184,39 +217,40 @@ const register = async () => {
   border-radius: 10px;
 }
 
-.form small {
-  color: #888;
-  margin-top: 5px;
+
+
+
+.button-container {
+  display: flex;
+  flex-direction: column; /* 버튼을 수직으로 쌓음 */
+  align-items: center; /* 버튼을 가로축 중앙에 배치 */
+  margin-top: auto; /* 컨테이너 상단의 여백을 자동으로 설정하여 내용을 위로 밀어냄 */
+  margin-bottom: 20px; /* 하단 여백도 자동으로 설정 */
 }
 
-.form ul {
-  color: #555;
-  font-size: 0.9em;
-  margin-top: 5px;
-  padding-left: 20px;
-}
-
-.form button {
-  background-color: #007aff;
-  color: white;
-  padding: 10px;
-  margin-top: 30px;
-  border: none;
+.button {
+  margin-top: 50px;
+  width: 327px;
+  height: 45px; 
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #1B3C62;
+  color: #ffffff;
   border-radius: 10px;
-  font-size: 1em;
 }
 
-.back-button {
-  font-size: 1em;
-  color: #007aff;
-  margin-bottom: 30px;
-  cursor: pointer;
-}
 .checkmark {
   color: green;
   margin-right: 5px;
+  margin-top: 5px;
 }
 .pwd-check1 {
+  display: flex;
   flex-direction: row;
+}
+
+.white {
+  color: #ffffff;
+  margin-left: 15px;
 }
 </style>

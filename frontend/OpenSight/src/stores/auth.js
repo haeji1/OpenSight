@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 export const useAuthStore = defineStore('authStore', () => {
   // const API_URL = 'https://j10b104.p.ssafy.io:8080'
   // const API_URL = 'http://192.168.31.168:8080'
-  const API_URL = 'http://192.168.31.25:8080'
+  const API_URL = 'http://localhost:8080'
       const router = useRouter()
   let id = ref(null)
   let name = ref(null)

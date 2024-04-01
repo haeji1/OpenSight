@@ -1,8 +1,16 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import {useAccountStore} from "@/stores/account.js";
 
 const router = useRouter()
+const accountStore = useAccountStore();
+const isDataLoaded = ref(false);
+const selectedBank = ref();
+const accountNumber = ref();
+const amount = ref();
+const recipientName = ref();
+const senderName = ref();
 
 const banks = ref([
   { bankCode: '001', bankName: '한국은행'},
@@ -10,6 +18,51 @@ const banks = ref([
   { bankCode: '003', bankName: '기업은행'},
   { bankCode: '004', bankName: '국민은행'},
 ])
+
+onMounted (async () => {
+  try {
+    console.log("=======시작======")
+    await accountStore.inquireAccountList();
+    await accountStore.inquireBalance(accountStore.myAccountList[0].bankCode, accountStore.myAccountList[0].accountNo);
+    isDataLoaded.value = true;
+    //myAccountListCopy.value = accountStore.myAccountList.value;
+    // myAccountList = accountStore.myAccountList;
+    // console.log(myAccountList.value)
+
+
+    console.log(accountStore.myAccountList)
+
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+function onClickNextButton() {
+  accountStore.amount = amount;
+  accountStore.selectedBank = selectedBank;
+  accountStore.recipientName = recipientName;
+  accountStore.senderName = senderName;
+  accountStore.accountNumber = accountNumber;
+
+  if (selectedBank.value === "001")
+    accountStore.selectedBankName = ref('한국은행');
+  else if (selectedBank.value === "002")
+    accountStore.selectedBankName = ref('산업은행');
+  else if (selectedBank.value === "003")
+    accountStore.selectedBankName = ref('기업은행');
+  else if (selectedBank.value === "004")
+    accountStore.selectedBankName = ref('국민은행');
+
+  router.push({ name: "TransferConfirm" });
+}
+
+function test() {
+  console.log(selectedBank.value)
+  console.log(amount.value)
+  console.log(recipientName.value)
+  console.log(senderName.value)
+  console.log(accountNumber.value)
+}
 
 </script>
 
@@ -19,19 +72,19 @@ const banks = ref([
       <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">이체</p>
     </div>
     <div class="content">
-      <div class="account-info">
-        <p class="body3">자유입출금통장</p>
-        <p class="title2">123456-78-901234</p>
+      <div class="account-info" v-if="isDataLoaded">
+        <p class="body3">{{ accountStore.myAccountList[0].accountName}}</p>
+        <p class="title2">{{accountStore.myAccountList[0].accountNo}}</p>
         <div class="current-balance">
-          <p class="body3">잔액</p><p class="body1">1,316,000원</p>
+          <p class="body3">잔액</p><p class="body1">{{accountStore.myAccountBalance}}원</p>
         </div>
         <div class="available-balance">
-          <p class="body3">1일 출금한도</p><p class="body1">5,000,000원</p>
+          <p class="body3">1일 출금한도</p><p class="body1">{{accountStore.myAccountList[0].dailyTransferLimit}}원</p>
         </div>
       </div>
 
-      <form class="transfer-form">
-        <select class="select-bank" name="bank" id="bank">
+      <div class="transfer-form">
+        <select class="select-bank" name="bank" id="bank" v-model="selectedBank">
           <option value="">은행선택</option>
           <option v-for="bank in banks" :key="bank.bankCode" :value="bank.bankCode">
             {{ bank.bankName }}
@@ -41,28 +94,29 @@ const banks = ref([
         <div class="input-text">
           <p class="caption1">계좌번호</p>
         </div>
-        <input class="input" type="number"/>
+        <input class="input" type="number" v-model="accountNumber"/>
 
         <div class="input-text">
           <p class="caption1">보낼금액</p>
         </div>
-        <input class="input" type="number"  />
+        <input class="input" type="number" v-model="amount" />
 
         <div class="input-text">
           <p class="caption1">받는 계좌에 표시</p>
         </div>
-        <input class="input" type="text" placeholder="미입력시 보낸 분 이름 표시" />
+        <input class="input" type="text" placeholder="미입력시 보낸 분 이름 표시" v-model="recipientName"/>
 
         <div class="input-text">
           <p class="caption1">내 계좌에 표시</p>
         </div>
-        <input class="input" type="text" placeholder="미입력시 받는 분 이름 표시" />
+        <input class="input" type="text" placeholder="미입력시 받는 분 이름 표시" v-model="senderName"/>
 
         <div class="button-group">
           <button class="button-cancel" type="button" @click="cancel">취소</button>
-          <button class="button-confirm" type="submit" @click="submit">다음</button>
+          <button class="button-confirm" type="button" @click="onClickNextButton">다음</button>
+          <button class="button-confirm" type="button" @click="test">테스트</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </template>

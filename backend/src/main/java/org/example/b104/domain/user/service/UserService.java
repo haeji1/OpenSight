@@ -1,10 +1,10 @@
 package org.example.b104.domain.user.service;
 
 import com.sun.jdi.request.InvalidRequestStateException;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
 import org.example.b104.domain.account.service.AccountService;
+import org.example.b104.domain.user.service.command.FaceAuthCommand;
 import org.example.b104.domain.account.service.command.RegisterAccountMemberCommand;
 import org.example.b104.domain.amazon.service.AmazonRekognitionService;
 import org.example.b104.domain.amazon.service.AmazonS3Service;
@@ -14,13 +14,11 @@ import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
 import org.example.b104.domain.user.service.command.*;
 import org.example.b104.global.exception.EntityNotFoundException;
-import org.example.b104.global.response.BankApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
 import software.amazon.awssdk.services.rekognition.model.FaceMatch;
 
 import java.io.File;
@@ -322,6 +320,36 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
+    public RegisterSimplePasswordResponse registerSimplePassword(String token, RegisterSimplePasswordCommand command) {
+        User user = getUserFromToken(token);
+        user.updateSimplePassword(command.getSimplePassword());
+        return RegisterSimplePasswordResponse.builder()
+                .isSuccess(true)
+                .build();
+    }
+
+    @Transactional(readOnly = false)
+    public ConfirmSimplePasswordResponse confirmSimplePassword(String token, ConfirmSimplePasswordCommand command) {
+        User user = getUserFromToken(token);
+        String simplePassword = user.getSimplePassword();
+        System.out.println("==========simplePassword"+simplePassword+" "+command.getSimplePassword());
+        if (simplePassword.equals(command.getSimplePassword())) {
+            System.out.println("일치");
+            return ConfirmSimplePasswordResponse.builder()
+                    .isMatched(true)
+                    .build();
+        } else {
+            System.out.println("불일치");
+            System.out.println("===============================");
+            System.out.println("유저의 simplePassword"+simplePassword);
+            System.out.println("들어온 simplePassword"+command.getSimplePassword());
+            return ConfirmSimplePasswordResponse.builder()
+                    .isMatched(false)
+                    .build();
+        }
+    }
+
+    @Transactional(readOnly = false)
     public FindPasswordResponse findPassword(FindPasswordCommand command) {
         User user = userRepository.findByEmailAndPhoneNumber(command.getEmail(), command.getPhone())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
@@ -389,4 +417,40 @@ public class UserService {
         return user;
     }
 
+    public FaceAuthResponse faceAuth(FaceAuthCommand command, Long userId) {
+        File uploadDir = new File(UPLOAD_DIR);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        // 파일을 지정된 디렉토리에 저장
+        String fileName = command.getRequestImage().getOriginalFilename();
+        try {
+            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+            command.getRequestImage().transferTo(destFile);
+
+            File file = new File(UPLOAD_DIR + File.separator + fileName);
+            String keyName = file.getName();
+
+            s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            List<FaceMatch> matchList = amazonRekognitionService.recognizeFace("cloud-open-sight-collection", "cloud-open-sight-ue1", keyName);
+
+            if (matchList.isEmpty())
+                throw new EntityNotFoundException("매치리스트가 없습니다");
+
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
+            if (user.getUniqueFaceId().equals(matchList.get(0).face().faceId())) {
+                return FaceAuthResponse.builder()
+                        .result("success")
+                        .userId(user.getUserId())
+                        .build();
+            }
+            else
+                throw new EntityNotFoundException("얼굴인증 실패");
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new EntityNotFoundException("로그인 실패");
+        }
+    }
 }

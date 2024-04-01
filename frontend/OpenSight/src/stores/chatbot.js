@@ -178,7 +178,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
     const accessToken = sessionStorage.getItem('accessToken')
 
     axios({
-      url: `http://192.168.31.25:8080/api/chatbot/request`,
+      url: `http://localhost:8080/api/chatbot/request`,
       method: "POST",
       headers : {
         'Authorization': `${accessToken}`

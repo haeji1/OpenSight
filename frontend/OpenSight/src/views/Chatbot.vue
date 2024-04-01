@@ -193,9 +193,10 @@ watch(() => store.getSpring, (newMessage) => {
 </script>
 
 <template>
-  <header>
-    <p>&lt; 챗봇</p>
-  </header>
+<div class="container">
+  <div class="header">
+    <p class="title1">&lt;</p><p class="title1">챗봇</p>
+  </div>
   <div class="content">
     <div class="chat-container">
       <ChatMessage v-for="message in messages"
@@ -205,7 +206,7 @@ watch(() => store.getSpring, (newMessage) => {
     </div>
 
     <div class="input-text">
-      <input type="text" name="textMessage" id="textMessage"
+      <input class="input" type="text" name="textMessage" id="textMessage"
       v-model="textMessage" placeholder="옆 버튼을 눌러 음성으로 말하거나 보실 은행 업무를 입력해주세요.">
 
       <div v-if="textMessage">
@@ -229,15 +230,41 @@ watch(() => store.getSpring, (newMessage) => {
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <style scoped>
-.chat-container {
+.container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  height: 100vh;
+  background-color: #ffffff;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.title1 {
+  margin-left: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* 이를 통해 chat-container가 아래쪽으로 정렬됩니다 */
+  height: 100%; /* 콘텐츠 영역이 화면 전체 높이를 차지하도록 설정합니다 */
+  background-color: #ffffff;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column-reverse;
   overflow-y: auto;
-  max-height: 600px; /* 원하는 높이에 맞추어 조정 */
+  max-height: 100%; /* 입력란의 높이를 빼고 나머지 높이를 사용합니다 */
+  width: 100%; /* 채팅 컨테이너의 너비를 화면 전체로 설정합니다 */
+  padding: 10px; /* 내부 여백을 추가합니다 */
 }
 
 .button {
@@ -245,14 +272,36 @@ watch(() => store.getSpring, (newMessage) => {
   height: 35px;
   width: 35px;
   border-radius: 50%;
+  text-align: center;
 }
 
 .speech {
-  width: 30px;
-  height: 30px;
+  margin-top: 5px;
+  width: 25px;
+  height: 25px;
 }
 
 .content {
   background-color: #ffffff;
+}
+
+.input-text {
+  position: relative; /* 입력란을 화면 하단에 고정합니다 */
+  bottom: 0; /* 하단에서부터의 위치를 0으로 설정하여 바닥에 붙습니다 */
+  left: 0; /* 왼쪽에서부터의 위치를 0으로 설정하여 왼쪽에 붙습니다 */
+  width: 100%; /* 입력란의 너비를 화면 전체로 설정합니다 */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 10px; /* 내부 여백을 추가합니다 */
+  background-color: #ffffff; /* 입력란의 배경색을 설정합니다 */
+}
+
+
+.input {
+  width: 300px;
+  height: 40px;
+  border-radius: 10px;
+  border: 1px solid #cbcbcb;
 }
 </style>

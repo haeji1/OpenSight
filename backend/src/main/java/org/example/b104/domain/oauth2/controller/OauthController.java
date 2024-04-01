@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @RequiredArgsConstructor
 @Controller
-public class OauthController {
+public class  OauthController {
 
     private final OauthService oauthService;
 
@@ -19,7 +19,7 @@ public class OauthController {
         System.out.println("provider : " + provider + ", code : " + code);
         SocialLoginResponse loginResponse = oauthService.socialLogin(provider, code);
         System.out.println("longinResponse 토큰 : "+loginResponse.getJwtToken());
-        String redirectUrl = "http://192.168.31.38:5173/main?accessToken=" + loginResponse.getJwtToken() + "&refreshToken=" + loginResponse.getRefreshToken();
+        String redirectUrl = "http://192.168.31.25:5173/login/social?accessToken=" + loginResponse.getJwtToken() + "&refreshToken=" + loginResponse.getRefreshToken();
         return "redirect:" + redirectUrl;
     }
 }
