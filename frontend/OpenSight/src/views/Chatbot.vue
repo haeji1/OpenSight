@@ -262,7 +262,7 @@ watch(() => store.getSpring, (newMessage) => {
 
 .chat-container {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   overflow-y: auto;
   max-height: 100%; /* 입력란의 높이를 빼고 나머지 높이를 사용합니다 */
   width: 100%; /* 채팅 컨테이너의 너비를 화면 전체로 설정합니다 */
