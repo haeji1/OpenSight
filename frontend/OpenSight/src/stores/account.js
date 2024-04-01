@@ -12,14 +12,19 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const openAccountResult = ref(null);
     const myAccountList = ref([]);
     const myAccountBalance = ref(null);
+    const selectMyAccountNumber = ref(null);
+    const selectedMyAccountBankCode = ref(null);
+    const transactionDate = ref(null);
 
-    const selectedBank = ref();
-    const selectedBankName = ref();
-    const accountNumber = ref();
-    const amount = ref();
-    const recipientName = ref();
-    const senderName = ref();
+    const selectedBank = ref("asdf");
+    const selectedBankName = ref("fdas");
+    const accountNumber = ref("qwer");
+    const amount = ref("sdfg");
+    const recipientName = ref("ncg");
+    const senderName = ref("fdgr");
 
+    
+    
     const inqureBankAccountListType = async function (){
         await axios({
           method: 'post',
@@ -104,55 +109,76 @@ export const useAccountStore = defineStore('AccountStore', () => {
 
       }
 
-      const accountTransfer = async function(bankCode, accountNo) {
-        const accessToken = sessionStorage.getItem('accessToken');
-        console.log("=====================inquireAccountBalance========================")
-        await axios({
-            method: 'post',
-            url : `${accountBaseURL}/inquire-account-balance`,
-            headers: {
-                'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
-            },
-            data : {
-                "bankCode" : bankCode,
-                "accountNo" : accountNo
-            }
-        }) .then((res) => {
-            console.log(bankCode, accountNo)
-            console.log(res);
-            myAccountBalance.value = res.data.data.rec.accountBalance;
-        }) .catch((error) =>  {
-            console.log(error)
-        })
+    const accountTransfer = async function() {
+        const depositBankCode = selectedBank.value;
+        const depositAccountNo = accountNumber.value;
+        const transactionBalance = amount.value;
+        const withdrawalBankCode = selectedMyAccountBankCode.value;
+        const withdrawalAccountNo = selectMyAccountNumber.value;
+        const depositTransactionSummary = "출금합니다.";
+        const withdrawalTransactionSummary = "입금합니다.";
 
+        const accessToken = sessionStorage.getItem('accessToken');
+        console.log("=====================accountTransfer========================");
+        try {
+            // axios 요청을 await를 사용하여 호출하고 결과를 res 변수에 저장
+            const res = await axios({
+                method: 'post',
+                url: `${accountBaseURL}/account-transfer`,
+                headers: {
+                    'Authorization': accessToken // access token을 Authorization 헤더에 포함
+                },
+                data: {
+                    "depositBankCode": depositBankCode,
+                    "depositAccountNo": depositAccountNo,
+                    "transactionBalance": transactionBalance,
+                    "withdrawalBankCode": withdrawalBankCode,
+                    "withdrawalAccountNo": withdrawalAccountNo,
+                    "depositTransactionSummary": depositTransactionSummary,
+                    "withdrawalTransactionSummary": withdrawalTransactionSummary
+                }
+            });
+            console.log(res);
+            return res; // 여기에서 axios 요청의 결과를 반환
+        } catch (error) {
+            console.log(error);
+            return error; // 오류가 발생했다면 오류를 반환
+        }
     }
 
-    //   const checkSimplePassword = async function(simplePassword) {
-    //     try {
-    //         const accessToken = sessionStorage.getItem('accessToken');
-    //         console.log("=====================checkSimplePassword========================")
-    //         const response = await axios({
-    //             method: 'post',
-    //             url : `${import.meta.env.VITE_REST_API}/users/check/simple-password`,
-    //             headers: {
-    //                 'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
-    //             },
-    //             data : {
-    //                 "simplePassword" : simplePassword
-    //             }
-    //         });
-    //
-    //         console.log("간편비밀번호는"+simplePassword)
-    //         console.log(response)
-    //         console.log(response.data.data.matched)
-    //         return response.data.data.matched === true;
-    //     } catch (error) {
-    //         console.log(error)
-    //         return false;
-    //     }
-    // }
-    //
 
+    //   const accountTransfer = async function() {
+    //       const depositBankCode = selectedBank.value
+    //       const depositAccountNo = accountNumber.value
+    //       const transactionBalance = amount.value
+    //       const withdrawalBankCode = selectedMyAccountBankCode.value
+    //       const withdrawalAccountNo = selectMyAccountNumber.value
+    //       const depositTransactionSummary = "출금합니다."
+    //       const withdrawalTransactionSummary = "입금합니다."
+    //
+    //     const accessToken = sessionStorage.getItem('accessToken');
+    //     console.log("=====================accountTransfer========================")
+    //     await axios({
+    //         method: 'post',
+    //         url : `${accountBaseURL}/account-transfer`,
+    //         headers: {
+    //             'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+    //         },
+    //         data : {
+    //             "depositBankCode" : depositBankCode,
+    //             "depositAccountNo" : depositAccountNo,
+    //             "transactionBalance" : transactionBalance,
+    //             "withdrawalBankCode" : withdrawalBankCode,
+    //             "withdrawalAccountNo" : withdrawalAccountNo,
+    //             "depositTransactionSummary" : depositTransactionSummary,
+    //             "withdrawalTransactionSummary" : withdrawalTransactionSummary
+    //         }
+    //     }) .then((res) => {
+    //         console.log(res);
+    //     }) .catch((error) =>  {
+    //         console.log(error)
+    //     })
+    // }
     const checkSimplePassword = async function(simplePassword) {
         try {
             const accessToken = sessionStorage.getItem('accessToken');
@@ -182,8 +208,9 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const matchedBank = computed(() => matchBank(selectedBank.value));
 
 
-    return {myAccountList, accountTypes,selectedAccountType,
-      openAccountResult,selectedBank,myAccountBalance,accountNumber,
+    return {myAccountList, accountTypes,selectedAccountType,transactionDate,
+      openAccountResult,selectedBank,myAccountBalance,accountNumber,selectMyAccountNumber,selectedMyAccountBankCode,
       amount,recipientName,senderName,selectedBankName, checkSimplePassword,
-      inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance};
+      inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance,accountTransfer}
+        ;
 });

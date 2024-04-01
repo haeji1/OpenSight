@@ -6,11 +6,11 @@ import {useAccountStore} from "@/stores/account.js";
 const router = useRouter()
 const accountStore = useAccountStore();
 const isDataLoaded = ref(false);
-const selectedBank = ref();
-const accountNumber = ref();
-const amount = ref();
-const recipientName = ref();
-const senderName = ref();
+const selectedBank = ref("");
+const accountNumber = ref("");
+const amount = ref("");
+const recipientName = ref("");
+const senderName = ref("");
 
 const banks = ref([
   { bankCode: '001', bankName: '한국은행'},
@@ -38,11 +38,12 @@ onMounted (async () => {
 });
 
 function onClickNextButton() {
-  accountStore.amount = amount;
-  accountStore.selectedBank = selectedBank;
-  accountStore.recipientName = recipientName;
-  accountStore.senderName = senderName;
-  accountStore.accountNumber = accountNumber;
+  accountStore.amount = amount.value;
+  accountStore.selectedBank = selectedBank.value;
+  accountStore.recipientName = recipientName.value;
+  accountStore.senderName = senderName.value;
+  accountStore.accountNumber = accountNumber.value;
+  console.log("**************************"+accountStore.amount.value+"****************")
 
   if (selectedBank.value === "001")
     accountStore.selectedBankName = ref('한국은행');
@@ -94,7 +95,7 @@ function test() {
         <div class="input-text">
           <p class="caption1">계좌번호</p>
         </div>
-        <input class="input" type="number" v-model="accountNumber"/>
+        <input class="input" type="string" v-model="accountNumber"/>
 
         <div class="input-text">
           <p class="caption1">보낼금액</p>

@@ -1,7 +1,9 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import {useAccountStore} from "@/stores/account.js";
 
 const router = useRouter()
+const accountStore = useAccountStore();
 
 </script>
 
@@ -15,16 +17,16 @@ const router = useRouter()
         <p class="title1">이체가 완료되었습니다</p>
         <div class="transfer-content">
           <div class="content-text">
-            <p class="caption1">받은 계좌</p><p class="caption1">싸피 987654-32-109876</p>
+            <p class="caption1">받은 계좌</p><p class="caption1">{{accountStore.recipientName}} {{ accountStore.accountNumber }}</p>
           </div>
           <div class="content-text">
-            <p class="caption1">이체 금액</p><p class="caption1">10,000원</p>
+            <p class="caption1">이체 금액</p><p class="caption1">{{ accountStore.amount }}</p>
           </div>
           <div class="content-text">
-            <p class="caption1">거래 일자</p><p class="caption1">2024.03.11.</p>
+            <p class="caption1">거래 일자</p><p class="caption1">{{ accountStore.transactionDate }}</p>
           </div>
           <div class="content-text">
-            <p class="caption1">출금 계좌</p><p class="caption1">싸피 123456-78-901234</p>
+            <p class="caption1">출금 계좌</p><p class="caption1">{{ accountStore.selectedBankName }} {{accountStore.accountNumber}}</p>
           </div>
         </div>
         <div>

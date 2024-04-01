@@ -2,7 +2,6 @@
   import { onMounted, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import {useAccountStore} from "@/stores/account.js";
-  import {computed} from "vue";
   import axios from 'axios'
 
   const router = useRouter()
@@ -83,8 +82,6 @@ const captureImage = () => {
   canvasRef.value.height = videoRef.value.videoHeight;
   canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
 };
-
-
 
 
   </script>

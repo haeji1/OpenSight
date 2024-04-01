@@ -57,6 +57,11 @@ const nextAccount = () => {
 };
 
 function transferButtonClick() {
+  accountStore.selectMyAccountNumber = accountStore.myAccountList[0].accountNo
+  accountStore.selectedMyAccountBankCode = accountStore.myAccountList[0].bankCode
+  console.log(accountStore.selectMyAccountNumber);
+  console.log(accountStore.selectMyAccountBankCode);
+
   router.push({name:"Transfer"})
 }
 
