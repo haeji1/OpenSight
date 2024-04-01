@@ -6,6 +6,13 @@
   const router = useRouter()
   const accountStore = useAccountStore();
 
+  function faceButtonClick() {
+
+  }
+
+  function simplePwButtonClick() {
+    router.push({name : "TransferVerify"})
+  }
 
 
   </script>
@@ -39,8 +46,8 @@
         </div>
         <div class="button-group">
             <button class="button-cancel">취소</button>
-            <button class="button-confirm">얼굴인식확인</button>
-            <button class="button-confirm">비밀번호확인</button>
+            <button class="button-confirm" @click="faceButtonClick">얼굴인식확인</button>
+            <button class="button-confirm" @click="simplePwButtonClick">비밀번호확인</button>
         </div>
       </div>
     </div>

@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+import { useAccountStore } from '@/stores/account';
+import router from '@/router';
 
 const input = ref('');
+const accountStore = useAccountStore();
 
 const appendNumber = (number) => {
   input.value += number;
@@ -18,7 +21,10 @@ const backspace = () => {
 const confirmInput = () => {
   // 입력된 값을 확인하는 로직
   console.log(input.value);
+  accountStore.checkSimplePassword = input;
+  router.push({name:"TransferComplete"})
 };
+
 </script>
 
 <template>
