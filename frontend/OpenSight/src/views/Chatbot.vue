@@ -71,7 +71,7 @@ watch(() => store.getDjango, (newMessage) => {
     const bank = newMessage.bank
     const account = newMessage.account
     const money = newMessage.money
-    const isChatbot = newMessage.isChatbot
+    const isChatbot = 1
 
     store.sendCommand({
       commandId,
@@ -143,17 +143,24 @@ watch(() => store.getSpring, (newMessage) => {
   }
 
   else if (newMessage.command_id == 3) {
+
+    // 가지고 오는 길이에 따라 최근 거래내역을 출력
+    const historyNum = newMessage.len
+    let history = ''
+
+    for (let i = 1; i <= historyNum; i++) {
+
+      if (i == historyNum) {
+        history += `newMessage.history${i}`
+      } else {
+        history += `newMessage.history${i}` + '\n'
+      }
+    }
+
     messages.value.push(
       {
         command_id : newMessage.command_id,
-        message :
-        newMessage.text1 + '\n' +
-        newMessage.history1 + '\n' +
-        newMessage.history2 + '\n' +
-        newMessage.history3 + '\n' +
-        newMessage.history4 + '\n' +
-        newMessage.history5 + '\n' +
-        newMessage.text2,
+        message : newMessage.text1 + '\n' + history + '\n' + newMessage.text2,
         isChatbot : 1
       }
     )

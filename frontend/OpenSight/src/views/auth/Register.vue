@@ -54,30 +54,53 @@ const register = async () => {
   const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
   const uniqueFilename = `profileImage_${dateTimeStr}.jpg`;
 
-  canvasRef.value.toBlob(async (blob) => {
-  const formData = new FormData();
-  formData.append('email', email.value);
-  formData.append('password', password.value);
-  formData.append('username', name.value);
-  formData.append('phone', phoneNumber.value);
-  // Append the image with a unique filename
-  formData.append('profileImage', blob, uniqueFilename);
 
+  if (isCameraReady.value === true){//사진 있을때
+    canvasRef.value.toBlob(async (blob) => {
+    const formData = new FormData();
+    formData.append('email', email.value);
+    formData.append('password', password.value);
+    formData.append('username', name.value);
+    formData.append('phone', phoneNumber.value);
+    // Append the image with a unique filename
+    formData.append('profileImage', blob, uniqueFilename);
+
+
+      try {
+        const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
+        const response = await axios.post(requestUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Registration successful:', response.data);
+        // Handle success, e.g., redirect or show a success message
+      } catch (error) {
+        console.error('Registration failed:', error);
+        // Handle error, e.g., show an error message
+      }
+    }, 'image/jpeg');
+  }
+  else {//사진 없을때
+    const formData = new FormData();
+    formData.append('email', email.value);
+    formData.append('password', password.value);
+    formData.append('username', name.value);
+    formData.append('phone', phoneNumber.value);
 
     try {
-      const requestUrl = 'http://192.168.31.25:8080/api/users/register';
-      const response = await axios.post(requestUrl, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log('Registration successful:', response.data);
-      // Handle success, e.g., redirect or show a success message
-    } catch (error) {
-      console.error('Registration failed:', error);
-      // Handle error, e.g., show an error message
-    }
-  }, 'image/jpeg');
+        const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
+        const response = await axios.post(requestUrl, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        console.log('Registration successful:', response.data);
+        // Handle success, e.g., redirect or show a success message
+      } catch (error) {
+        console.error('Registration failed:', error);
+      }
+  }
 };
 
 // Check if `userImage` is a file input and has a file selected

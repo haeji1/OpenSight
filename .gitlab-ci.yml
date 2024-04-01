@@ -29,7 +29,7 @@ deploy:
   image: docker:latest
   # before_script:
   # - apk add --no-cache py-pip python3-dev libffi-dev openssl-dev gcc libc-dev rust cargo make
-  # - pip install docker-compose
+  # - pip install docker-compose 111
 
   script:
     - echo "Deploying application..."
@@ -37,6 +37,9 @@ deploy:
     # - docker pull $CI_REGISTRY_IMAGE/backend:$CI_COMMIT_REF_SLUG
     # - docker pull $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_SLUG
     # - cd ..
+    # - docker-compose down
+    # 123
+    - docker-compose down
     - docker-compose up -d
   only:
     - develop

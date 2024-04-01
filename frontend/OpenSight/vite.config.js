@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://192.168.31.168:8080';
+axios.defaults.baseURL = 'http://localhost:8080';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,7 +14,7 @@ export default defineConfig({
   server:{
     proxy:{
       '/api':{
-        target : "http://192.168.31.168:8080/api",
+        target : "http://localhost:8080/api",
         changeOrigin: true,
       }
     }

@@ -10,6 +10,7 @@ const props = defineProps({
 
 </script>
 
+
 <template>
   <div class="transaction-content">
     <div v-for="transaction in transactions" :key="transaction.id">
