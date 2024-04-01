@@ -42,6 +42,8 @@ public class User {
     private String accountNo;
     private String bankCode;
 
+    private String simplePassword;
+
     @Builder
     public User(Long id, String oauthId, String name, String email) {
         this.userId = id;
@@ -63,6 +65,10 @@ public class User {
         this.username = name;
         this.email = email;
         return this;
+    }
+
+    public void updateSimplePassword(String simplePassword) {
+        this.simplePassword = simplePassword;
     }
 
     public void updatePassword(String password) {

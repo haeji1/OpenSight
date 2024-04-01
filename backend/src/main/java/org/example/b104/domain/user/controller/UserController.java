@@ -124,6 +124,16 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(updatePasswordResponse));
     }
 
+    @PostMapping("/register/simple-password")
+    public ResponseEntity<ApiResponse<RegisterSimplePasswordResponse>> registerSimplePassword(
+            @RequestHeader("Authorization") String token,
+            @RequestBody RegisterSimplePasswordRequest request
+    ) {
+        System.out.println("====시작====");
+        RegisterSimplePasswordResponse registerSimplePasswordResponse = userService.registerSimplePassword(token, request.toRegisterSimplePasswordCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(registerSimplePasswordResponse));
+    }
+
     @GetMapping("/find-email")
     public ResponseEntity<ApiResponse<FindEmailResponse>> findEmail(
             @RequestBody FindEmailRequest request

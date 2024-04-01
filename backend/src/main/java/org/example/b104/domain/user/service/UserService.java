@@ -320,6 +320,15 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
+    public RegisterSimplePasswordResponse registerSimplePassword(String token, RegisterSimplePasswordCommand command) {
+        User user = getUserFromToken(token);
+        user.updateSimplePassword(command.getSimplePassword());
+        return RegisterSimplePasswordResponse.builder()
+                .isSuccess(true)
+                .build();
+    }
+
+    @Transactional(readOnly = false)
     public FindPasswordResponse findPassword(FindPasswordCommand command) {
         User user = userRepository.findByEmailAndPhoneNumber(command.getEmail(), command.getPhone())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
