@@ -329,6 +329,27 @@ public class UserService {
     }
 
     @Transactional(readOnly = false)
+    public ConfirmSimplePasswordResponse confirmSimplePassword(String token, ConfirmSimplePasswordCommand command) {
+        User user = getUserFromToken(token);
+        String simplePassword = user.getSimplePassword();
+        System.out.println("==========simplePassword"+simplePassword+" "+command.getSimplePassword());
+        if (simplePassword.equals(command.getSimplePassword())) {
+            System.out.println("일치");
+            return ConfirmSimplePasswordResponse.builder()
+                    .isMatched(true)
+                    .build();
+        } else {
+            System.out.println("불일치");
+            System.out.println("===============================");
+            System.out.println("유저의 simplePassword"+simplePassword);
+            System.out.println("들어온 simplePassword"+command.getSimplePassword());
+            return ConfirmSimplePasswordResponse.builder()
+                    .isMatched(false)
+                    .build();
+        }
+    }
+
+    @Transactional(readOnly = false)
     public FindPasswordResponse findPassword(FindPasswordCommand command) {
         User user = userRepository.findByEmailAndPhoneNumber(command.getEmail(), command.getPhone())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
