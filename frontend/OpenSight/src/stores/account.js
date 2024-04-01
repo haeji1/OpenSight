@@ -104,10 +104,86 @@ export const useAccountStore = defineStore('AccountStore', () => {
 
       }
 
+      const accountTransfer = async function(bankCode, accountNo) {
+        const accessToken = sessionStorage.getItem('accessToken');
+        console.log("=====================inquireAccountBalance========================")
+        await axios({
+            method: 'post',
+            url : `${accountBaseURL}/inquire-account-balance`,
+            headers: {
+                'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+            },
+            data : {
+                "bankCode" : bankCode,
+                "accountNo" : accountNo
+            }
+        }) .then((res) => {
+            console.log(bankCode, accountNo)
+            console.log(res);
+            myAccountBalance.value = res.data.data.rec.accountBalance;
+        }) .catch((error) =>  {
+            console.log(error)
+        })
+
+    }
+
+    //   const checkSimplePassword = async function(simplePassword) {
+    //     try {
+    //         const accessToken = sessionStorage.getItem('accessToken');
+    //         console.log("=====================checkSimplePassword========================")
+    //         const response = await axios({
+    //             method: 'post',
+    //             url : `${import.meta.env.VITE_REST_API}/users/check/simple-password`,
+    //             headers: {
+    //                 'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+    //             },
+    //             data : {
+    //                 "simplePassword" : simplePassword
+    //             }
+    //         });
+    //
+    //         console.log("간편비밀번호는"+simplePassword)
+    //         console.log(response)
+    //         console.log(response.data.data.matched)
+    //         return response.data.data.matched === true;
+    //     } catch (error) {
+    //         console.log(error)
+    //         return false;
+    //     }
+    // }
+    //
+
+    const checkSimplePassword = async function(simplePassword) {
+        try {
+            const accessToken = sessionStorage.getItem('accessToken');
+            console.log("=====================checkSimplePassword========================")
+            const response = await axios({
+                method: 'post',
+                url : `${import.meta.env.VITE_REST_API}/users/check/simple-password`,
+                headers: {
+                    'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
+                },
+                data : {
+                    "simplePassword" : simplePassword
+                }
+            });
+
+            console.log("간편비밀번호는"+simplePassword)
+            console.log(response)
+            console.log(response.data.data.matched)
+            return response.data.data.matched === true;
+        } catch (error) {
+            console.log(error)
+            return false;
+        }
+    }
 
 
     const matchedBank = computed(() => matchBank(selectedBank.value));
 
 
-    return {myAccountList, accountTypes,selectedAccountType,openAccountResult,selectedBank,myAccountBalance,accountNumber,amount,recipientName,senderName,selectedBankName, inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance};
+    return {myAccountList, accountTypes,selectedAccountType,
+      openAccountResult,selectedBank,myAccountBalance,accountNumber,
+      amount,recipientName,senderName,selectedBankName, checkSimplePassword,
+      inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance};
 });

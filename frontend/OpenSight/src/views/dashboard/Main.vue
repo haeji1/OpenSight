@@ -5,6 +5,7 @@ import { onMounted } from 'vue';
 import { useAccountStore } from '@/stores/account'
 import { useAuthStore } from '@/stores/auth';
 import { ref, watch } from 'vue';
+import Transfer from '../transfer/Transfer.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -55,6 +56,9 @@ const nextAccount = () => {
   }
 };
 
+function transferButtonClick() {
+  router.push({name:"Transfer"})
+}
 
 </script>
 
@@ -80,7 +84,7 @@ const nextAccount = () => {
               <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}원</p>
             </div>
           </div>
-          <button class="button">이체하기</button>
+          <button class="button" @click="transferButtonClick">이체하기</button>
           <button class="button">거래내역 조회하기</button>
         </div>
         <p class="prev-next" @click="nextAccount">&gt;</p>

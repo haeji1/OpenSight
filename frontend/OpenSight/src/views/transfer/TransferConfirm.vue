@@ -3,8 +3,87 @@
   import { useRouter } from 'vue-router';
   import {useAccountStore} from "@/stores/account.js";
   import {computed} from "vue";
+  import axios from 'axios'
+
   const router = useRouter()
   const accountStore = useAccountStore();
+
+  function faceButtonClick() {
+    captureImageFilter();
+  }
+
+  function simplePwButtonClick() {
+    router.push({name : "TransferVerify"})
+  }
+
+  const isCameraReady = ref(false);
+const canvasRef = ref(null);
+const videoRef = ref(null);
+
+const captureImageFilter = () =>{
+  if (isCameraReady.value === false){
+    setupCamera();
+    alert("카메라 준비 완료 다시 버튼을 눌러주세요");
+    isCameraReady.value = true;
+    return;
+  }
+  else{
+    captureImage();
+    alert("사진 캡쳐 완료");
+
+    const now = new Date();
+    const dateTimeStr = now.toISOString().replace(/[^0-9]/g, '').slice(0, 14);
+    const uniqueFilename = `capturedImage_${dateTimeStr}.jpg`;
+
+    const accessToken = sessionStorage.getItem('accessToken');
+        
+    canvasRef.value.toBlob(async (blob) => {
+      const formData = new FormData();
+      formData.append('requestImage', blob, uniqueFilename);
+
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_REST_API}/users/face-auth`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data', // Content-Type을 올바르게 설정해야 합니다.
+              'Authorization': `${accessToken}`
+            }
+          }
+        );
+        console.log(response.data);
+        if (response.data.data.result === "success") {
+          alert("얼굴인식 성공");
+          router.push({name : "TransferComplete"})
+        } else {
+          alert("얼굴인식 실패");
+        }
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }, 'image/jpeg');
+  }
+}
+
+const setupCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    videoRef.value.srcObject = stream;
+    console.error("Setup camera successful");
+  } catch (error) {
+    console.error("Error accessing the camera", error);
+  }
+};
+
+
+const captureImage = () => {
+  canvasRef.value.width = videoRef.value.videoWidth;
+  canvasRef.value.height = videoRef.value.videoHeight;
+  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
+};
+
 
 
 
@@ -38,9 +117,11 @@
           </div>
         </div>
         <div class="button-group">
+          <video ref="videoRef" autoplay style="display:none;"></video>
+          <canvas ref="canvasRef" style="display:none;"></canvas>
             <button class="button-cancel">취소</button>
-            <button class="button-confirm">얼굴인식확인</button>
-            <button class="button-confirm">비밀번호확인</button>
+            <button class="button-confirm" @click="faceButtonClick">얼굴인식확인</button>
+            <button class="button-confirm" @click="simplePwButtonClick">비밀번호확인</button>
         </div>
       </div>
     </div>

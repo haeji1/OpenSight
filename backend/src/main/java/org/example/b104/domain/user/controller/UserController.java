@@ -7,6 +7,7 @@ import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.user.controller.request.*;
 import org.example.b104.domain.user.controller.response.*;
 import org.example.b104.domain.user.service.UserService;
+import org.example.b104.domain.user.service.command.ConfirmSimplePasswordCommand;
 import org.example.b104.global.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,8 +79,6 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.createSuccess(registerAccountResponse));
     }
 
-
-
     @PostMapping("/update-info")
     public ResponseEntity<ApiResponse<UpdateUserResponse>> updateUser(
             @RequestBody UpdateUserRequest request
@@ -130,9 +129,18 @@ public class UserController {
             @RequestHeader("Authorization") String token,
             @RequestBody RegisterSimplePasswordRequest request
     ) {
-        System.out.println("====시작====");
         RegisterSimplePasswordResponse registerSimplePasswordResponse = userService.registerSimplePassword(token, request.toRegisterSimplePasswordCommand());
         return ResponseEntity.ok(ApiResponse.createSuccess(registerSimplePasswordResponse));
+    }
+
+    @PostMapping("/check/simple-password")
+    public ResponseEntity<ApiResponse<ConfirmSimplePasswordResponse>> confirmSimplePassword(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ConfirmSimplePasswordRequest request
+    ) {
+        System.out.println("request 비밀번호"+request.getSimplePassword());
+        ConfirmSimplePasswordResponse confirmSimplePasswordResponse = userService.confirmSimplePassword(token, request.toConfirmSimplePasswordCommand());
+        return ResponseEntity.ok(ApiResponse.createSuccess(confirmSimplePasswordResponse));
     }
 
     @GetMapping("/find-email")

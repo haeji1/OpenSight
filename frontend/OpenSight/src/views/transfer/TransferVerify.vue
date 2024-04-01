@@ -1,7 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+import { useAccountStore } from '@/stores/account';
+import router from '@/router';
 
 const input = ref('');
+const accountStore = useAccountStore();
 
 const appendNumber = (number) => {
   input.value += number;
@@ -11,14 +14,27 @@ const clearInput = () => {
   input.value = '';
 };
 
-const backspace = () => {
-  input.value = input.value.slice(0, -1);
+// const backspace = () => {
+//   input.value = input.value.slice(0, -1);
+// };
+//
+// const confirmInput = () => {
+//   // 입력된 값을 확인하는 로직
+//   console.log(input.value);
+//   let result = accountStore.checkSimplePassword();
+//   console.log()
+//   router.push({name:"TransferComplete"})
+// };
+const confirmInput = async () => {
+  // 입력된 값을 확인하는 로직
+  console.log("=======inputvalue======="+input.value);
+  const result = await accountStore.checkSimplePassword(input.value);
+  console.log(result)
+  if (result === true) router.push({name:"TransferComplete"})
+  else alert("비밀번호를 다시 입력해주세요");
 };
 
-const confirmInput = () => {
-  // 입력된 값을 확인하는 로직
-  console.log(input.value);
-};
+
 </script>
 
 <template>
