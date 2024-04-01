@@ -441,7 +441,7 @@ public class UserService {
                     .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
             if (user.getUniqueFaceId().equals(matchList.get(0).face().faceId())) {
                 return FaceAuthResponse.builder()
-                        .result("얼굴인증 성공")
+                        .result("success")
                         .userId(user.getUserId())
                         .build();
             }
