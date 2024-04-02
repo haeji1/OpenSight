@@ -16,7 +16,6 @@ public class ChatBotController {
 
     private final ChatBotService chatBotService;
 
-
     @PostMapping("/request")
     public ResponseEntity<ApiResponse<?>> receiveTextRequest(
             @RequestHeader("Authorization") String token,

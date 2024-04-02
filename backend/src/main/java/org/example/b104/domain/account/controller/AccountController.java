@@ -121,6 +121,8 @@ public class AccountController {
     ) {
         User user = getUserFromToken(token);
         if (user != null) {
+            System.out.println(user.getUserId());
+            System.out.println(user.getUserKey());
             InquireAccountListResponse inquireAccountList = accountService.inquireAccountList(
                     InquireAccountListCommand.builder()
                             .userKey(getUserKeyFromToken(token))

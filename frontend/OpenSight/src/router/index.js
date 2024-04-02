@@ -24,6 +24,7 @@ import TransferCompleteView from '@/views/transfer/TransferComplete.vue'
 import TransferVerifyView from '@/views/transfer/TransferVerify.vue';
 import ChatbotView from '@/views/Chatbot.vue';
 import SimplePasswordSettingView from '@/views/account/SimplePasswordSetting.vue';
+import SocialLoginView from '@/views/dashboard/SocialLogin.vue';
 
 
 
@@ -154,6 +155,11 @@ const router = createRouter({
       path: '/password/setting',
       name: 'SimplePasswordSetting',
       component: SimplePasswordSettingView
+    },
+    {
+      path: '/login/social',
+      name: 'SocialLogin',
+      component: SocialLoginView
     }
   ]
 })

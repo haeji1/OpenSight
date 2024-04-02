@@ -1,16 +1,34 @@
 <script setup>
 import { useRouter} from "vue-router";
+import { onMounted } from 'vue';
 const router  = useRouter()
 
-// URL에서 쿼리 스트링 파싱
-const queryParams = new URLSearchParams(window.location.search);
-
-// 필요한 값(예: accessToken) 추출
-const accessToken = queryParams.get('accessToken');
-
-if (accessToken) {
-  sessionStorage.setItem('accessToken', accessToken);
+function getQueryVariable(variable) {
+  var query = window.location.search.substring(1);
+  var vars = query.split('&');
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split('=');
+    if (decodeURIComponent(pair[0]) == variable) {
+      return decodeURIComponent(pair[1]);
+    }
+  }
+  console.log('Query variable %s not found', variable);
 }
+
+
+//Extract tokens
+var accessToken = getQueryVariable('accessToken');
+var refreshToken = getQueryVariable('refreshToken');
+
+// Check if tokens are found before saving
+if (accessToken && refreshToken) {
+  // Save tokens to localStorage
+  sessionStorage.setItem('accessToken', accessToken);
+  sessionStorage.setItem('refreshToken', refreshToken);
+} else {
+  console.log('Tokens not found in query string');
+}
+router.push('/main')
 
 </script>
 

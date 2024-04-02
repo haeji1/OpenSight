@@ -22,8 +22,9 @@ async function fetchAccountBalance(index) {
     const account = accountStore.myAccountList[index];
     const isNull = accountStore.isNull;
     checkNull.value = accountStore.isNull;
+    console.log(account)
     console.log("==================="+checkNull.value)
-    if (!checkNull.value) {
+    if (checkNull.value === false) {
       await accountStore.inquireBalance(account.bankCode, account.accountNo);
     }
   } catch (error) {
@@ -65,8 +66,8 @@ const nextAccount = () => {
 };
 
 function transferButtonClick() {
-  accountStore.selectMyAccountNumber = accountStore.myAccountList[0].accountNo
-  accountStore.selectedMyAccountBankCode = accountStore.myAccountList[0].bankCode
+  accountStore.selectMyAccountNumber = accountStore.myAccountList[currentIndex].accountNo
+  accountStore.selectedMyAccountBankCode = accountStore.myAccountList[currentIndex].bankCode
   console.log(accountStore.selectMyAccountNumber);
   console.log(accountStore.selectMyAccountBankCode);
 
@@ -78,7 +79,7 @@ function transferButtonClick() {
 <template>
   <div class="container">
     <div class="header">
-      <p class="title1-white">안녕하세요, 김싸피 고객님.</p>
+      <p class="title1-white">안녕하세요, {{authStore.name}}고객님.</p>
       <div class="img-container">
         <img class="img" src="../../assets/img/user.png" alt="프로필수정" @click="router.push('/profile/edit')">
         <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호수정" @click="router.push('/password/setting')">
