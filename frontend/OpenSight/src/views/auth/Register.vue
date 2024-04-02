@@ -66,7 +66,7 @@ const register = async () => {
     formData.append('profileImage', blob, uniqueFilename);
 
 
-      try {
+      try {//http://52.78.27.70:8080/api/users/register
         const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
         const response = await axios.post(requestUrl, formData, {
           headers: {
