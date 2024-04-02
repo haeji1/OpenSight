@@ -9,16 +9,24 @@ import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.account.service.command.AccountTransferCommand;
 import org.example.b104.domain.account.service.command.InquireAccountBalanceCommand;
 import org.example.b104.domain.account.service.command.InquireAccountHistoryTransactionCommand;
+import org.example.b104.domain.chatbot.controller.request.ChatBotTextRequest;
 import org.example.b104.domain.chatbot.controller.response.*;
 import org.example.b104.domain.chatbot.service.command.ChatBotTextCommand;
 import org.example.b104.domain.oauth2.JwtTokenProvider;
+import org.example.b104.domain.openai.service.ChatGptService;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
 import org.example.b104.global.exception.EntityNotFoundException;
+import org.example.b104.global.response.ApiResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -31,7 +39,7 @@ public class ChatBotService {
     private final AccountService accountService;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
-
+    private final ChatGptService chatGptService;
     /**
      * 1. command 에서 command_id 추출
      * 2. command_id에 따라 로직 처리
@@ -218,6 +226,97 @@ public class ChatBotService {
 //        response.put("text", "다시 요청해주세요");
 //        return response.toString();
 //    }
+
+    public Integer handleUserCommand(String text) {
+        // 1. text 프롬포트에 넣기
+//        "[사과, 딸기, 포도]" +
+//                "이 대 괄호 안에 있는 상품들 중에\n" +
+//                "[1. (출금) 사과 5,000 \n 2. (출금) 딸기 10,000 \n 3. (출금) 바나나 4,000\n 4. (출금) 사과 6,000]\n" +
+//                "이 대 괄호 안에 있는 내용을 참조해서 내가 가장 좋아하는 상품을 추천해줘.\n" +
+//                "답변은 다른말 하지말고 상품 숫자 하나만 대답해줘.\n"+
+//                "예를들어 사과면 '2'");
+
+        String promptedMessage = "[]안에 있는 문장에 대한 답변을 다음과 같이 해줘.\n" +
+                "계좌이체와 관련되어 있으면 '1',\n " +
+                "잔액조회와 관련되어 있으면 '2',\n " +
+                "거래내역조회는 '3',\n " +
+                "비대면 계좌개설은 '4'로 응답해줘.\n"+
+                "답변은 다른말 하지말고 상품 숫자 하나만 대답해줘.\n"+
+                "예를들어 계좌이체와 관련있으면 너는 \n" +
+                "'1'\n" +
+                "이라고 대답해\n"+
+                "["+text+"]";;
+
+//        System.out.println(promptedMessage);
+
+        int a = 0;
+        int b = 0;
+        int c = 0;
+        int d = 0;
+        int maxFrequency = 0;
+        int mostFrequentNumber = 0;
+
+        for(int i = 0; i < 5; i++) {
+            String result = chatGptService.chat(promptedMessage);
+            Integer number = Integer.parseInt(result);
+
+            if (number == 1) {
+                a++;
+                if (a > maxFrequency) {
+                    maxFrequency = a;
+                    System.out.println("a"+a);
+                    mostFrequentNumber = 1;
+                }
+            } else if (number == 2) {
+                b++;
+                if (b > maxFrequency) {
+                    maxFrequency = b;
+                    System.out.println("b"+b);
+                    mostFrequentNumber = 2;
+                }
+            } else if (number == 3) {
+                c++;
+                if (c > maxFrequency) {
+                    maxFrequency = c;
+                    System.out.println("c"+c);
+                    mostFrequentNumber = 3;
+                }
+            } else if (number == 4) {
+                d++;
+                if (d > maxFrequency) {
+                    maxFrequency = d;
+                    System.out.println("d"+d);
+                    mostFrequentNumber = 4;
+                }
+            } else {
+                continue;
+            }
+        }
+
+        System.out.println(mostFrequentNumber);
+        return mostFrequentNumber;
+//        if(mostFrequentNumber == 1) {
+//            // 1. gpt 응답으로 아래 세개 정보 입력받기
+//            // 2. 금액, 계좌번호, 은행코드 입력받기
+//            // 3. chatBotTextCommand 값 넣기
+//            // 4. 서비스 수행
+//
+//        } else if (mostFrequentNumber == 2) {
+//            ChatBotTextCommand chatBotTextCommand = ChatBotTextCommand.builder()
+//                    .command_id(mostFrequentNumber)
+//                    .message()
+//                    .bank()
+//                    .account()
+//                    .money()
+//                    .is_chatbot(1)
+//                    .build();
+//            balanceInquiry(token, chatBotTextCommand);
+//        } else if (mostFrequentNumber == 3) {
+//
+//        } else if (mostFrequentNumber == 4) {
+//
+//        }
+    }
 
 
     public AccountTransferChatBotResponse accountTransfer(String token, ChatBotTextCommand command) {
@@ -458,6 +557,7 @@ public class ChatBotService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
         return user;
     }
+
 }
 
 
