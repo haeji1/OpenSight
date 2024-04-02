@@ -2,31 +2,19 @@ FROM node:lts-alpine AS build
 
 WORKDIR /app
 
-# 라이브러리 설치에 필요한 파일만 복사
+# Copy only the files needed for installing dependencies
 COPY package.json .
 COPY package-lock.json .
 
-# 라이브러리 설치
+# Install dependencies
 RUN npm ci
 
-# 소스코드 복사
+# Copy the source code
 COPY . /app
 
-# 소스코드 빌드
+# Build the source code
 RUN npm run build
 
-# 프로덕션 스테이지
-FROM nginx:1.21.4-alpine 
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
-ENV BACKEND_URL=http://backend:8080
-# ENV BACKEND_PORT 8080
-
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# 빌드 이미지에서 생성된 dist 폴더를 nginx 이미지로 복사
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-# ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+# The following lines related to Nginx are removed. This Dockerfile will now only build your application.
+# To use the build artifacts, you would manually have to copy them from the Docker container to wherever you need them, 
+# or use a Docker volume to make the build accessible to your host or another container.
