@@ -14,11 +14,18 @@ const myAccountListCopy = ref([]);
 const isDataLoaded = ref(false);
 const currentIndex = ref(0);
 
+const myAccountBalance = ref([]);
+const checkNull = ref(false);
 // 선택된 계정의 잔액을 조회하는 함수
 async function fetchAccountBalance(index) {
   try {
     const account = accountStore.myAccountList[index];
-    await accountStore.inquireBalance(account.bankCode, account.accountNo);
+    const isNull = accountStore.isNull;
+    checkNull.value = accountStore.isNull;
+    console.log("==================="+checkNull.value)
+    if (!checkNull.value) {
+      await accountStore.inquireBalance(account.bankCode, account.accountNo);
+    }
   } catch (error) {
     console.error("잔액 조회 중 오류 발생:", error);
   }
@@ -30,7 +37,7 @@ onMounted(async () => {
     await accountStore.inquireAccountList();
     await fetchAccountBalance(0); // 첫 번째 계정의 잔액 조회
     isDataLoaded.value = true;
-    console.log(accountStore.myAccountList);
+    // console.log("======="+accountStore.myAccountList);
   } catch (error) {
     console.error(error);
   }
@@ -39,6 +46,7 @@ onMounted(async () => {
 
 // currentIndex가 변경될 때마다 잔액을 다시 조회
 watch(currentIndex, async (newIndex) => {
+  accountStore.currentIndex = currentIndex.value;
   await fetchAccountBalance(newIndex);
 });
 
@@ -82,13 +90,18 @@ function transferButtonClick() {
         <p class="prev-next" @click="prevAccount">&lt;</p>
         <div class="account-container">
           <div class="account">
-            <div class="account-content" v-if="isDataLoaded">
-              <p class="title1 title1-account">{{accountStore.myAccountList[currentIndex].bankName}}</p>
-              <p class="body3 body3-account">{{accountStore.myAccountList[currentIndex].accountName}}</p>
-              <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
-              <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}원</p>
+            <div v-if = "checkNull">
+              <p>계좌가 없습니다.</p>
             </div>
-          </div>
+            <div v-else>
+              <div class="account-content" v-if="isDataLoaded">
+                <p class="title1 title1-account">{{accountStore.myAccountList[currentIndex].bankName}}</p>
+                <p class="body3 body3-account">{{accountStore.myAccountList[currentIndex].accountName}}</p>
+                <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
+                <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}원</p>
+              </div>
+            </div>
+            </div>
           <button class="button" @click="transferButtonClick">이체하기</button>
           <button class="button">거래내역 조회하기</button>
         </div>
@@ -110,7 +123,7 @@ function transferButtonClick() {
       </div>
     </div>
   </div>
-  
+
 </template>
 
 <style scoped>

@@ -23,12 +23,11 @@ onMounted (async () => {
   try {
     console.log("=======시작======")
     await accountStore.inquireAccountList();
-    await accountStore.inquireBalance(accountStore.myAccountList[0].bankCode, accountStore.myAccountList[0].accountNo);
+    await accountStore.inquireBalance(accountStore.myAccountList[accountStore.currentIndex].bankCode, accountStore.myAccountList[accountStore.currentIndex].accountNo);
     isDataLoaded.value = true;
     //myAccountListCopy.value = accountStore.myAccountList.value;
     // myAccountList = accountStore.myAccountList;
     // console.log(myAccountList.value)
-
 
     console.log(accountStore.myAccountList)
 
@@ -74,13 +73,13 @@ function test() {
     </div>
     <div class="content">
       <div class="account-info" v-if="isDataLoaded">
-        <p class="body3">{{ accountStore.myAccountList[0].accountName}}</p>
-        <p class="title2">{{accountStore.myAccountList[0].accountNo}}</p>
+        <p class="body3">{{ accountStore.myAccountList[accountStore.currentIndex].accountName}}</p>
+        <p class="title2">{{accountStore.myAccountList[accountStore.currentIndex].accountNo}}</p>
         <div class="current-balance">
           <p class="body3">잔액</p><p class="body1">{{accountStore.myAccountBalance}}원</p>
         </div>
         <div class="available-balance">
-          <p class="body3">1일 출금한도</p><p class="body1">{{accountStore.myAccountList[0].dailyTransferLimit}}원</p>
+          <p class="body3">1일 출금한도</p><p class="body1">{{accountStore.myAccountList[accountStore.currentIndex].dailyTransferLimit}}원</p>
         </div>
       </div>
 

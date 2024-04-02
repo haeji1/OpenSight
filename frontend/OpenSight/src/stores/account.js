@@ -15,6 +15,8 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const selectMyAccountNumber = ref(null);
     const selectedMyAccountBankCode = ref(null);
     const transactionDate = ref(null);
+    
+    const isNull = ref(false)
 
     const selectedBank = ref("asdf");
     const selectedBankName = ref("fdas");
@@ -22,6 +24,7 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const amount = ref("sdfg");
     const recipientName = ref("ncg");
     const senderName = ref("fdgr");
+    const currentIndex = ref(0);
 
     
     
@@ -75,11 +78,18 @@ export const useAccountStore = defineStore('AccountStore', () => {
           }
         }) .then((res) => {
             console.log(res);
-
-            for(let i = 0; i < res.data.data.rec.length; i++){
-                myAccountList.value.push(res.data.data.rec[i]);
+            if (res.data.data == null) {
+                isNull.value = true
+                console.log("res.data.data의 값"+isNull.value)
             }
-            console.log("+++++++++++"+myAccountList.value);
+            else {
+                for(let i = 0; i < res.data.data.rec.length; i++){
+                    myAccountList.value.push(res.data.data.rec[i]);
+                }
+                console.log("+++++++++++"+myAccountList.value);
+            }
+
+
         }) .catch((error) =>  {
           console.log(error)
         })
@@ -147,38 +157,6 @@ export const useAccountStore = defineStore('AccountStore', () => {
     }
 
 
-    //   const accountTransfer = async function() {
-    //       const depositBankCode = selectedBank.value
-    //       const depositAccountNo = accountNumber.value
-    //       const transactionBalance = amount.value
-    //       const withdrawalBankCode = selectedMyAccountBankCode.value
-    //       const withdrawalAccountNo = selectMyAccountNumber.value
-    //       const depositTransactionSummary = "출금합니다."
-    //       const withdrawalTransactionSummary = "입금합니다."
-    //
-    //     const accessToken = sessionStorage.getItem('accessToken');
-    //     console.log("=====================accountTransfer========================")
-    //     await axios({
-    //         method: 'post',
-    //         url : `${accountBaseURL}/account-transfer`,
-    //         headers: {
-    //             'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
-    //         },
-    //         data : {
-    //             "depositBankCode" : depositBankCode,
-    //             "depositAccountNo" : depositAccountNo,
-    //             "transactionBalance" : transactionBalance,
-    //             "withdrawalBankCode" : withdrawalBankCode,
-    //             "withdrawalAccountNo" : withdrawalAccountNo,
-    //             "depositTransactionSummary" : depositTransactionSummary,
-    //             "withdrawalTransactionSummary" : withdrawalTransactionSummary
-    //         }
-    //     }) .then((res) => {
-    //         console.log(res);
-    //     }) .catch((error) =>  {
-    //         console.log(error)
-    //     })
-    // }
     const checkSimplePassword = async function(simplePassword) {
         try {
             const accessToken = sessionStorage.getItem('accessToken');
@@ -208,9 +186,9 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const matchedBank = computed(() => matchBank(selectedBank.value));
 
 
-    return {myAccountList, accountTypes,selectedAccountType,transactionDate,
+    return {myAccountList, accountTypes,selectedAccountType,transactionDate,currentIndex,
       openAccountResult,selectedBank,myAccountBalance,accountNumber,selectMyAccountNumber,selectedMyAccountBankCode,
       amount,recipientName,senderName,selectedBankName, checkSimplePassword,
-      inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance,accountTransfer}
+      inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance,accountTransfer,isNull}
         ;
 });
