@@ -23,7 +23,7 @@ FROM nginx:1.21.4-alpine
 #     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
 #     echo $TZ > /etc/timezone
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 ENV BACKEND_HOST backend
 ENV BACKEND_PORT 8080
 
