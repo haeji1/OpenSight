@@ -2,11 +2,15 @@ package org.example.b104.domain.oauth2.sevice;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.example.b104.domain.account.controller.response.RegisterAccountMemberResponse;
+import org.example.b104.domain.account.service.AccountService;
+import org.example.b104.domain.account.service.command.RegisterAccountMemberCommand;
 import org.example.b104.domain.oauth2.*;
 import org.example.b104.domain.oauth2.entity.Auth;
 import org.example.b104.domain.oauth2.repository.AuthRepository;
 import org.example.b104.domain.oauth2.response.SocialLoginResponse;
 import org.example.b104.domain.oauth2.response.OauthTokenResponse;
+import org.example.b104.domain.user.controller.response.CreateUserResponse;
 import org.example.b104.domain.user.entity.User;
 import org.example.b104.domain.user.repository.UserRepository;
 import org.example.b104.domain.user.service.UserService;
@@ -20,6 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
@@ -33,6 +38,8 @@ public class OauthService {
 
     private final InMemoryProviderRepository inMemoryProviderRepository;
 
+    private final AccountService accountService;
+
     private final UserRepository userRepository;
 
     private final AuthRepository authRepository;
@@ -44,7 +51,7 @@ public class OauthService {
         // 프론트에서 providerName 받아 InMemoryProviderRepository에서 OauthProvider 가져오기
         OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
 
-        // 1. jwtToken 가져오기
+        // 1. accessToken 가져오기
         OauthTokenResponse tokenResponse = getToken(code, provider);
 //        System.out.println("****tokenResponse****"+tokenResponse.getAccessToken());
         OauthTokenResponse.builder()
@@ -56,90 +63,146 @@ public class OauthService {
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
 
         if (userRepository.findByEmail(userProfile.getEmail()) == null) {
-            System.out.println("======api통신 시작=========" + userProfile.getEmail());
-            String emailPrefix = userProfile.getEmail().substring(0, Math.min(userProfile.getEmail().length(), 10));
-            BankApiResponse responseEntity = WebClient.create()
-                    .post()
-                    .uri("https://finapi.p.ssafy.io/ssafy/api/v1/member/")
-                    .bodyValue(new OauthService.MemberRequest("96f07d05ddb44471a9f51ab483286563", userProfile.getEmail()))
-                    .retrieve()
-                    .bodyToMono(BankApiResponse.class)
-                    .block();
-            System.out.println("=====통신완료========");
+//            System.out.println("======api통신 시작=========" + userProfile.getEmail());
+//            String emailPrefix = userProfile.getEmail().substring(0, Math.min(userProfile.getEmail().length(), 10));
+//            BankApiResponse responseEntity = WebClient.create()
+//                    .post()
+//                    .uri("https://finapi.p.ssafy.io/ssafy/api/v1/member/")
+//                    .bodyValue(new OauthService.MemberRequest("96f07d05ddb44471a9f51ab483286563", userProfile.getEmail()))
+//                    .retrieve()
+//                    .bodyToMono(BankApiResponse.class)
+//                    .block();
+//            System.out.println("=====통신완료========");
+            RegisterAccountMemberResponse response = accountService.registerAccountMember(
+                    RegisterAccountMemberCommand.builder()
+                            .userId(userProfile.getEmail())
+                            .build()
+            );
 
-            if (responseEntity != null) {
-                String userKey = responseEntity.getPayload().getUserKey();
-                Date created = responseEntity.getPayload().getCreated();
-                Date modified = responseEntity.getPayload().getModified();
-                String institutionCode = responseEntity.getPayload().getInstitutionCode();
+            try {
+                if (response != null) {
+                    String userKey = response.getUserKey();
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-                User newUser = User.createNewUser(
-                        userProfile.getEmail(),
-                        bCryptPasswordEncoder.encode("socialLogin"),
-                        userProfile.getName(),
-                        userKey,
-                        created,
-                        modified,
-                        institutionCode,
-                        emailPrefix
-                );
-                // 3. 유저 DB에 저장
-//            User user = saveOrUpdate(userProfile);
-                User user = userRepository.save(newUser);
 
-                // JWT 토큰 만들기
-                String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
-                String refreshToken = jwtTokenProvider.createRefreshToken();
+                    Date created = formatter.parse(response.getCreated());
+                    Date modified = formatter.parse(response.getModified());
+                    String institutionCode = response.getInstitutionCode();
 
-                Auth auth = Auth.builder()
-                        .user(user)
-                        .refreshToken(refreshToken)
-                        .build();
+                    User newUser = User.createNewUser(
+                            userProfile.getEmail(),
+                            bCryptPasswordEncoder.encode("socialLogin"),
+                            userProfile.getName(),
+                            userKey,
+                            created,
+                            modified,
+                            institutionCode,
+                            getPrefixOfEmail(userProfile.getEmail())
+                    );
 
-                saveOrUpdate(auth, user);
+                    User user = userRepository.save(newUser);
+                    CreateUserResponse.builder()
+                            .userId(newUser.getUserId())
+                            .build();
 
-//        System.out.println("jwt토큰"+jwtToken);
-                return SocialLoginResponse.builder()
-                        .id(user.getUserId())
-                        .name(user.getUsername())
-                        .email(user.getEmail())
-                        .tokenType("Bearer")
-                        .accessToken(tokenResponse.getAccessToken())
-                        .jwtToken(jwtToken)
-                        .refreshToken(refreshToken)
-                        .build();
-            }
+                    // JWT 토큰 만들기
+                    String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
+                    String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        }
+                    Auth auth = Auth.builder()
+                            .user(user)
+                            .refreshToken(refreshToken)
+                            .build();
 
-        else {
-            System.out.println("======email이 null이 아님======");
-            User user = saveOrUpdate(userProfile);
-            System.out.println("**********saveOrUpdate로직 끝**************");
-            // JWT 토큰 만들기
-            String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
-            String refreshToken = jwtTokenProvider.createRefreshToken();
+                    saveOrUpdate(auth, user);
 
-            Auth auth = Auth.builder()
-                    .user(user)
-                    .refreshToken(refreshToken)
-                    .build();
+                    return SocialLoginResponse.builder()
+                            .id(user.getUserId())
+                            .name(user.getUsername())
+                            .email(user.getEmail())
+                            .tokenType("Bearer")
+                            .accessToken(tokenResponse.getAccessToken())
+                            .jwtToken(jwtToken)
+                            .refreshToken(refreshToken)
+                            .build();
+                } else {
+                    System.out.println("======email이 null이 아님======");
+                    User user = saveOrUpdate(userProfile);
+                    System.out.println("**********saveOrUpdate로직 끝**************");
+                    // JWT 토큰 만들기
+                    String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
+                    String refreshToken = jwtTokenProvider.createRefreshToken();
 
-            saveOrUpdate(auth, user);
+                    Auth auth = Auth.builder()
+                            .user(user)
+                            .refreshToken(refreshToken)
+                            .build();
+
+                    saveOrUpdate(auth, user);
 
 //            saveOrUpdate(auth.getUser());
 
 //        System.out.println("jwt토큰"+jwtToken);
-            return SocialLoginResponse.builder()
-                    .id(user.getUserId())
-                    .name(user.getUsername())
-                    .email(user.getEmail())
-                    .tokenType("Bearer")
-                    .accessToken(tokenResponse.getAccessToken())
-                    .jwtToken(jwtToken)
-                    .refreshToken(refreshToken)
-                    .build();
+                    return SocialLoginResponse.builder()
+                            .id(user.getUserId())
+                            .name(user.getUsername())
+                            .email(user.getEmail())
+                            .tokenType("Bearer")
+                            .accessToken(tokenResponse.getAccessToken())
+                            .jwtToken(jwtToken)
+                            .refreshToken(refreshToken)
+                            .build();
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            if (responseEntity != null) {
+//                String userKey = responseEntity.getPayload().getUserKey();
+//                Date created = responseEntity.getPayload().getCreated();
+//                Date modified = responseEntity.getPayload().getModified();
+//                String institutionCode = responseEntity.getPayload().getInstitutionCode();
+//
+//                User newUser = User.createNewUser(
+//                        userProfile.getEmail(),
+//                        bCryptPasswordEncoder.encode("socialLogin"),
+//                        userProfile.getName(),
+//                        userKey,
+//                        created,
+//                        modified,
+//                        institutionCode,
+//                        emailPrefix
+//                );
+//                // 3. 유저 DB에 저장
+////            User user = saveOrUpdate(userProfile);
+//                User user = userRepository.save(newUser);
+//
+//                // JWT 토큰 만들기
+//                String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
+//                String refreshToken = jwtTokenProvider.createRefreshToken();
+//
+//                Auth auth = Auth.builder()
+//                        .user(user)
+//                        .refreshToken(refreshToken)
+//                        .build();
+//
+//                saveOrUpdate(auth, user);
+//
+////        System.out.println("jwt토큰"+jwtToken);
+//                return SocialLoginResponse.builder()
+//                        .id(user.getUserId())
+//                        .name(user.getUsername())
+//                        .email(user.getEmail())
+//                        .tokenType("Bearer")
+//                        .accessToken(tokenResponse.getAccessToken())
+//                        .jwtToken(jwtToken)
+//                        .refreshToken(refreshToken)
+//                        .build();
+//            }
+
         }
+
+
 
 //        System.out.println("===유저정보 출력==="+user.getName()+user.getEmail());
 
@@ -242,6 +305,13 @@ private User saveOrUpdate(UserProfile userProfile) {
 ////            return authRepository.save(auth);
 ////        }
 //    }
+public String getPrefixOfEmail(String email) {
+    String[] parts = email.split("@");
+    if (parts.length > 0) {
+        return parts[0];
+    }
+    return null;
+}
 
     @Data
     static class MemberRequest {
