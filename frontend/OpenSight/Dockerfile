@@ -16,7 +16,13 @@ COPY . /app
 RUN npm run build
 
 # 프로덕션 스테이지
-FROM nginx:1.21.4-alpine 
+FROM nginx:1.21.4-alpine
+
+# ENV TZ=Asia/Seoul
+# RUN apk add --no-cache tzdata && \
+#     cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+#     echo $TZ > /etc/timezone
+
 COPY nginx.conf /etc/nginx/conf.d/default.conf.template
 ENV BACKEND_HOST backend
 ENV BACKEND_PORT 8080
