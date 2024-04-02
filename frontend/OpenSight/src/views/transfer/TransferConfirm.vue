@@ -54,6 +54,12 @@ const captureImageFilter = () =>{
         console.log(response.data);
         if (response.data.data.result === "success") {
           alert("얼굴인식 성공");
+          const transferResult = await accountStore.accountTransfer();
+          console.log("========transferResult============"+transferResult);
+          // transactionDate를 변수에 저장합니다.
+          const transactionDate = transferResult.data.data.rec[0].transactionDate;
+          console.log(transactionDate);
+          accountStore.transactionDate = transactionDate;
           router.push({name : "TransferComplete"})
         } else {
           alert("얼굴인식 실패");
