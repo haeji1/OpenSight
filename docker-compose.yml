@@ -17,7 +17,7 @@ services:
       - docker-network
 
   mysql:
-    image: chiseungoh/mysql:latest # Replace with your actual MySQL Docker image tag
+    image: mysql:8.0.30 # Replace with your actual MySQL Docker image tag
     environment:
       MYSQL_ROOT_PASSWORD: SSAFY
       MYSQL_DATABASE: bank
