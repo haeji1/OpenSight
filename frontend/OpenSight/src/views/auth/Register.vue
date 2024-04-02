@@ -92,11 +92,14 @@ const register = async () => {
 
     try {
         const requestUrl = `${import.meta.env.VITE_REST_API}/users/register`;
-        const response = await axios.post(requestUrl, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+        // const response = await axios.post(requestUrl, formData, {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data'
+        //   }
+        // });
+
+        const response = await axios.post(requestUrl, formData);
+      
         console.log('Registration successful:', response.data);
         router.push('/register/complete')
         // Handle success, e.g., redirect or show a success message
