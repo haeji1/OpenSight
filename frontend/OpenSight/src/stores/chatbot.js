@@ -28,11 +28,13 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
       // 2. 10초 간 녹음 후 자동으로 종료
       const speech = new webkitSpeechRecognition
 
+      alert('10초 동안 음성 인식 기능이 활성화됩니다. 원하시는 업무를 말씀해주세요. 음성은 10초 후 자동으로 종료됩니다.')
       speech.start()
       console.log('녹음 시작')
       
       setTimeout(() => {
         speech.stop()
+        alert('10초가 경과하여 음성 인식 기능이 종료되었습니다. 알림을 닫고 화면으로 돌아가주세요.')
         console.log('녹음 종료')
       }, 10000)
 
@@ -44,7 +46,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
         // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
         if (text) {
           axios({
-            url: `http://127.0.0.1:8000/command/`,
+            url: `http://175.209.203.185:7979/command/`,
             method: "POST",
             data: {
               text
@@ -78,7 +80,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCommand = (text) => {
     axios({
-      url: `http://127.0.0.1:8000/text/`,
+      url: `http://175.209.203.185:7979/text/`,
       method: "POST",
       data: {
         text
@@ -120,7 +122,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
         // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
         if (text) {
           axios({
-            url: `http://127.0.0.1:8000/check/`,
+            url: `http://175.209.203.185:7979/check/`,
             method: "POST",
             data: {
               text
@@ -155,7 +157,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCheckCommand = (text) => {
     axios({
-      url: `http://127.0.0.1:8000/check/`,
+      url: `http://175.209.203.185:7979/check/`,
       method: "POST",
       data: {
         text
