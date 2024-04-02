@@ -64,6 +64,10 @@ const register = async () => {
     formData.append('phone', phoneNumber.value);
     // Append the image with a unique filename
     formData.append('profileImage', blob, uniqueFilename);
+    
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+        }
 
 
       try {//http://52.78.27.70:8080/api/users/register
