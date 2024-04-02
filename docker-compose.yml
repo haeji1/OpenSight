@@ -8,10 +8,11 @@ services:
     depends_on:
       - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bank?serverTimezone=UTC&characterEncoding=UTF-8
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bank?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: SSAFY
-      # Add other environment variables here
+      TZ: Asia/Seoul
+      # Add other environment variables here ss
     networks:
       - docker-network
 
@@ -20,6 +21,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: SSAFY
       MYSQL_DATABASE: bank
+      TZ: Asia/Seoul
     ports:
       - "3306:3306"
     volumes:
@@ -37,6 +39,8 @@ services:
     depends_on:
       - app
     container_name: frontend
+    environment:
+      TZ: Asia/Seoul
 
 networks:
   docker-network:
