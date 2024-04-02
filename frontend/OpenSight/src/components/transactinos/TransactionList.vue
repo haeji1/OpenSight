@@ -8,6 +8,17 @@ const props = defineProps({
   }
 });
 
+const formatDateTime = (date, time) => {
+  const year = date.slice(0, 4);
+  const month = date.slice(4, 6);
+  const day = date.slice(6, 8);
+  
+  const hours = time.slice(0, 2);
+  const minutes = time.slice(2, 4);
+  const seconds = time.slice(4, 6);
+
+  return `${year}.${month}.${day}  ${hours}:${minutes}:${seconds}`;
+};
 </script>
 
 
@@ -15,17 +26,18 @@ const props = defineProps({
   <div class="transaction-content">
     <div v-for="transaction in transactions" :key="transaction.id">
       <div class="content-box">
-        <p class="caption1 gray">{{ transaction.date }}</p>
+        <p class="caption1 gray">{{ formatDateTime(transaction.transactionDate, transaction.transactionTime)}}</p>
+        
         <div class="content-text">
           <div class="left-content">
-            <p class="title3">{{ transaction.receivename }}</p>
+            <p class="title3">{{ transaction.transactionSummary }}</p>
           </div>
           <div class="right-content">
             <div class="right-text">
-              <p class="caption1 gray">입금</p><p class="caption1">{{ transaction.withdrawal }}</p>
+              <p class="caption1 gray">입금</p><p class="caption1">{{ transaction.transactionBalance }}원</p>
             </div>
             <div class="right-text">
-              <p class="caption1 gray">잔액</p><p class="caption1">{{ transaction.balance }}</p>
+              <p class="caption1 gray">잔액</p><p class="caption1">{{ transaction.transactionAfterBalance}}원</p>
             </div>
           </div>
         </div>
@@ -70,4 +82,8 @@ const props = defineProps({
   margin-left: 20px;
   margin-top: 5px;
 }
+.title3 {
+  color: #000;
+}
+
 </style>
