@@ -80,10 +80,10 @@ onMounted( async () => {
     <div class="content">
       <div class="account">
         <div class="account-content">
-          <p class="title1-white">{{ requestData._value.bankName.value }}</p>
-          <p class="body3-white">{{ requestData._value.accountName.value }}</p>
-          <p class="body2-white">{{ requestData._value.accountNo.value }}</p>
-          <p class="title2-white">{{ requestData._value.accountBalance.value }}</p>
+          <p class="title1-white">{{ store.currentAccount.bankName }}</p>
+          <p class="body3-white">{{ store.currentAccount.accountName }}</p>
+          <p class="body2-white">{{ store.currentAccount.accountNo }}</p>
+          <p class="title2-white">{{ store.currentAccount.accountBalance }}</p>
         </div>
       </div>
       <button class="button" @click="">이체하기</button>
