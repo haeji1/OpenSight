@@ -20,7 +20,7 @@ const accessToken = sessionStorage.getItem('accessToken');
 const requestData = ref(store.currentAccount)
 
 console.log('****', store.currentAccount, '****')
-console.log('++++', requestData, '++++')
+console.log('++++', requestData._value, '++++')
 
 // 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
