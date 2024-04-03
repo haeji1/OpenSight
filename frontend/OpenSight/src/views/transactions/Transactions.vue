@@ -25,11 +25,11 @@ console.log('++++', requestData._value, '++++')
 // 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
 
-  console.log('은행코드:', requestData.bankCode)
-  console.log('계좌번호:', requestData.accountNo)
+  console.log('은행코드:', requestData._value.bankCode)
+  console.log('계좌번호:', requestData._value.accountNo)
 
-  console.log('은행코드 value:', requestData.bankCode.value)
-  console.log('계좌번호 value:', requestData.accountNo,value)
+  console.log('은행코드 value:', requestData._value.bankCode.value)
+  console.log('계좌번호 value:', requestData._value.accountNo,value)
 
   try {
     await axios({
@@ -39,8 +39,8 @@ const requestTransactionData = async (requestData) =>{
         'Authorization': `${accessToken}`
       },
       data: {
-        "bankCode": requestData.bankCode,
-        "accountNo": requestData.accountNo,
+        "bankCode": requestData._value.bankCode,
+        "accountNo": requestData._value.accountNo,
         "startDate": "20240101",
         "endDate": "20241231",
         "transactionType": "A",
