@@ -135,7 +135,7 @@ onMounted( async () => {
 }
 
 .account {
-  background-image: url('src/assets/img/account.png');
+  background-image: url('../../assets/img/account.png');
   background-position: center;
   width: 360px;
   height: 250px;
