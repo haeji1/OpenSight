@@ -19,7 +19,7 @@ public class  OauthController {
         System.out.println("provider : " + provider + ", code : " + code);
         SocialLoginResponse loginResponse = oauthService.socialLogin(provider, code);
         System.out.println("longinResponse 토큰 : "+loginResponse.getJwtToken());
-        String redirectUrl = "https://j10b104.p.ssafy.io/api/login/social?accessToken=" + loginResponse.getJwtToken() + "&refreshToken=" + loginResponse.getRefreshToken();
+        String redirectUrl = "https://j10b104.p.ssafy.io/login/social?accessToken=" + loginResponse.getJwtToken() + "&refreshToken=" + loginResponse.getRefreshToken();
         return "redirect:" + redirectUrl;
     }
 }
