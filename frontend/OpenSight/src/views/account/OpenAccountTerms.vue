@@ -25,7 +25,7 @@ const openAccount = () => {
     <div class="haeder-back">
       <p class="title2">&lt;</p><p class="title2">비대면계좌 개설</p>
     </div>
-    <p class="title1">{{AccountStore.selectedAccountType }}</p>
+    <p class="title1">{{AccountStore.selectedAccountType.accountName }}</p>
   </div>
   <div>
     <div>

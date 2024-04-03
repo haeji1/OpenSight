@@ -2,7 +2,9 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import { useSettingStore } from '@/stores/setting';
 
+const settingStore = useSettingStore()
 
 const router = useRouter()
 
@@ -22,24 +24,16 @@ const backspace = () => {
   input.value = input.value.slice(0, -1);
 };
 
-const confirmInput = async () => {
-  try {
-    await axios.post(`${import.meta.env.VITE_REST_API}/users/register/simple-password`, {simplePassword: input.value}, {
-      headers: {
-        Authorization: sessionStorage.getItem('accessToken')
-      }
-    });
-    router.push('/main')
-  } catch (error) {
-    console.log(error)
-  }
+const confirmInput = () => {
+  const simplePassword = input.value
+  settingStore.PasswordSetting(simplePassword)
 };
 </script>
 
 <template>
   <div class="container">
     <div class="header">
-      <p @click="router.push('/main')" class="title1">&lt;</p><p class="title1">비밀번호 입력</p>
+      <p @click="router.push('/main')" class="title1">&lt;</p><p class="title1">간편비밀번호 수정</p>
     </div>
     <div class="numpad-container">
       <div class="input-display">
@@ -64,7 +58,6 @@ const confirmInput = async () => {
 <style scoped>
 .container {
   background-color: #ffffff;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 현대적인 느낌의 폰트 적용 */
 }
 
 .header {

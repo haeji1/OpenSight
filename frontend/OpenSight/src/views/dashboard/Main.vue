@@ -83,7 +83,7 @@ function transferButtonClick() {
       <p class="title1-white">안녕하세요, {{authStore.name}}고객님.</p>
       <div class="img-container">
         <img class="img" src="../../assets/img/user.png" alt="프로필수정" @click="router.push('/profile/edit')">
-        <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호수정" @click="router.push('/password/setting')">
+        <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호, 주거래계좌 설정" @click="router.push('/setting')">
         <img class="img" src="../../assets/img/signout.png" alt="로그아웃" @click="authStore.logout">
       </div>
     </div>
@@ -92,8 +92,8 @@ function transferButtonClick() {
         <p class="prev-next" @click="prevAccount">&lt;</p>
         <div class="account-container">
           <div class="account">
-            <div v-if = "checkNull">
-              <p>계좌가 없습니다.</p>
+            <div class="account-content" v-if = "checkNull">
+              <p class="title1 title1-account">계좌가 없습니다.</p>
             </div>
             <div v-else>
               <div class="account-content" v-if="isDataLoaded">
@@ -109,8 +109,8 @@ function transferButtonClick() {
         </div>
         <p class="prev-next" @click="nextAccount">&gt;</p>
       </div>
-      <div class="account-open">
-        <div class="account-text" @click="router.push('/account/open/select-bank')">
+      <div class="account-open" @click="router.push('/account/open/select-bank')">
+        <div class="account-text">
           <p class="title2">비대면 자유입출금</p>
           <p class="title2">계좌 개설</p>
         </div>

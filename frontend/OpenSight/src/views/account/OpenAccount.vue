@@ -50,12 +50,6 @@ const movePage = (item) => {
         <div v-for="item in AccountStore.accountTypes":key="item.id">
           <button class="button title2" @click="movePage(item)"> {{item.accountName}} </button>
         </div>
-        <!--
-        <button class="button title2" >한국은행</button>
-        <button class="button title2" >산업은행</button>
-        <button class="button title2" >기업은행</button>
-        <button class="button title2" >국민은행</button>
-        -->
       </div>
     </div>
   </template>
