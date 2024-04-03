@@ -1,11 +1,9 @@
 <script setup>
-import footer from '@/components/layout/Footer.vue'
 import { useRouter } from 'vue-router';
 import { computed, onMounted } from 'vue';
 import { useAccountStore } from '@/stores/account'
 import { useAuthStore } from '@/stores/auth';
 import { ref, watch } from 'vue';
-import Transfer from '../transfer/Transfer.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -77,7 +75,7 @@ function transferButtonClick() {
 }
 
 function transactionButtonClick() {
-  console.log('&&&', accountStore.myAccountList.value, '&&&')
+  console.log('&&&', accountStore.myAccountList[currentIndex.value], '&&&')
   console.log('***', accountStore.currentIndex.value, '***')
 }
 
