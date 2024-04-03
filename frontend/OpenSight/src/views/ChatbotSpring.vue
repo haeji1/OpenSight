@@ -390,6 +390,9 @@ watch(()=> store.getSpringResponse, async (command) => {
 
 .modal {
   background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100vw;
   height: 100vh;
   z-index: 99;
