@@ -27,34 +27,37 @@ SSAFY 10기 특화 프로젝트
 - LLM 모델을 활용한 대화형 챗봇을 텍스트 혹은 음성을 통해 편리한 은행 서비스 이용
 
 ### 서비스 화면
-|인트로|로그인|회원가입|
-|---|---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|인트로1|인트로2|인트로3|인트로4|인트로5|
+|---|---|---|---|---|
+|<img src="./reademeasset/intro1.jpg" width="500px">|<img src="./reademeasset/intro2.jpg" width="500px">|<img src="./reademeasset/intro3.jpg" width="500px">|<img src="./reademeasset/intro4.jpg" width="500px">|<img src="./reademeasset/intro5.jpg" width="500px">|
 
+|로그인|회원가입|
+|---|---|
+|<img src="./reademeasset/login.jpg" width="500px">|<img src="./reademeasset/register.jpg" width="500px">|
 
-|이메일찾기|비밀번호찾기|비밀번호변경|
-|---|---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|이메일찾기|비밀번호찾기|
+|---|---|
+|<img src="./reademeasset/findemail.jpg" width="500px">|<img src="./reademeasset/findpassword.jpg" width="500px">|<img src="./reademeasset/" width="500px">|
 
 |메인페이지|챗봇|
 |---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|<img src="./reademeasset/main.jpg" width="500px">|<img src="./reademeasset/chatbot.jpg" width="500px">|
 
 |계좌이체입력|계좌이체확인|간편비밀번호|계좌이체완료|
 |---|---|---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|<img src="./reademeasset/transfer1.jpg" width="500px">|<img src="./reademeasset/transfer2.jpg" width="500px">|<img src="./reademeasset/transfer3.jpg" width="500px">|<img src="./reademeasset/transfer4.jpg" width="500px">|
 
-|거래내역조회|거래내역기간설정|
-|---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|거래내역조회|
+|---|
+|<img src="./reademeasset/transaction.jpg" width="500px">|
 
 |비대면계좌개설|약관동의|계좌개설완료|
 |---|---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|<img src="./reademeasset/accountopen1.jpg" width="500px">|<img src="./reademeasset/accountopen2.jpg" width="500px">|<img src="./reademeasset/accountopen3.jpg" width="500px">|
 
 |회원정보수정|간편비밀번호설정|주거래통장설정|
 |---|---|---|
-|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|<img src="./reademeasset/" width="500px">|
+|<img src="./reademeasset/editprofile.jpg" width="500px">|<img src="./reademeasset/settingpw.jpg" width="500px">|<img src="./reademeasset/settingbank.jpg" width="500px">|
 
 
 ### 팀원
