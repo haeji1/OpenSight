@@ -4,6 +4,9 @@ import { useAccountStore } from '@/stores/account';
 import router from '@/router';
 
 const input = ref('');
+
+const displayInput = computed(() => '*'.repeat(input.value.length));
+
 const accountStore = useAccountStore();
 
 const appendNumber = (number) => {
@@ -45,7 +48,7 @@ const confirmInput = async () => {
     </div>
     <div class="numpad-container">
       <div class="input-display">
-        {{ input }}
+        {{ displayInput }}
       </div>
       <div class="numpad">
         <button v-for="number in 9" :key="number" @click="appendNumber(number)">

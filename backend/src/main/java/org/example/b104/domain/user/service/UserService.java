@@ -40,7 +40,8 @@ public class UserService {
     private final AmazonRekognitionService amazonRekognitionService;
     @Autowired
     private final AmazonS3Service s3Service;
-    private static final String UPLOAD_DIR = "C:\\OPENSIGHT\\profileImages";
+    //private static final String UPLOAD_DIR = "C:\\OPENSIGHT\\profileImages";
+    private static final String UPLOAD_DIR = "profileImages";
 
     public String getPrefixOfEmail(String email) {
         String[] parts = email.split("@");
@@ -83,13 +84,15 @@ public class UserService {
 
     @Transactional(readOnly = false)
     public LoginResponse faceLogin(FaceLoginCommand command) {
-        File uploadDir = new File(UPLOAD_DIR);
-        if (!uploadDir.exists()) {
-            uploadDir.mkdirs();
-        }
-        // 파일을 지정된 디렉토리에 저장
-        String fileName = command.getRequestImage().getOriginalFilename();
         try {
+            /*File uploadDir = new File("src/main/resources/" + UPLOAD_DIR);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }*/
+
+            // 파일을 지정된 디렉토리에 저장
+            /*String fileName = command.getRequestImage().getOriginalFilename();
+
             File destFile = new File(UPLOAD_DIR + File.separator + fileName);
             command.getRequestImage().transferTo(destFile);
 
@@ -97,6 +100,11 @@ public class UserService {
             String keyName = file.getName();
 
             s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            */
+            String fileName = command.getRequestImage().getOriginalFilename();
+            String keyName = fileName;
+
+            s3Service.uploadFile(command.getRequestImage(),"cloud-open-sight-ue1");
             List<FaceMatch> matchList = amazonRekognitionService.recognizeFace("cloud-open-sight-collection", "cloud-open-sight-ue1", keyName);
 
             if (matchList.isEmpty())
@@ -220,18 +228,24 @@ public class UserService {
 
         try {
             // 디렉토리가 없으면 생성
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+//            File uploadDir = new File(UPLOAD_DIR);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdirs();
+//            }
+//
+//            // 파일을 지정된 디렉토리에 저장
+//            String fileName = command.getEmail() + profileImage.getOriginalFilename();
+//            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+//            profileImage.transferTo(destFile);
+//
+//
+//            String fn = s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
 
-            // 파일을 지정된 디렉토리에 저장
-            String fileName = command.getEmail() + profileImage.getOriginalFilename();
-            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
-            profileImage.transferTo(destFile);
 
+            String fileName = profileImage.getOriginalFilename();
+            String keyName = fileName;
+            s3Service.uploadFile(profileImage,"cloud-open-sight-ue1");
 
-            String fn = s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
             faceId = amazonRekognitionService.registeruser("cloud-open-sight-ue1", fileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -423,14 +437,19 @@ public class UserService {
         }
         // 파일을 지정된 디렉토리에 저장
         String fileName = command.getRequestImage().getOriginalFilename();
+        String keyName = fileName;
+
+
         try {
-            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+/*            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
             command.getRequestImage().transferTo(destFile);
 
             File file = new File(UPLOAD_DIR + File.separator + fileName);
             String keyName = file.getName();
 
-            s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);*/
+
+            s3Service.uploadFile(command.getRequestImage(),"cloud-open-sight-ue1");
             List<FaceMatch> matchList = amazonRekognitionService.recognizeFace("cloud-open-sight-collection", "cloud-open-sight-ue1", keyName);
 
             if (matchList.isEmpty())

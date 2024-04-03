@@ -103,8 +103,8 @@ public class AccountService {
         HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member", "POST",
                 jsonObject.toString());
 
-//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
-//        System.out.println("[+] Body : " +httpResponse.body());
+        System.out.println("[+] Status Code : " + httpResponse.statusCode());
+        System.out.println("[+] Body : " +httpResponse.body());
 
         if (httpResponse == null) return null;
         if (!(httpResponse.statusCode() == 200 || httpResponse.statusCode() == 201))

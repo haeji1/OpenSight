@@ -87,7 +87,7 @@ const logIn = function () {
 
 
 function naverSocialLogin() {
-  window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=4hSpDvA1GDlGXjqG6sac&redirect_uri=http://192.168.31.25:8080/login/oauth2/code/naver'
+  window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=4hSpDvA1GDlGXjqG6sac&redirect_uri=https://j10b104.p.ssafy.io/api/login/oauth2/code/naver'
 }
 </script>
 
@@ -143,7 +143,7 @@ function naverSocialLogin() {
 .login-container {
   background-color: #ffffff;
   border-radius: 20px 20px 0 0; /* 아래쪽 모서리는 둥글지 않음 */
-  width: 360px; /* 가로 크기 유지 */
+  width: 370px; /* 가로 크기 유지 */
   padding: 20px;
   margin: 0 auto;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

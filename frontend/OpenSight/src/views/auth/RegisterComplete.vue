@@ -39,7 +39,7 @@ import router from '@/router';
 .content {
   background-color: #ffffff;
   border-radius: 20px 20px 0 0; /* 아래쪽 모서리는 둥글지 않음 */
-  width: 360px; /* 가로 크기 유지 */
+  width: 370px; /* 가로 크기 유지 */
   padding: 20px;
   margin: 0 auto;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);

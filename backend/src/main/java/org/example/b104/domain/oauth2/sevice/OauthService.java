@@ -61,8 +61,13 @@ public class OauthService {
 
         // 2. 유저 정보 가져오기
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
+        System.out.println("**********User정보***********"+userProfile.getEmail());
+        System.out.println("**********user정보**********"+userProfile.getName());
+        System.out.println("====userProfile.getEmail===="+userProfile.getEmail());
+        System.out.println("=====userRepository에서 찾은 Email===="+userRepository.findByEmail(userProfile.getEmail()).getEmail());
 
         if (userRepository.findByEmail(userProfile.getEmail()) == null) {
+            System.out.println("==================email이 null임==================");
 //            System.out.println("======api통신 시작=========" + userProfile.getEmail());
 //            String emailPrefix = userProfile.getEmail().substring(0, Math.min(userProfile.getEmail().length(), 10));
 //            BankApiResponse responseEntity = WebClient.create()
@@ -78,9 +83,12 @@ public class OauthService {
                             .userId(userProfile.getEmail())
                             .build()
             );
+            System.out.println("============RegisterAccountMemberResponse====="+response.getUserId());
+            System.out.println("============RegisterAccountMemberResponse====="+response.getUserKey());
+            System.out.println("============RegisterAccountMemberResponse====="+response.getUserName());
 
             try {
-                if (response != null) {
+                if (response == null) {
                     String userKey = response.getUserKey();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -125,35 +133,9 @@ public class OauthService {
                             .jwtToken(jwtToken)
                             .refreshToken(refreshToken)
                             .build();
-                } else {
-                    System.out.println("======email이 null이 아님======");
-                    User user = saveOrUpdate(userProfile);
-                    System.out.println("**********saveOrUpdate로직 끝**************");
-                    // JWT 토큰 만들기
-                    String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
-                    String refreshToken = jwtTokenProvider.createRefreshToken();
-
-                    Auth auth = Auth.builder()
-                            .user(user)
-                            .refreshToken(refreshToken)
-                            .build();
-
-                    saveOrUpdate(auth, user);
-
-//            saveOrUpdate(auth.getUser());
-
-//        System.out.println("jwt토큰"+jwtToken);
-                    return SocialLoginResponse.builder()
-                            .id(user.getUserId())
-                            .name(user.getUsername())
-                            .email(user.getEmail())
-                            .tokenType("Bearer")
-                            .accessToken(tokenResponse.getAccessToken())
-                            .jwtToken(jwtToken)
-                            .refreshToken(refreshToken)
-                            .build();
                 }
             }catch (Exception e) {
+                System.out.println("===========회원가입중 에러===========");
                 e.printStackTrace();
             }
 
@@ -200,6 +182,33 @@ public class OauthService {
 //                        .build();
 //            }
 
+        } else {
+            System.out.println("======email이 null이 아님======");
+            User user = saveOrUpdate(userProfile);
+            System.out.println("**********saveOrUpdate로직 끝**************");
+            // JWT 토큰 만들기
+            String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
+            String refreshToken = jwtTokenProvider.createRefreshToken();
+
+            Auth auth = Auth.builder()
+                    .user(user)
+                    .refreshToken(refreshToken)
+                    .build();
+
+            saveOrUpdate(auth, user);
+
+//            saveOrUpdate(auth.getUser());
+
+//        System.out.println("jwt토큰"+jwtToken);
+            return SocialLoginResponse.builder()
+                    .id(user.getUserId())
+                    .name(user.getUsername())
+                    .email(user.getEmail())
+                    .tokenType("Bearer")
+                    .accessToken(tokenResponse.getAccessToken())
+                    .jwtToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
         }
 
 
@@ -222,6 +231,7 @@ public class OauthService {
     // OAuth 서버에서 유저 정보 map으로 가져오기
     private Map<String, Object> getUserAttributes(OauthProvider provider, OauthTokenResponse tokenResponse) {
         System.out.println("====== webClient 통신====="+provider+tokenResponse);
+        System.out.println("========유저정보 가져오기==========");
         return  WebClient.create()
                 .get()
                 .uri(provider.getUserInfoUrl())

@@ -14,12 +14,12 @@ public class  OauthController {
 
     private final OauthService oauthService;
 
-    @GetMapping("/login/oauth2/code/{provider}")
+    @GetMapping("/api/login/oauth2/code/{provider}")
     public String socialLogin(@PathVariable String provider, @RequestParam("code") String code) {
         System.out.println("provider : " + provider + ", code : " + code);
         SocialLoginResponse loginResponse = oauthService.socialLogin(provider, code);
         System.out.println("longinResponse 토큰 : "+loginResponse.getJwtToken());
-        String redirectUrl = "http://192.168.31.25:5173/login/social?accessToken=" + loginResponse.getJwtToken() + "&refreshToken=" + loginResponse.getRefreshToken();
+        String redirectUrl = "https://j10b104.p.ssafy.io/login/social?accessToken=" + loginResponse.getJwtToken() + "&refreshToken=" + loginResponse.getRefreshToken();
         return "redirect:" + redirectUrl;
     }
 }

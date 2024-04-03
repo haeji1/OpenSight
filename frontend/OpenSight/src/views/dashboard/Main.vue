@@ -1,7 +1,7 @@
 <script setup>
 import footer from '@/components/layout/Footer.vue'
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useAccountStore } from '@/stores/account'
 import { useAuthStore } from '@/stores/auth';
 import { ref, watch } from 'vue';
@@ -73,7 +73,41 @@ function transferButtonClick() {
   accountStore.selectMyAccountNumber = accountStore.myAccountList[currentIndex.value].accountNo
   accountStore.selectedMyAccountBankCode = accountStore.myAccountList[currentIndex.value].bankCode
 
+  router.push({name:'Transfer'})
 }
+
+function transactionButtonClick() {
+  console.log('&&&', accountStore.myAccountList.value, '&&&')
+  console.log('***', accountStore.currentIndex.value, '***')
+}
+
+function noContent() {
+  alert('준비중입니다.')
+}
+
+const balanceString = ref('')
+
+const getBalanceString = computed(() => {
+  return balanceString.value
+})
+
+watch(() => accountStore.myAccountBalance, (balance) => {
+  const str = String(balance)
+  let res = ''
+  let count = 0
+
+  for (let i = str.length - 1; i >= 0; i--) {
+    res = str[i] + res
+    count++
+
+    if (count % 3 == 0 && i != 0) {
+      res = ',' + res
+    }
+  }
+  balanceString.value = res
+})
+
+console.log('###', getBalanceString, '###')
 
 </script>
 
@@ -83,7 +117,7 @@ function transferButtonClick() {
       <p class="title1-white">안녕하세요, {{authStore.name}}고객님.</p>
       <div class="img-container">
         <img class="img" src="../../assets/img/user.png" alt="프로필수정" @click="router.push('/profile/edit')">
-        <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호수정" @click="router.push('/password/setting')">
+        <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호, 주거래계좌 설정" @click="router.push('/setting')">
         <img class="img" src="../../assets/img/signout.png" alt="로그아웃" @click="authStore.logout">
       </div>
     </div>
@@ -92,31 +126,31 @@ function transferButtonClick() {
         <p class="prev-next" @click="prevAccount">&lt;</p>
         <div class="account-container">
           <div class="account">
-            <div v-if = "checkNull">
-              <p>계좌가 없습니다.</p>
+            <div class="account-content" v-if = "checkNull">
+              <p class="title1">계좌가 없습니다.</p>
             </div>
             <div v-else>
               <div class="account-content" v-if="isDataLoaded">
                 <p class="title1 title1-account">{{accountStore.myAccountList[currentIndex].bankName}}</p>
                 <p class="body3 body3-account">{{accountStore.myAccountList[currentIndex].accountName}}</p>
                 <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
-                <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}원</p>
+                <p class="title2 title2-account">잔액 {{getBalanceString}}원</p>
               </div>
             </div>
             </div>
           <button class="button" @click="transferButtonClick">이체하기</button>
-          <button class="button">거래내역 조회하기</button>
+          <button class="button" @click="transactionButtonClick">거래내역 조회하기</button>
         </div>
         <p class="prev-next" @click="nextAccount">&gt;</p>
       </div>
-      <div class="account-open">
-        <div class="account-text" @click="router.push('/account/open/select-bank')">
+      <div class="account-open" @click="router.push('/account/open/select-bank')">
+        <div class="account-text">
           <p class="title2">비대면 자유입출금</p>
           <p class="title2">계좌 개설</p>
         </div>
         <img class="content-img" src="../../assets/img/accountimage.png" alt="">
       </div>
-      <div class="savings" @click="">
+      <div class="savings" @click="noContent">
         <p class="title2">예적금 상품추천</p>
         <img class="content-img" src="../../assets/img/savings.png" alt="">
       </div>
@@ -227,7 +261,7 @@ function transferButtonClick() {
 }
 
 .account {
-  background-image: url('src/assets/img/account.png');
+  background-image: url('../../assets/img/account.png');
   background-position: center;
   width: 360px;
   height: 250px;
@@ -279,17 +313,17 @@ function transferButtonClick() {
 
 .chat-bot {
   position: fixed;
-  right: 10px;  /* 또는 원하는 간격으로 조정 */
-  top: 600px; /* 또는 원하는 간격으로 조정 */
-  width: 50px;  /* 아이콘의 크기에 맞게 조정 */
-  height: 50px; /* 아이콘의 크기에 맞게 조정 */
+  right: 40px;  /* 또는 원하는 간격으로 조정 */
+  top: 580px; /* 또는 원하는 간격으로 조정 */
+  width: 75px;  /* 아이콘의 크기에 맞게 조정 */
+  height: 75px; /* 아이콘의 크기에 맞게 조정 */
   z-index: 1000; /* 다른 요소들 위에 떠 있게 하려면 충분히 큰 값 */
   background-color: #1B3C62;
   border-radius: 50%;
 }
 
 .chat-img {
-  width: 40px;
-  height: 40px;
+  width: 65px;
+  height: 65px;
 }
 </style>

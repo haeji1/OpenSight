@@ -25,7 +25,10 @@ import TransferVerifyView from '@/views/transfer/TransferVerify.vue';
 import ChatbotView from '@/views/Chatbot.vue';
 import SimplePasswordSettingView from '@/views/account/SimplePasswordSetting.vue';
 import SocialLoginView from '@/views/dashboard/SocialLogin.vue';
+import ChatbotView2 from '@/views/ChatbotSpring.vue';
 
+import AccountSettingView from '@/views/account/AccountSetting.vue';
+import SettingView from '@/views/account/Setting.vue';
 
 
 const router = createRouter({
@@ -152,6 +155,11 @@ const router = createRouter({
       component: ChatbotView
     },
     {
+      path: '/chatbot2',
+      name: 'Chatbot2',
+      component: ChatbotView2
+    },
+    {
       path: '/password/setting',
       name: 'SimplePasswordSetting',
       component: SimplePasswordSettingView
@@ -160,6 +168,16 @@ const router = createRouter({
       path: '/login/social',
       name: 'SocialLogin',
       component: SocialLoginView
+    },
+    {
+      path: '/setting',
+      name: 'Setting',
+      component: SettingView
+    },
+    {
+      path: '/account/setting',
+      name: 'AccountSetting',
+      component: AccountSettingView
     }
   ]
 })
