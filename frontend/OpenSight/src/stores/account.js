@@ -15,7 +15,7 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const selectMyAccountNumber = ref(null);
     const selectedMyAccountBankCode = ref(null);
     const transactionDate = ref(null);
-    const currentAccount = ref({})
+    const currentAccount = ref(null)
     
     const isNull = ref(false)
 

@@ -75,9 +75,9 @@ function transferButtonClick() {
 }
 
 function transactionButtonClick() {
-  accountStore.currentAccount.value = accountStore.myAccountList[currentIndex.value]
+  accountStore.currentAccount = accountStore.myAccountList[currentIndex.value]
 
-  console.log('%$%$', accountStore.currentAccount.value, '%$%$')
+  console.log('%$%$', accountStore.currentAccount, '%$%$')
   router.push({name:'Transactinos'})
 }
 
