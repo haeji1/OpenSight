@@ -73,6 +73,7 @@ function transferButtonClick() {
   accountStore.selectMyAccountNumber = accountStore.myAccountList[currentIndex.value].accountNo
   accountStore.selectedMyAccountBankCode = accountStore.myAccountList[currentIndex.value].bankCode
 
+  router.push({name:'Transfer'})
 }
 
 </script>
@@ -279,8 +280,8 @@ function transferButtonClick() {
 
 .chat-bot {
   position: fixed;
-  right: 10px;  /* 또는 원하는 간격으로 조정 */
-  top: 600px; /* 또는 원하는 간격으로 조정 */
+  right: 55px;  /* 또는 원하는 간격으로 조정 */
+  top: 580px; /* 또는 원하는 간격으로 조정 */
   width: 50px;  /* 아이콘의 크기에 맞게 조정 */
   height: 50px; /* 아이콘의 크기에 맞게 조정 */
   z-index: 1000; /* 다른 요소들 위에 떠 있게 하려면 충분히 큰 값 */
