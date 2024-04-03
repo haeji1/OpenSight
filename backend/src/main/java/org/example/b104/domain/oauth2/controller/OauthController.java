@@ -14,7 +14,7 @@ public class  OauthController {
 
     private final OauthService oauthService;
 
-    @GetMapping("/api/login/oauth2/code/{provider}")
+    @GetMapping("/login/oauth2/code/{provider}")
     public String socialLogin(@PathVariable String provider, @RequestParam("code") String code) {
         System.out.println("provider : " + provider + ", code : " + code);
         SocialLoginResponse loginResponse = oauthService.socialLogin(provider, code);
