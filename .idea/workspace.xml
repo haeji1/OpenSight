@@ -5,7 +5,51 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="39af7728-0f89-4c7b-a288-738856df33d8" name="Changes" comment=":bug: fix : .env 파일 수정">
-      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/.env" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/request/ChatBotInsertAccountInfoRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/request/ChatBotIsPositiveAnswerRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/request/ChatBotTransferInfoRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/response/ChatBotInsertAccountInfoResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/response/ChatBotIsPositiveAnswerResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/service/command/ChatBotInsertAccountInfoCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/service/command/ChatBotIsPositiveAnswerCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/service/command/ChatBotTransferCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/OpenSight/src/stores/chatbot2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/OpenSight/src/stores/setting.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/ChatbotSpring.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/AccountSetting.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/Setting.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-28__9_41__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-28__9_42__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2024-03-28__9_42__Changes_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/controller/clirequest/cliAccountTransferRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/controller/clirequest/cliAccountTransferRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/account/service/AccountService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/amazon/service/AmazonS3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/amazon/service/AmazonS3Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/ChatBotController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/controller/ChatBotController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/service/ChatBotService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/chatbot/service/ChatBotService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/oauth2/controller/OauthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/oauth2/controller/OauthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/oauth2/sevice/OauthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/oauth2/sevice/OauthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/user/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/org/example/b104/domain/user/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/stores/auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/stores/auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/stores/chatbot.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/stores/chatbot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/Chatbot.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/Chatbot.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/OpenAccount.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/OpenAccount.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/OpenAccountComplete.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/OpenAccountComplete.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/OpenAccountTerms.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/OpenAccountTerms.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/SimplePasswordSetting.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/account/SimplePasswordSetting.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/FindEmail.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/FindEmail.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/PasswordChange.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/PasswordChange.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/PasswordFind.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/PasswordFind.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/RegisterComplete.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/auth/RegisterComplete.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/dashboard/Main.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/dashboard/Main.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/dashboard/SocialLogin.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/dashboard/SocialLogin.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/profile/EditProfile.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/profile/EditProfile.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/transfer/Transfer.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/transfer/Transfer.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/transfer/TransferComplete.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/transfer/TransferComplete.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/OpenSight/src/views/transfer/TransferVerify.vue" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/OpenSight/src/views/transfer/TransferVerify.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,13 +107,6 @@
       </method>
     </configuration>
   </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-17.0.10-corretto-17.0.10-f644763e9732-24fca987" />
-      </set>
-    </attachedChunks>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -86,6 +123,7 @@
       <workItem from="1711951005456" duration="819000" />
       <workItem from="1712031258549" duration="2412000" />
       <workItem from="1712035168187" duration="244000" />
+      <workItem from="1712143704263" duration="108000" />
     </task>
     <task id="LOCAL-00001" summary=":spakles: feat: 얼굴인증 프론트 단 구성">
       <option name="closed" value="true" />
