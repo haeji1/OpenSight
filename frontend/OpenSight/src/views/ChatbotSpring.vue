@@ -28,6 +28,7 @@ const transferBalance = ref("");
 
 const messageToSend = ref("");
 
+const cameraActivate = ref(false);
 const isCameraReady = ref(false);
 const canvasRef = ref(null);
 const videoRef = ref(null);
