@@ -88,7 +88,7 @@ onMounted( async () => {
       </div>
       <button class="button" @click="">이체하기</button>
       <!-- <button class="">조회기간설정</button> -->
-      <TransactionList :transactions="transactions" />
+      <TransactionList class="transaction" :transactions="transactions" />
       <!-- <DateRangeModal v-if="isModalOpen" @update="updateDateRange" @close="closeModal" /> -->
     </div>
   </div>
@@ -128,6 +128,11 @@ onMounted( async () => {
   background-color: #1B3C62;
   color: #ffffff;
   border-radius: 10px;
+}
+
+.transaction {
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .title2 {

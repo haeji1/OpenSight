@@ -61,7 +61,7 @@ const formatDateTime = (date, time) => {
   width: 340px;
   height: 120px;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   text-align: left;
   justify-content: center;
   margin: 15px 0px;
