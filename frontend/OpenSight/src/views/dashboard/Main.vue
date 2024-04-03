@@ -91,7 +91,7 @@ const name = sessionStorage.getItem('username')
 <template>
   <div class="container">
     <div class="header">
-      <p class="title1-white">안녕하세요, {{name}}고객님.</p>
+      <p class="title2-white">안녕하세요, {{name}}고객님.</p>
       <div class="img-container">
         <img class="img" src="../../assets/img/user.png" alt="프로필수정" @click="router.push('/profile/edit')">
         <img class="img" src="../../assets/img/setting.png" alt="간편비밀번호, 주거래계좌 설정" @click="router.push('/setting')">
@@ -177,16 +177,16 @@ const name = sessionStorage.getItem('username')
   justify-content: space-between;
 }
 
-.title1-white {
-  font-size: 24px;
+.title2-white {
+  font-size: 20px;
   font-weight: 600;
   color: #ffffff;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .img {
   margin-top: 30px;
-  margin-right: 30px;
+  margin-right: 20px;
   width: 24px;
   height: 24px;
 }
