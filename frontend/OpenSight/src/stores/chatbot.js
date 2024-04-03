@@ -7,6 +7,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const django = ref([])
   const spring = ref([])
+  const API_URL = 'https://j10b104.p.ssafy.io'
 
   // ======== GETTER ========
 
@@ -48,7 +49,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
         // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
         if (text) {
           axios({
-            url: `http://175.209.203.185:7979/command/`,
+            url: `${API_URL}/gpu/command/`,
             method: "POST",
             data: {
               text
@@ -82,7 +83,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCommand = (text) => {
     axios({
-      url: `http://175.209.203.185:7979/text/`,
+      url: `${API_URL}/gpu/command/`,
       method: "POST",
       data: {
         text
@@ -124,7 +125,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
         // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
         if (text) {
           axios({
-            url: `http://175.209.203.185:7979/check/`,
+            url: `${API_URL}/gpu/check/`,
             method: "POST",
             data: {
               text
@@ -159,7 +160,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCheckCommand = (text) => {
     axios({
-      url: `http://175.209.203.185:7979/check/`,
+      url: `${API_URL}/gpu/check/`,
       method: "POST",
       data: {
         text
@@ -182,7 +183,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
     const accessToken = sessionStorage.getItem('accessToken')
 
     axios({
-      url: `http://localhost:8080/api/chatbot/request`,
+      url: `${API_URL}/api/chatbot/request`,
       method: "POST",
       headers : {
         'Authorization': `${accessToken}`
