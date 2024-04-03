@@ -76,6 +76,11 @@ function transferButtonClick() {
   router.push({name:'Transfer'})
 }
 
+function transactionButtonClick() {
+  console.log('&&&', accountStore.myAccountList.value, '&&&')
+  console.log('***', accountStore.currentIndex.value, '***')
+}
+
 function noContent() {
   alert('준비중입니다.')
 }
@@ -134,7 +139,7 @@ console.log('###', getBalanceString, '###')
             </div>
             </div>
           <button class="button" @click="transferButtonClick">이체하기</button>
-          <button class="button">거래내역 조회하기</button>
+          <button class="button" @click="transactionButtonClick">거래내역 조회하기</button>
         </div>
         <p class="prev-next" @click="nextAccount">&gt;</p>
       </div>
