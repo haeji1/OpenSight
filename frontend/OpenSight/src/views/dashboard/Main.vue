@@ -1,7 +1,7 @@
 <script setup>
 import footer from '@/components/layout/Footer.vue'
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useAccountStore } from '@/stores/account'
 import { useAuthStore } from '@/stores/auth';
 import { ref, watch } from 'vue';
@@ -80,6 +80,30 @@ function noContent() {
   alert('준비중입니다.')
 }
 
+const balanceString = ref('')
+
+const getBalanceString = computed(() => {
+  return balanceString.value
+})
+
+const changeBalanceString = function changeBalanceString() {
+  watch(() => accountStore.myAccountBalance, (balance) => {
+    const str = String(balance)
+    let res = ''
+    let count = 0
+
+    for (let i = str.length - 1; i >= 0; i--) {
+      res = str[i] + res
+      count++
+
+      if (count % 3 == 0 && i != 0) {
+        res = ',' + res
+      }
+    }
+    
+    balance.value = res
+  })
+}
 </script>
 
 <template>
@@ -105,7 +129,7 @@ function noContent() {
                 <p class="title1 title1-account">{{accountStore.myAccountList[currentIndex].bankName}}</p>
                 <p class="body3 body3-account">{{accountStore.myAccountList[currentIndex].accountName}}</p>
                 <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
-                <p class="title2 title2-account">잔액 {{accountStore.myAccountBalance}}원</p>
+                <p class="title2 title2-account">잔액 {{getBalanceString}}원</p>
               </div>
             </div>
             </div>
