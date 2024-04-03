@@ -85,10 +85,10 @@ public class UserService {
     @Transactional(readOnly = false)
     public LoginResponse faceLogin(FaceLoginCommand command) {
         try {
-            File uploadDir = new File("src/main/resources/" + UPLOAD_DIR);
+            /*File uploadDir = new File("src/main/resources/" + UPLOAD_DIR);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
-            }
+            }*/
 
             // 파일을 지정된 디렉토리에 저장
             /*String fileName = command.getRequestImage().getOriginalFilename();
