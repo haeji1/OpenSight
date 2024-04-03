@@ -1,0 +1,15 @@
+{
+  "background_color": "#FFFFFF",
+  "description": "",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "name": "OpenSight", 
+  "short_name": "OpenSight",
+  "start_url": "/"
+}
