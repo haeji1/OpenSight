@@ -83,7 +83,7 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
   const textCommand = (text) => {
     axios({
-      url: `${API_URL}/gpu/command/`,
+      url: `http://127.0.0.1:8000/text/`,
       method: "POST",
       data: {
         text

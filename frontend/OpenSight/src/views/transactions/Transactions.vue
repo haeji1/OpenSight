@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import TransactionList from '@/components/transactinos/TransactionList.vue'
+// import PeriodSettingModal from '@/components/modal/PeriodSettingModal.vue';
 import Account from '@/components/layout/Account.vue'
 import axios from 'axios';
 
@@ -9,7 +10,7 @@ const router = useRouter()
 
 const loading = ref(false);
 const error = ref(null);
-const transactions = ref([]) 
+const transactions = ref([])
 const apiUrl = 'http://localhost:8080/api/accounts/inquire-account-transaction-history';
 const accessToken = sessionStorage.getItem('accessToken');
 
@@ -41,8 +42,8 @@ const requestTransactionData = async (requestData) =>{
       console.log("Transaction data requested successfully:", res.data);
       transactions.value = res.data.data.rec.list;
     })
-    
-    
+
+
   } catch (err) {
     console.error("Failed to request transaction data:", err);
     throw err; // Rethrow the error to handle it where this function is called
@@ -63,7 +64,9 @@ const requestTransactionData = async (requestData) =>{
     <div class="content">
       <Account class="account" />
       <button class="button" @click="">이체하기</button>
+      <!-- <button class="">조회기간설정</button> -->
       <TransactionList :transactions="transactions" />
+      <!-- <DateRangeModal v-if="isModalOpen" @update="updateDateRange" @close="closeModal" /> -->
     </div>
   </div>
 </template>

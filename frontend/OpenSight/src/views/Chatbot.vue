@@ -161,7 +161,7 @@ watch(() => store.getSpring, (newMessage) => {
 
     messages.value.push(
       {
-        command_id : newMessage.command_id,
+        command_id :  newMessage.command_id,
         message : newMessage.text1 + '\n' + history + '\n' + newMessage.text2,
         isChatbot : 1
       }

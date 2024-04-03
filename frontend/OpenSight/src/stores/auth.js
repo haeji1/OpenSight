@@ -6,7 +6,8 @@ import { useRouter } from 'vue-router';
 export const useAuthStore = defineStore('authStore', () => {
   // const API_URL = 'https://j10b104.p.ssafy.io:8080'
   // const API_URL = 'http://192.168.31.168:8080'
-  const API_URL = 'https://j10b104.p.ssafy.io'
+  const accountBaseURL = `${import.meta.env.VITE_REST_API}`;
+  //const API_URL = 'http://localhost:8080'
   const router = useRouter()
   const id = ref(null)
   const name = ref(null)
@@ -55,7 +56,7 @@ export const useAuthStore = defineStore('authStore', () => {
   const login = function (payload) {
     axios({
       method: 'post', 
-      url: `${API_URL}/api/users/login`,
+      url: `${accountBaseURL}/users/login`,
       data: {
         code: 'login',
         userEmail : payload.username,
@@ -77,7 +78,7 @@ export const useAuthStore = defineStore('authStore', () => {
   const logout = function () {
     axios({
       method: 'post',
-      url: `${API_URL}/api/users/logout`
+      url: `${accountBaseURL}/users/logout`
     })
     .then((res) => {
       accessToken.value = null
@@ -95,7 +96,7 @@ export const useAuthStore = defineStore('authStore', () => {
     const { phonenumber } = payload
     axios({
       method: 'post',
-      url: `${API_URL}/api/users/find-id`,
+      url: `${accountBaseURL}/users/find-id`,
       data: {
         code: 'findId',
         phonenumber
@@ -113,7 +114,7 @@ export const useAuthStore = defineStore('authStore', () => {
     const { email, phonenumber } = payload
     axios({
       method: 'post',
-      url: `${API_URL}/api/users/find-pw`,
+      url: `${accountBaseURL}/users/find-pw`,
       data: {
         code: 'findpw',
         email,
@@ -139,7 +140,7 @@ export const useAuthStore = defineStore('authStore', () => {
         'password': payload.password
       }
     })
-    .then((res) => { 
+    .then((res) => {
       console.log(res)
       alert('완료되었습니다.')
       router.push('/register/complete')
@@ -160,7 +161,7 @@ export const useAuthStore = defineStore('authStore', () => {
     if (accessToken) {
       axios({
         method:'post',
-        url:`${API_URL}/api/users/update-pw`,
+        url:`${accountBaseURL}/users/update-pw`,
         headers: {
           'Authorization': `${accessToken}` // access token을 Authorization 헤더에 포함
         },
