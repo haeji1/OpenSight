@@ -8,7 +8,7 @@ const router = useRouter()
 <template>
   <div class="container">
     <div class="header">
-      <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">설정</p>
+      <p class="title1" @click="router.push('/main')">&lt;</p><p class="title1">설정</p>
     </div>
     <div class="content">
       <button class="button" @click="router.push('/account/setting')">주거래계좌 설정</button>
@@ -45,5 +45,9 @@ const router = useRouter()
   background-color: #1B3C62;
   color: #ffffff;
   border-radius: 10px;
+}
+
+.title1 {
+  margin-left: 20px;
 }
 </style>

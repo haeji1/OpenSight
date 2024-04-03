@@ -66,13 +66,13 @@ const selectaccount = function () {
           <div class="account">
             <div>
               <div class="account-content" v-if="isDataLoaded">
-                <p class="title1 title1-account">{{accountStore.myAccountList[currentIndex].bankName}}</p>
-                <p class="body3 body3-account">{{accountStore.myAccountList[currentIndex].accountName}}</p>
-                <p class="body2 body2-account">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
+                <p class="title1">{{accountStore.myAccountList[currentIndex].bankName}}</p>
+                <p class="body2">{{accountStore.myAccountList[currentIndex].accountName}}</p>
+                <p class="body1">계좌번호 {{accountStore.myAccountList[currentIndex].accountNo}}</p>
               </div>
             </div>
           </div>
-          <button class="button" @click="selectaccount">이체하기</button>
+          <button class="button" @click="selectaccount">선택하기</button>
         </div>
         <p class="prev-next" @click="nextAccount">&gt;</p>
       </div>
@@ -100,7 +100,7 @@ const selectaccount = function () {
 }
 
 .button {
-  margin-top: 100px;
+  margin: 50px 0px;
   width: 327px;
   height: 50px; 
   font-size: 16px;
@@ -141,5 +141,9 @@ const selectaccount = function () {
 
 .prev-next {
   margin-top: 100px;
+}
+
+.title1 {
+  margin-left: 20px;
 }
 </style>

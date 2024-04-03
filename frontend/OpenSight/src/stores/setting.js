@@ -12,7 +12,7 @@ export const useSettingStore = defineStore('SettingStore', () => {
       const accessToken = sessionStorage.getItem('accessToken')
       await axios({
         method: 'post',
-        url: `${settingBaseURL}/register/account`,
+        url: `${settingBaseURL}/users/register/simple-password`,
         headers: {
           'Authorization': `${accessToken}`
         },
@@ -33,7 +33,7 @@ export const useSettingStore = defineStore('SettingStore', () => {
       const accessToken = sessionStorage.getItem('accessToken')
       await axios({
         method: 'post',
-        url: `${settingBaseURL}/register/account`,
+        url: `${settingBaseURL}/users/register/account`,
         headers: {
           'Authorization': `${accessToken}`
         },
