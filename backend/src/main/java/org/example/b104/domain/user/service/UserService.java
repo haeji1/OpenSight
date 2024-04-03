@@ -437,14 +437,19 @@ public class UserService {
         }
         // 파일을 지정된 디렉토리에 저장
         String fileName = command.getRequestImage().getOriginalFilename();
+        String keyName = fileName;
+
+
         try {
-            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+/*            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
             command.getRequestImage().transferTo(destFile);
 
             File file = new File(UPLOAD_DIR + File.separator + fileName);
             String keyName = file.getName();
 
-            s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
+            s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);*/
+
+            s3Service.uploadFile(command.getRequestImage(),"cloud-open-sight-ue1");
             List<FaceMatch> matchList = amazonRekognitionService.recognizeFace("cloud-open-sight-collection", "cloud-open-sight-ue1", keyName);
 
             if (matchList.isEmpty())
