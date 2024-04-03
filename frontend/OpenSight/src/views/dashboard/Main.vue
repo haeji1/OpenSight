@@ -85,33 +85,6 @@ function noContent() {
   alert('준비중입니다.')
 }
 
-const balanceString = ref('')
-
-const getBalanceString = computed(() => {
-  return balanceString.value
-})
-
-watch(() => accountStore.myAccountBalance, (balance) => {
-
-  if (!balance) {
-    const str = String(balance)
-    let res = ''
-    let count = 0
-
-    for (let i = str.length - 1; i >= 0; i--) {
-      res = str[i] + res
-      count++
-
-      if (count % 3 == 0 && i != 0) {
-        res = ',' + res
-      }
-    }
-    balanceString.value = res
-  }
-  
-})
-
-console.log('###', getBalanceString, '###')
 
 
 const name = sessionStorage.getItem('username')
