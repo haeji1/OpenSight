@@ -86,24 +86,24 @@ const getBalanceString = computed(() => {
   return balanceString.value
 })
 
-const changeBalanceString = function changeBalanceString() {
-  watch(() => accountStore.myAccountBalance, (balance) => {
-    const str = String(balance)
-    let res = ''
-    let count = 0
+watch(() => accountStore.myAccountBalance, (balance) => {
+  const str = String(balance)
+  let res = ''
+  let count = 0
 
-    for (let i = str.length - 1; i >= 0; i--) {
-      res = str[i] + res
-      count++
+  for (let i = str.length - 1; i >= 0; i--) {
+    res = str[i] + res
+    count++
 
-      if (count % 3 == 0 && i != 0) {
-        res = ',' + res
-      }
+    if (count % 3 == 0 && i != 0) {
+      res = ',' + res
     }
+  }
+  balanceString.value = res
+})
 
-    balanceString.value = res
-  })
-}
+console.log('###', getBalanceString, '###')
+
 </script>
 
 <template>
