@@ -87,7 +87,7 @@ const logIn = function () {
 
 
 function naverSocialLogin() {
-  window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=4hSpDvA1GDlGXjqG6sac&redirect_uri=https://j10b104.p.ssafy.io/login/oauth2/code/naver'
+  window.location.href = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=4hSpDvA1GDlGXjqG6sac&redirect_uri=http://j10b104.p.ssafy.io/api/login/oauth2/code/naver'
 }
 </script>
 
