@@ -68,7 +68,6 @@ const captureImageFilter = () =>{
         if (response.data.data.result === "success") {
           alert("얼굴인식 성공");
 
-          cameraActivate.value = false;
           await accountStore.inquireAccountList();
 
           console.log(accountStore.myAccountList[0].bankCode);
@@ -114,6 +113,11 @@ const setupCamera = async () => {
   }
 };
 
+const captureImage = () => {
+  canvasRef.value.width = videoRef.value.videoWidth;
+  canvasRef.value.height = videoRef.value.videoHeight;
+  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
+};
 async function sendVoiceToCommand() {
   alert("sendVoiceToCommand");
   try {
