@@ -20,7 +20,6 @@ export const useSettingStore = defineStore('SettingStore', () => {
           'simplePassword': simplePassword
         }
       })
-      console.log(res)
       alert('완료되었습니다.')
       router.push('/main')
     } catch (error) {
@@ -42,7 +41,6 @@ export const useSettingStore = defineStore('SettingStore', () => {
           'bankCode': account.bankCode
         }
       })
-      console.log(res)
       alert('완료되었습니다.')
       router.push('/main')
     } catch (error) {
