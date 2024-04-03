@@ -95,7 +95,7 @@ function naverSocialLogin() {
 <template>
   <div class="screen-container">
     <div class="login-header">
-      <p class="title1">로그인</p>
+      <p class="title1 title1-white">로그인</p>
     </div>
     <div class="login-container">
       <div class="login-subheader">
@@ -244,4 +244,8 @@ function naverSocialLogin() {
   margin-bottom: 5px;
 }
 /* 각 요소의 사이즈 및 색상은 이미지를 기반으로 조정하였습니다. */
+
+.title1-white {
+  color: #ffffff;
+}
 </style>
