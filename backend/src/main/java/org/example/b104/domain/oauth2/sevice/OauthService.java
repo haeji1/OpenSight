@@ -63,8 +63,11 @@ public class OauthService {
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
         System.out.println("**********User정보***********"+userProfile.getEmail());
         System.out.println("**********user정보**********"+userProfile.getName());
+        System.out.println("====userProfile.getEmail===="+userProfile.getEmail());
+        System.out.println("=====userRepository에서 찾은 Email===="+userRepository.findByEmail(userProfile.getEmail()).getEmail());
 
         if (userRepository.findByEmail(userProfile.getEmail()) == null) {
+            System.out.println("==================email이 null임==================");
 //            System.out.println("======api통신 시작=========" + userProfile.getEmail());
 //            String emailPrefix = userProfile.getEmail().substring(0, Math.min(userProfile.getEmail().length(), 10));
 //            BankApiResponse responseEntity = WebClient.create()
