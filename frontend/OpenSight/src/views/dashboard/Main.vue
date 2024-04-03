@@ -100,8 +100,8 @@ const changeBalanceString = function changeBalanceString() {
         res = ',' + res
       }
     }
-    
-    balance.value = res
+
+    balanceString.value = res
   })
 }
 </script>
