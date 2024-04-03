@@ -90,19 +90,23 @@ const getBalanceString = computed(() => {
 })
 
 watch(() => accountStore.myAccountBalance, (balance) => {
-  const str = String(balance)
-  let res = ''
-  let count = 0
 
-  for (let i = str.length - 1; i >= 0; i--) {
-    res = str[i] + res
-    count++
+  if (!balance) {
+    const str = String(balance)
+    let res = ''
+    let count = 0
 
-    if (count % 3 == 0 && i != 0) {
-      res = ',' + res
+    for (let i = str.length - 1; i >= 0; i--) {
+      res = str[i] + res
+      count++
+
+      if (count % 3 == 0 && i != 0) {
+        res = ',' + res
+      }
     }
+    balanceString.value = res
   }
-  balanceString.value = res
+  
 })
 
 console.log('###', getBalanceString, '###')
