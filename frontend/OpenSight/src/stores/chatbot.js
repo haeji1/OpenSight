@@ -2,6 +2,8 @@ import { ref, computed } from "vue"
 import { defineStore } from "pinia";
 import axios from "axios";
 
+export const cameraActivate = ref(false)
+
 export const useChatBotStore = defineStore('chatBotStore', () => {
   // ======== STATE ========
 
