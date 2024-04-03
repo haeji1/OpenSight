@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import ChatMessage from '@/components/ChatMessage.vue'
 import { useChatBotStore2 } from '@/stores/chatbot2'
 import {useAccountStore}  from "@/stores/account.js";
+import axios from 'axios'
 
 const accountStore = useAccountStore();
 
