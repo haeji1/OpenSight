@@ -61,6 +61,8 @@ public class OauthService {
 
         // 2. 유저 정보 가져오기
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
+        System.out.println("**********User정보***********"+userProfile.getEmail());
+        System.out.println("**********user정보**********"+userProfile.getName());
 
         if (userRepository.findByEmail(userProfile.getEmail()) == null) {
 //            System.out.println("======api통신 시작=========" + userProfile.getEmail());
@@ -78,7 +80,9 @@ public class OauthService {
                             .userId(userProfile.getEmail())
                             .build()
             );
-            System.out.println(response);
+            System.out.println("============RegisterAccountMemberResponse====="+response.getUserId());
+            System.out.println("============RegisterAccountMemberResponse====="+response.getUserKey());
+            System.out.println("============RegisterAccountMemberResponse====="+response.getUserName());
 
             try {
                 if (response != null) {
@@ -223,6 +227,7 @@ public class OauthService {
     // OAuth 서버에서 유저 정보 map으로 가져오기
     private Map<String, Object> getUserAttributes(OauthProvider provider, OauthTokenResponse tokenResponse) {
         System.out.println("====== webClient 통신====="+provider+tokenResponse);
+        System.out.println("========유저정보 가져오기==========");
         return  WebClient.create()
                 .get()
                 .uri(provider.getUserInfoUrl())
