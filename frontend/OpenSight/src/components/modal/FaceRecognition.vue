@@ -104,7 +104,7 @@ const captureImage = () => {
     <video ref="videoRef" autoplay style="display:none;"></video>
     <canvas ref="canvasRef" style="display:none;"></canvas>
     <div @click="captureImageFilter">
-      <img class="faceid" src="../assets/img/faceid.png" alt="얼굴 인식 버튼">
+      <img class="faceid" src="../../assets/img/faceid.png" alt="얼굴 인식 버튼">
     </div>
   </div>
 </template>
