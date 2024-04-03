@@ -133,35 +133,9 @@ public class OauthService {
                             .jwtToken(jwtToken)
                             .refreshToken(refreshToken)
                             .build();
-                } else {
-                    System.out.println("======email이 null이 아님======");
-                    User user = saveOrUpdate(userProfile);
-                    System.out.println("**********saveOrUpdate로직 끝**************");
-                    // JWT 토큰 만들기
-                    String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
-                    String refreshToken = jwtTokenProvider.createRefreshToken();
-
-                    Auth auth = Auth.builder()
-                            .user(user)
-                            .refreshToken(refreshToken)
-                            .build();
-
-                    saveOrUpdate(auth, user);
-
-//            saveOrUpdate(auth.getUser());
-
-//        System.out.println("jwt토큰"+jwtToken);
-                    return SocialLoginResponse.builder()
-                            .id(user.getUserId())
-                            .name(user.getUsername())
-                            .email(user.getEmail())
-                            .tokenType("Bearer")
-                            .accessToken(tokenResponse.getAccessToken())
-                            .jwtToken(jwtToken)
-                            .refreshToken(refreshToken)
-                            .build();
                 }
             }catch (Exception e) {
+                System.out.println("===========회원가입중 에러===========");
                 e.printStackTrace();
             }
 
@@ -208,6 +182,33 @@ public class OauthService {
 //                        .build();
 //            }
 
+        } else {
+            System.out.println("======email이 null이 아님======");
+            User user = saveOrUpdate(userProfile);
+            System.out.println("**********saveOrUpdate로직 끝**************");
+            // JWT 토큰 만들기
+            String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
+            String refreshToken = jwtTokenProvider.createRefreshToken();
+
+            Auth auth = Auth.builder()
+                    .user(user)
+                    .refreshToken(refreshToken)
+                    .build();
+
+            saveOrUpdate(auth, user);
+
+//            saveOrUpdate(auth.getUser());
+
+//        System.out.println("jwt토큰"+jwtToken);
+            return SocialLoginResponse.builder()
+                    .id(user.getUserId())
+                    .name(user.getUsername())
+                    .email(user.getEmail())
+                    .tokenType("Bearer")
+                    .accessToken(tokenResponse.getAccessToken())
+                    .jwtToken(jwtToken)
+                    .refreshToken(refreshToken)
+                    .build();
         }
 
 
