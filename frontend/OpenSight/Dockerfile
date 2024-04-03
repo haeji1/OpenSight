@@ -52,6 +52,7 @@ RUN npm ci
 # Copy the rest of your Vue.js application source code
 COPY . /app
 
+RUN npm install
 # Build your Vue.js application
 RUN npm run build
 
