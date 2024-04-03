@@ -1,14 +1,18 @@
 <script setup>
+import { defineProps } from 'vue';
+const props = defineProps({
+
+})
 
 </script>
 
 <template>
   <div class="account">
     <div class="content">
-      <p class="title1">은행명</p>
-      <p class="body3">통장이름</p>
-      <p class="body2">계좌번호</p>
-      <p class="title2">잔액</p>
+      <p class="title1-white">은행명</p>
+      <p class="body3-white">통장이름</p>
+      <p class="body2-white">계좌번호</p>
+      <p class="title2-white">잔액</p>
     </div>
   </div>
 </template>
@@ -22,7 +26,7 @@
   border-radius: 15px;
 }
 
-.content {
+.account-content {
   display: flex;
   flex-direction: column;
   justify-content: left;
@@ -31,7 +35,7 @@
   margin-left: 50px;
 }
 
-.title1, .title2, .body2, .body3 {
+.title1-white, .title2-white, .body2-white, .body3-white {
   color: #ffffff;
   margin: 5px 0px;
 }
