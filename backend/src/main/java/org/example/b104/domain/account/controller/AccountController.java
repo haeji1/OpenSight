@@ -249,6 +249,7 @@ public class AccountController {
             @RequestHeader("Authorization") String token,
             @RequestBody cliAccountTransferRequest request
     ){
+        System.out.println(request.toString());
         User user = getUserFromToken(token);
         if (user != null) {
             AccountTransferResponse accountTransfer = accountService.accountTransfer(

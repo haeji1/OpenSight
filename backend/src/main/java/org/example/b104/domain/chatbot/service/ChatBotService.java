@@ -9,8 +9,12 @@ import org.example.b104.domain.account.service.AccountService;
 import org.example.b104.domain.account.service.command.AccountTransferCommand;
 import org.example.b104.domain.account.service.command.InquireAccountBalanceCommand;
 import org.example.b104.domain.account.service.command.InquireAccountHistoryTransactionCommand;
+import org.example.b104.domain.chatbot.controller.request.ChatBotInsertAccountInfoRequest;
 import org.example.b104.domain.chatbot.controller.request.ChatBotTextRequest;
 import org.example.b104.domain.chatbot.controller.response.*;
+import org.example.b104.domain.chatbot.service.command.ChatBotInsertAccountInfoCommand;
+import org.example.b104.domain.chatbot.service.command.ChatBotIsPositiveAnswerCommand;
+import org.example.b104.domain.chatbot.service.command.ChatBotRawTextCommand;
 import org.example.b104.domain.chatbot.service.command.ChatBotTextCommand;
 import org.example.b104.domain.oauth2.JwtTokenProvider;
 import org.example.b104.domain.openai.service.ChatGptService;
@@ -30,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -227,7 +233,89 @@ public class ChatBotService {
 //        return response.toString();
 //    }
 
-    public Integer handleUserCommand(String text) {
+    @Transactional(readOnly = false)
+    public ChatBotInsertAccountInfoResponse insertAccountInfo(ChatBotInsertAccountInfoCommand command) {
+        String promptedMessage = "[]안에 있는 문장에 대해서 은행이름과 계좌번호, 보내는 금액, 은행코드를 추출해줘 다음과 같이 해줘.\n" +
+                "은행은 한국은행,산업은행,기업은행,국민은행 .\n" +
+                "은행코드는 한국은행일 때 001, 산업은행일때 002, 기업은행일 때 003, 국민은행일 때 004',\n " +
+                ",\n " +
+                "계좌번호는 은행코드로 시작하는 16자리 숫자야,\n " +
+                "보내는 금액도 얼마인지 알려줘\n"+
+                "답변은 다른말 하지말고 은행코드, 은행이름, 계좌번호, 금액으로 대답해줘.\n"+
+                "예를들어 너는 \n" +
+                "'은행코드 : 001, 은행이름 : 한국은행, 계좌번호 : 0013454323456543, 보낼금액 : 10000원'\n" +
+                "이라고 대답해\n"+
+                "["+command.getText()+"]";
+        System.out.println(promptedMessage);
+        String input = chatGptService.chat(promptedMessage);
+        System.out.println(input);
+
+        // 은행 코드 추출
+        Pattern bankCodePattern = Pattern.compile("은행코드 : (\\d+)");
+        Matcher bankCodeMatcher = bankCodePattern.matcher(input);
+        if (bankCodeMatcher.find()) {
+            String bankCode = bankCodeMatcher.group(1);
+            System.out.println("은행 코드: " + bankCode);
+        }
+
+        // 은행 이름 추출
+        Pattern bankNamePattern = Pattern.compile("은행이름 : (.+?),");
+        Matcher bankNameMatcher = bankNamePattern.matcher(input);
+        if (bankNameMatcher.find()) {
+            String bankName = bankNameMatcher.group(1);
+            System.out.println("은행 이름: " + bankName);
+        }
+
+
+        // 계좌 번호 추출
+        Pattern accountNumberPattern = Pattern.compile("계좌번호 : (\\d+)");
+        Matcher accountNumberMatcher = accountNumberPattern.matcher(input);
+        if (accountNumberMatcher.find()) {
+            String accountNumber = accountNumberMatcher.group(1);
+            System.out.println("계좌 번호: " + accountNumber);
+        }
+
+    // 금액 추출
+        Pattern amountPattern = Pattern.compile("보낼금액 : (\\d+)원");
+        Matcher amountMatcher = amountPattern.matcher(input);
+        if (amountMatcher.find()) {
+            String amount = amountMatcher.group(1);
+            System.out.println("금액: " + amount);
+        }
+        ChatBotInsertAccountInfoResponse response = ChatBotInsertAccountInfoResponse.builder()
+                .bankCode(bankCodeMatcher.group(1))
+                .accountNumber(accountNumberMatcher.group(1))
+                .transferBalance(amountMatcher.group(1))
+                .bankName(bankNameMatcher.group(1))
+                .commandId("101")
+                .build();
+        return response;
+    }
+
+    @Transactional(readOnly = false)
+    public ChatBotIsPositiveAnswerResponse checkIsPositiveAnswer(ChatBotIsPositiveAnswerCommand command) {
+        // 2. gpt에 보내서 긍정인지(Yes) 부정(No)인지 처리
+        String promptedMessage = "[]안에 있는 문장에 대한 답변을 다음과 같이 해줘.\n" +
+                "문장의 의미가 긍정적이면 'Yes',\n " +
+                "문장의 의미가 부정적이면 'No',\n " +
+                "예를들어 '어'라면 너는 \n" +
+                "'Yes'\n" +
+                "이라고 대답해\n"+
+                "["+command.getText()+"]";;
+        String result = chatGptService.chat(promptedMessage);
+        System.out.println(command);
+        System.out.println(result);
+        // 3. response에 응답 담아서 보내기
+        ChatBotIsPositiveAnswerResponse chatBotIsPositiveAnswerResponse = ChatBotIsPositiveAnswerResponse.builder()
+                .answer(result)
+                .commandId("102")
+                .build();
+
+        return chatBotIsPositiveAnswerResponse;
+    }
+
+    @Transactional(readOnly = false)
+    public Integer handleUserCommand(ChatBotRawTextCommand command) {
         // 1. text 프롬포트에 넣기
 //        "[사과, 딸기, 포도]" +
 //                "이 대 괄호 안에 있는 상품들 중에\n" +
@@ -245,7 +333,7 @@ public class ChatBotService {
                 "예를들어 계좌이체와 관련있으면 너는 \n" +
                 "'1'\n" +
                 "이라고 대답해\n"+
-                "["+text+"]";;
+                "["+command.getText()+"]";;
 
 //        System.out.println(promptedMessage);
 
@@ -295,27 +383,6 @@ public class ChatBotService {
 
         System.out.println(mostFrequentNumber);
         return mostFrequentNumber;
-//        if(mostFrequentNumber == 1) {
-//            // 1. gpt 응답으로 아래 세개 정보 입력받기
-//            // 2. 금액, 계좌번호, 은행코드 입력받기
-//            // 3. chatBotTextCommand 값 넣기
-//            // 4. 서비스 수행
-//
-//        } else if (mostFrequentNumber == 2) {
-//            ChatBotTextCommand chatBotTextCommand = ChatBotTextCommand.builder()
-//                    .command_id(mostFrequentNumber)
-//                    .message()
-//                    .bank()
-//                    .account()
-//                    .money()
-//                    .is_chatbot(1)
-//                    .build();
-//            balanceInquiry(token, chatBotTextCommand);
-//        } else if (mostFrequentNumber == 3) {
-//
-//        } else if (mostFrequentNumber == 4) {
-//
-//        }
     }
 
 
