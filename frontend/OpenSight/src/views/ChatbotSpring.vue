@@ -120,7 +120,7 @@ const captureImage = () => {
   canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
 };
 async function sendVoiceToCommand() {
-  alert("sendVoiceToCommand");
+  alert("10초 동안 음성 인식 기능이 활성화됩니다. 원하시는 업무를 말씀해주세요. 음성은 10초 후 자동으로 종료됩니다.");
   try {
     const result = await store.micCommand2();
     console.log(result);
