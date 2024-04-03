@@ -12,7 +12,7 @@ const hasAllRequiredCharacters = computed(() => {
   return lowerCase && upperCase && numbers;
 });
 function goComplete () {
-  router.push('/register/complete')
+  
 }
 </script>
 <template>
@@ -21,7 +21,7 @@ function goComplete () {
       <p @click="router.push('/main')" class="title2 white">&lt;</p><p class="title2 white">회원정보 수정</p>
     </div>
     <div class="content">
-      <form class="form">
+      <form class="form" @submit.prevent="goComplete">
         <label for="email">이메일(필수)</label>
         <input class="block-input" type="email" id="email" placeholder="이메일" required readonly>
         
@@ -46,7 +46,7 @@ function goComplete () {
         <input class="block-input" type="tel" id="phoneNumber" placeholder="전화번호" required readonly>
         
         <div class="button-container">
-          <button class="button" type="submit" @click="goComplete">회원정보 수정하기</button>
+          <button class="button" type="submit" @click.prevent="goComplete">회원정보 수정하기</button>
         </div>
       </form>
     </div>

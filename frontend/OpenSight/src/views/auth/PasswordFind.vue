@@ -1,8 +1,21 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore()
+
+const phone = ref(null)
+const email = ref(null)
 
 const router = useRouter()
 
+const findPassword = function () {
+  const payload = {
+    email : email.value,
+    phonenumber : phone.value
+  }
+  authStore.findPassword(payload)
+}
 </script>
 
 <template>
@@ -17,6 +30,7 @@ const router = useRouter()
           class="input"
           type="text"
           placeholder="전화번호"
+          v-model="phone"
         />
       </div>
     </div>
@@ -27,9 +41,10 @@ const router = useRouter()
           class="input"
           type="email"
           placeholder="이메일"
+          v-model="email"
         />
       </div>
-      <button class="button" @click="">비밀번호 찾기</button>
+      <button class="button" @click="findPassword">비밀번호 찾기</button>
     </div>
   </div>
 </template>

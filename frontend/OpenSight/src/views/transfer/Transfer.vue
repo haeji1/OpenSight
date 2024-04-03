@@ -112,9 +112,8 @@ function test() {
         <input class="input" type="text" placeholder="미입력시 받는 분 이름 표시" v-model="senderName"/>
 
         <div class="button-group">
-          <button class="button-cancel" type="button" @click="cancel">취소</button>
+          <button class="button-cancel" type="button" @click="router.push('/main')">취소</button>
           <button class="button-confirm" type="button" @click="onClickNextButton">다음</button>
-          <button class="button-confirm" type="button" @click="test">테스트</button>
         </div>
       </div>
     </div>

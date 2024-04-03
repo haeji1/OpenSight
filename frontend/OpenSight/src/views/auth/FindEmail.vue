@@ -1,8 +1,18 @@
 <script setup>
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useAuthStore } from '@/stores/auth';
 
+const authStore = useAuthStore()
 const router = useRouter()
+const phonenumber = ref(null)
 
+const findEmail = function () {
+  const payload = {
+    phonenumber: phonenumber.value
+  }
+  authStore.findEmail(payload)
+}
 </script>
 
 <template>
@@ -18,9 +28,10 @@ const router = useRouter()
           class="input"
           type="text"
           placeholder="전화번호"
+          v-model="phonenumber"
         />
       </div>
-      <button class="button" @click="">이메일 찾기</button>
+      <button class="button" @click="findEmail">이메일 찾기</button>
     </div>
   </div>
 </template>

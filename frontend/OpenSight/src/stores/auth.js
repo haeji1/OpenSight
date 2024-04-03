@@ -122,10 +122,29 @@ export const useAuthStore = defineStore('authStore', () => {
     })
     .then((res) => {
       console.log(res)
+      router.push('/password/change')
     })
     .catch((err) => {
       console.log(err)
     })
+  }
+
+  const editProfile = function (payload) {
+    axios({
+      method: 'post',
+      url: `${API_URL}/api/users/update-info`,
+      data: {
+        'email': payload.email,
+        'username': payload.username,
+        'password': payload.password
+      }
+    })
+    .then((res) => { 
+      console.log(res)
+      alert('완료되었습니다.')
+      router.push('/register/complete')
+    })
+    .catch((err) => console.log(err))
   }
 
   const updatePassword = function (payload) {
@@ -164,6 +183,6 @@ export const useAuthStore = defineStore('authStore', () => {
   }
 
   return {
-    accessToken, refreshToken, isLogin, register, login, logout, findEmail, findPassword,updatePassword,name
+    accessToken, refreshToken, isLogin, register, login, logout, findEmail, findPassword,updatePassword,name, editProfile
   }
 })

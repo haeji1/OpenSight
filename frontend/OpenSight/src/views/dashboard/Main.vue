@@ -76,6 +76,10 @@ function transferButtonClick() {
   router.push({name:'Transfer'})
 }
 
+function noContent() {
+  alert('준비중입니다.')
+}
+
 </script>
 
 <template>
@@ -117,7 +121,7 @@ function transferButtonClick() {
         </div>
         <img class="content-img" src="../../assets/img/accountimage.png" alt="">
       </div>
-      <div class="savings" @click="">
+      <div class="savings" @click="noContent">
         <p class="title2">예적금 상품추천</p>
         <img class="content-img" src="../../assets/img/savings.png" alt="">
       </div>
@@ -280,17 +284,17 @@ function transferButtonClick() {
 
 .chat-bot {
   position: fixed;
-  right: 55px;  /* 또는 원하는 간격으로 조정 */
+  right: 40px;  /* 또는 원하는 간격으로 조정 */
   top: 580px; /* 또는 원하는 간격으로 조정 */
-  width: 50px;  /* 아이콘의 크기에 맞게 조정 */
-  height: 50px; /* 아이콘의 크기에 맞게 조정 */
+  width: 75px;  /* 아이콘의 크기에 맞게 조정 */
+  height: 75px; /* 아이콘의 크기에 맞게 조정 */
   z-index: 1000; /* 다른 요소들 위에 떠 있게 하려면 충분히 큰 값 */
   background-color: #1B3C62;
   border-radius: 50%;
 }
 
 .chat-img {
-  width: 40px;
-  height: 40px;
+  width: 65px;
+  height: 65px;
 }
 </style>
