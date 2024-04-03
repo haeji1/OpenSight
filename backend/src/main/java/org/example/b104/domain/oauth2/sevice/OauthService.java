@@ -78,6 +78,7 @@ public class OauthService {
                             .userId(userProfile.getEmail())
                             .build()
             );
+            System.out.println(response);
 
             try {
                 if (response != null) {
