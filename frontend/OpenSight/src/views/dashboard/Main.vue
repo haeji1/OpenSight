@@ -155,7 +155,7 @@ console.log('###', getBalanceString, '###')
         <img class="content-img" src="../../assets/img/savings.png" alt="">
       </div>
       <div class="chat-bot" @click="router.push('/chatbot')">
-        <img class="chat-img" src="../../assets/img/whiterobot.png" alt="챗봇" @click="router.push('/chatbot')">
+        <img class="chat-img" src="../../assets/img/whiterobot.png" alt="챗봇" @click="router.push('/chatbot2')">
       </div>
     </div>
   </div>

@@ -70,6 +70,7 @@ export const useAuthStore = defineStore('authStore', () => {
       sessionStorage.setItem('userId', res.data.data.id)
       sessionStorage.setItem('accessToken', res.data.data.accessToken)
       sessionStorage.setItem('refreshToken', res.data.data.refreshToken)
+      name.value = res.data.data.name
       router.push('/main')
     })
     .catch((err) => {console.log(err)})
