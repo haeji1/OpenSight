@@ -12,16 +12,15 @@ const store = useAccountStore()
 
 const router = useRouter()
 
-const loading = ref(false);
-const error = ref(null);
 const transactions = ref([])
 // const apiUrl = 'http://localhost:8080/api/accounts/inquire-account-transaction-history';
 const apiUrl = 'https://j10b104.p.ssafy.io/api/accounts/inquire-account-transaction-history'
 const accessToken = sessionStorage.getItem('accessToken');
 
-const requestData = ref(store.currentAccount.value)
+const requestData = ref(store.currentAccount)
 
-console.log('****', store.currentAccount.value, '****')
+console.log('****', store.currentAccount, '****')
+console.log('++++', requestData, '++++')
 
 // 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
