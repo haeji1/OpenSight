@@ -15,7 +15,8 @@ const router = useRouter()
 const loading = ref(false);
 const error = ref(null);
 const transactions = ref([])
-const apiUrl = 'http://localhost:8080/api/accounts/inquire-account-transaction-history';
+// const apiUrl = 'http://localhost:8080/api/accounts/inquire-account-transaction-history';
+const apiUrl = 'https://j10b104.p.ssafy.io/api/accounts/inquire-account-transaction-history'
 const accessToken = sessionStorage.getItem('accessToken');
 
 console.log('!!!', store.myAccountList.value, '!!!')
