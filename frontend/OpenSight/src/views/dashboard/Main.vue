@@ -85,8 +85,6 @@ function noContent() {
   alert('준비중입니다.')
 }
 
-
-
 const name = sessionStorage.getItem('username')
 </script>
 

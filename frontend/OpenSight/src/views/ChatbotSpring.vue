@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import ChatMessage from '@/components/ChatMessage.vue'
 import { useChatBotStore2 } from '@/stores/chatbot2'
 import {useAccountStore}  from "@/stores/account.js";
+import axios from 'axios'
 
 const accountStore = useAccountStore();
 
@@ -28,6 +29,7 @@ const transferBalance = ref("");
 
 const messageToSend = ref("");
 
+const cameraActivate = ref(false);
 const isCameraReady = ref(false);
 const canvasRef = ref(null);
 const videoRef = ref(null);
@@ -67,7 +69,6 @@ const captureImageFilter = () =>{
         if (response.data.data.result === "success") {
           alert("얼굴인식 성공");
 
-          cameraActivate.value = false;
           await accountStore.inquireAccountList();
 
           console.log(accountStore.myAccountList[0].bankCode);
@@ -113,6 +114,11 @@ const setupCamera = async () => {
   }
 };
 
+const captureImage = () => {
+  canvasRef.value.width = videoRef.value.videoWidth;
+  canvasRef.value.height = videoRef.value.videoHeight;
+  canvasRef.value.getContext('2d').drawImage(videoRef.value, 0, 0);
+};
 async function sendVoiceToCommand() {
   alert("sendVoiceToCommand");
   try {

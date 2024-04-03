@@ -25,6 +25,13 @@ console.log('****', store.currentAccount.value, '****')
 
 // 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
+
+  console.log('은행코드:', requestData.bankCode)
+  console.log('계좌번호:', requestData.accountNo)
+
+  console.log('은행코드 value:', requestData.bankCode.value)
+  console.log('계좌번호 value:', requestData.accountNo,value)
+
   try {
     await axios({
       url: apiUrl,
@@ -42,8 +49,14 @@ const requestTransactionData = async (requestData) =>{
       },
     })
     .then((res) => {
-      console.log("Transaction data requested successfully:", res.data);
-      transactions.value = res.data.data.rec.list;
+      if (res.data.data.result === 'success') {
+        console.log("Transaction data requested successfully:", res.data)
+        transactions.value = res.data.data.rec.list
+      }
+
+      else {
+        console.log(res.data)
+      }
     })
 
 
