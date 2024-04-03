@@ -26,7 +26,6 @@ import ChatbotView from '@/views/Chatbot.vue';
 import SimplePasswordSettingView from '@/views/account/SimplePasswordSetting.vue';
 import SocialLoginView from '@/views/dashboard/SocialLogin.vue';
 import ChatbotView2 from '@/views/ChatbotSpring.vue';
-
 import AccountSettingView from '@/views/account/AccountSetting.vue';
 import SettingView from '@/views/account/Setting.vue';
 

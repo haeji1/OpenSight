@@ -131,7 +131,7 @@ const name = sessionStorage.getItem('username')
         <p class="title2">예적금 상품추천</p>
         <img class="content-img" src="../../assets/img/savings.png" alt="">
       </div>
-      <div class="chat-bot" @click="router.push('/chatbot')">
+      <div class="chat-bot" @click="router.push('/chatbot2')">
         <img class="chat-img" src="../../assets/img/whiterobot.png" alt="챗봇" @click="router.push('/chatbot2')">
       </div>
     </div>
