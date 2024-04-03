@@ -93,7 +93,7 @@ function transferButtonClick() {
         <div class="account-container">
           <div class="account">
             <div class="account-content" v-if = "checkNull">
-              <p class="title1 title1-account">계좌가 없습니다.</p>
+              <p class="title1">계좌가 없습니다.</p>
             </div>
             <div v-else>
               <div class="account-content" v-if="isDataLoaded">
@@ -227,7 +227,7 @@ function transferButtonClick() {
 }
 
 .account {
-  background-image: url('src/assets/img/account.png');
+  background-image: url('../../assets/img/account.png');
   background-position: center;
   width: 360px;
   height: 250px;
