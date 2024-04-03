@@ -125,14 +125,14 @@ const name = sessionStorage.getItem('username')
           <p class="title2">비대면 자유입출금</p>
           <p class="title2">계좌 개설</p>
         </div>
-        <img class="content-img" src="../../assets/img/accountimage.png" alt="">
+        <img class="content-img" src="../../assets/img/accountimage.png" alt="비대면 자유입출금 계좌 개설 페이지로 이동하는 이미지">
       </div>
       <div class="savings" @click="noContent">
         <p class="title2">예적금 상품추천</p>
-        <img class="content-img" src="../../assets/img/savings.png" alt="">
+        <img class="content-img" src="../../assets/img/savings.png" alt="예적금 상품추천 페이지로 이동하는 이미지">
       </div>
       <div class="chat-bot" @click="router.push('/chatbot2')">
-        <img class="chat-img" src="../../assets/img/whiterobot.png" alt="챗봇" @click="router.push('/chatbot2')">
+        <img class="chat-img" src="../../assets/img/whiterobot.png" alt="챗봇으로 이동하는 이미지" @click="router.push('/chatbot2')">
       </div>
     </div>
   </div>

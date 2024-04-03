@@ -5,7 +5,7 @@ import router from '@/router';
   <div class="container">
     <div class="content">
       <div class="check-mark">
-        <img class="check-img" src="../../assets/img/check-mark.png" alt="회원가입이 완료되었다는 이미지">
+        <img class="check-img" src="../../assets/img/check-mark.png" alt="비밀번호 재설정이 완료되었다는 이미지">
       </div>
       <div class="title">
         <p class="title2">비밀번호가 새롭게 설정되었습니다</p>

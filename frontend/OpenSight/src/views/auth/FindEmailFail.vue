@@ -6,7 +6,7 @@ import router from '@/router';
   <div class="container">
     <div class="content">
       <div>
-        <img class="caution-img" src="../../assets/img/caution.png" alt="">
+        <img class="caution-img" src="../../assets/img/caution.png" alt="일치하는 회원정보를 찾지 못했다는 이미지">
       </div>
       <div>
         <div class="title-message">

@@ -11,7 +11,7 @@ const accountStore = useAccountStore();
   <div class="container">
     <div class="content">
       <div class="check-mark">
-        <img class="check-img" src="../../assets/img/check-mark.png" alt="회원가입이 완료되었다는 이미지">
+        <img class="check-img" src="../../assets/img/check-mark.png" alt="계좌이체가 완료되었다는 이미지">
       </div>
       <div class="title">
         <p class="title1">이체가 완료되었습니다</p>

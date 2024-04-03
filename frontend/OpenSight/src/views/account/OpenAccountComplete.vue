@@ -5,6 +5,16 @@ import { useAccountStore } from '@/stores/account';
 
 const AccountStore = useAccountStore();
 
+const bankName = computed(() => {
+  const code = AccountStore.openAccountResult.bankCode;
+  const bankMap = {
+    '001': '한국은행',
+    '002': '산업은행',
+    '003': '기업은행',
+    '004': '국민은행',
+  }
+  return bankMap[code];
+})
 
 
 </script>
@@ -21,7 +31,7 @@ const AccountStore = useAccountStore();
       <div class="content-box">
         <div class="bank-name">
           <p class="title3">은행명</p>
-          <p class="title3">{{AccountStore.openAccountResult.bankCode}}</p>
+          <p class="title3">{{bankName}}</p>
         </div>
         <div class="bank-number">
           <p class="title3">계좌번호</p>
