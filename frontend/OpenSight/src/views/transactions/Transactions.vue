@@ -28,9 +28,6 @@ const requestTransactionData = async (requestData) =>{
   console.log('은행코드:', requestData._value.bankCode)
   console.log('계좌번호:', requestData._value.accountNo)
 
-  console.log('은행코드 value:', requestData._value.bankCode.value)
-  console.log('계좌번호 value:', requestData._value.accountNo,value)
-
   try {
     await axios({
       url: apiUrl,
