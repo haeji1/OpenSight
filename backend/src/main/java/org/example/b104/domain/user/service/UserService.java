@@ -41,7 +41,7 @@ public class UserService {
     @Autowired
     private final AmazonS3Service s3Service;
     //private static final String UPLOAD_DIR = "C:\\OPENSIGHT\\profileImages";
-    private static final String UPLOAD_DIR = "\\profileImages";
+    private static final String UPLOAD_DIR = "profileImages";
 
     public String getPrefixOfEmail(String email) {
         String[] parts = email.split("@");
