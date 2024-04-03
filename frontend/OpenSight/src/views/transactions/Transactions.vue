@@ -86,7 +86,7 @@ onMounted( async () => {
           <p class="title2 title2-white">잔액 {{ store.currentAccount.accountBalance }}원</p>
         </div>
       </div>
-      <button class="button" @click="">이체하기</button>
+      <button class="button" @click="router.push('/transfer')">이체하기</button>
       <!-- <button class="">조회기간설정</button> -->
       <TransactionList class="transaction" :transactions="transactions" />
       <!-- <DateRangeModal v-if="isModalOpen" @update="updateDateRange" @close="closeModal" /> -->
