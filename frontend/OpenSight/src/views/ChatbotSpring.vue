@@ -5,12 +5,9 @@ import ChatMessage from '@/components/ChatMessage.vue'
 import { useChatBotStore2 } from '@/stores/chatbot2'
 import {useAccountStore}  from "@/stores/account.js";
 
-
 const accountStore = useAccountStore();
 
-
 const router = useRouter();
-
 
 const store = useChatBotStore2()
 
@@ -22,7 +19,6 @@ const messages = ref([
     isChatbot: 1 },
 ])
 
-const miccheck = ref(null);
 
 const isNextCommandTrasnferInfoRequest = ref(0);
 
@@ -31,6 +27,8 @@ const receiverAccountNo = ref("");
 const transferBalance = ref("");
 
 const messageToSend = ref("");
+
+const cameraActivate = ref(false)
 
 async function sendVoiceToCommand() {
   alert("sendVoiceToCommand");
@@ -213,6 +211,16 @@ watch(()=> store.getSpringResponse, async (command) => {
   <div class="header">
     <p class="title1" @click="router.push('/main')">&lt;</p><p class="title1">챗봇</p>
   </div>
+
+  <div v-if="cameraActivate" class="modal">
+    <!-- 여기 밑 클릭 이벤트에 카메라 활성화하는 함수 작성 -->
+    <!-- 카메라 활성화하는 함수를 작성했을 때 cameraActivate.value = ture로 바꾸고 -->
+    <!-- 얼굴 인식이 끝나면 cameraActivate.value = false로 바꿔야 함 -->
+    <div @click="">
+      <img class="faceid" src="../assets/img/faceid.png" alt="얼굴 인식 버튼">
+    </div> 
+  </div>
+
   <div class="content">
     <div class="chat-container">
       <ChatMessage v-for="message in messages"
@@ -311,4 +319,17 @@ watch(()=> store.getSpringResponse, async (command) => {
   border-radius: 10px;
   border: 1px solid #cbcbcb;
 }
+
+.modal {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 100vw;
+  height: 100vh;
+  z-index: 99;
+}
+
+.faceid {
+  width: 100px;
+  height: 100px;
+}
+
 </style>
