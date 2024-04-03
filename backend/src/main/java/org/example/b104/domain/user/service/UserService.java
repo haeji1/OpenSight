@@ -228,18 +228,24 @@ public class UserService {
 
         try {
             // 디렉토리가 없으면 생성
-            File uploadDir = new File(UPLOAD_DIR);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+//            File uploadDir = new File(UPLOAD_DIR);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdirs();
+//            }
+//
+//            // 파일을 지정된 디렉토리에 저장
+//            String fileName = command.getEmail() + profileImage.getOriginalFilename();
+//            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
+//            profileImage.transferTo(destFile);
+//
+//
+//            String fn = s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
 
-            // 파일을 지정된 디렉토리에 저장
-            String fileName = command.getEmail() + profileImage.getOriginalFilename();
-            File destFile = new File(UPLOAD_DIR + File.separator + fileName);
-            profileImage.transferTo(destFile);
 
+            String fileName = profileImage.getOriginalFilename();
+            String keyName = fileName;
+            s3Service.uploadFile(profileImage,"cloud-open-sight-ue1");
 
-            String fn = s3Service.uploadFile(UPLOAD_DIR + File.separator + fileName);
             faceId = amazonRekognitionService.registeruser("cloud-open-sight-ue1", fileName);
         } catch (IOException e) {
             e.printStackTrace();
