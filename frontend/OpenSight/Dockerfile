@@ -47,12 +47,13 @@ COPY package.json .
 COPY package-lock.json .
 
 # Install dependencies
+RUN npm install
 RUN npm ci
 
 # Copy the rest of your Vue.js application source code
 COPY . /app
 
-RUN npm install
+# RUN npm install
 # Build your Vue.js application
 RUN npm run build
 
