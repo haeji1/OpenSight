@@ -43,6 +43,8 @@ export const useChatBotStore = defineStore('chatBotStore', () => {
 
         const text = event['results'][0][0]['transcript']
 
+        console.log(text)
+
         // 4-1. 녹음이 정상적으로 되었을 경우 변환된 텍스트를 django로 전달
         if (text) {
           axios({
