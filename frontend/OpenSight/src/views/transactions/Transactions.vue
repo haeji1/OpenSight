@@ -21,7 +21,7 @@ const accessToken = sessionStorage.getItem('accessToken');
 
 const requestData = ref(store.currentAccount.value)
 
-console.log('%$%$', store.currentAccount.value, '%$%$')
+console.log('****', store.currentAccount.value, '****')
 
 // 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
@@ -32,7 +32,14 @@ const requestTransactionData = async (requestData) =>{
       headers : {
         'Authorization': `${accessToken}`
       },
-      data: requestData,
+      data: {
+        "bankCode": requestData.bankCode,
+        "accountNo": requestData.accountNo,
+        "startDate": "20240101",
+        "endDate": "20241231",
+        "transactionType": "A",
+        "orderByType": "DESC"
+      },
     })
     .then((res) => {
       console.log("Transaction data requested successfully:", res.data);
