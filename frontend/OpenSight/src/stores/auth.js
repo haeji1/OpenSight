@@ -70,27 +70,21 @@ export const useAuthStore = defineStore('authStore', () => {
       sessionStorage.setItem('userId', res.data.data.id)
       sessionStorage.setItem('accessToken', res.data.data.accessToken)
       sessionStorage.setItem('refreshToken', res.data.data.refreshToken)
-      name.value = res.data.data.name
+      sessionStorage.setItem('username', res.data.data.name)
       router.push('/main')
     })
     .catch((err) => {console.log(err)})
   }
 
   const logout = function () {
-    axios({
-      method: 'post',
-      url: `${accountBaseURL}/users/logout`
-    })
-    .then((res) => {
       accessToken.value = null
       refreshToken.value = null
       sessionStorage.removeItem('userId')
       sessionStorage.removeItem('accessToken')
       sessionStorage.removeItem('refreshToken')
+      sessionStorage.removeItem('username')
       alert('로그아웃 되었습니다.')
       router.push('/login')
-    })
-    .catch((err) => {console.log(err)})
   }
 
   const findEmail = function (payload) {
