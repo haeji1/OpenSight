@@ -2,26 +2,38 @@ FROM gradle:8.5-jdk17 AS build
 
 WORKDIR /app
 
-# 라이브러리 설치에 필요한 파일만 복사
+# Copy only the files needed for dependency installation
 COPY build.gradle settings.gradle ./
 
+# Install dependencies
 RUN gradle dependencies --no-daemon
 
-# 호스트 머신의 소스코드를 작업 디렉토리로 복사
+# Copy the rest of your application's source code
 COPY . /app 
 
-# Gradle 빌드를 실행하여 JAR 파일 생성
+# Execute Gradle build, creating the JAR file
 RUN gradle clean build --no-daemon
 
-# 런타임 이미지로 OpenJDK 11-jre-slim 지정
+# Use OpenJDK 17 slim image for the runtime
 FROM openjdk:17.0.1-jdk-slim
 
-# 애플리케이션을 실행할 작업 디렉토리를 생성
+# Create the application's working directory
 WORKDIR /app
 
-# 빌드 이미지에서 생성된 JAR 파일을 런타임 이미지로 복사        
+# Create the directory for uploaded files
+RUN mkdir -p /var/www/myapp/uploads
+
+# Make sure the directory is writable by the container's user
+# If your application runs as a non-root user, ensure that user owns the upload directory
+# RUN adduser --disabled-password --gecos "" appuser && chown -R appuser:appuser /var/www/myapp/uploads
+# USER appuser
+
+# Copy the built JAR file from the build stage to the runtime container
 COPY --from=build /app/build/libs/*.jar /app/B104.jar
 
+# Expose the port the app runs on
 EXPOSE 8080 
+
+# Specify the entry point and default command
 ENTRYPOINT ["java"] 
 CMD ["-jar", "B104.jar"]
