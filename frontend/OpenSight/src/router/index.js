@@ -29,6 +29,14 @@ import ChatbotView2 from '@/views/ChatbotSpring.vue';
 import AccountSettingView from '@/views/account/AccountSetting.vue';
 import SettingView from '@/views/account/Setting.vue';
 
+const requireAuth = () => (from, to, next) => {
+  if (!sessionStorage.getItem("accessToken")) {
+    window.alert("로그인이 필요한 서비스입니다. 로그인을 해주세요");
+    next("/login");
+  }
+  next();
+};
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +49,8 @@ const router = createRouter({
     {
       path: '/main',
       name: 'Main',
-      component: MainView
+      component: MainView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/',
@@ -76,12 +85,14 @@ const router = createRouter({
     {
       path: '/profile/edit',
       name: 'EditProfile',
-      component: EditProfileView
+      component: EditProfileView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/profile/edit-complete',
       name: 'EditProfileComplete',
-      component: EditProfileCompleteView
+      component: EditProfileCompleteView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/find-password',
@@ -106,62 +117,74 @@ const router = createRouter({
     {
       path: '/account/open/select-bank',
       name: 'OpenAccount',
-      component: OpenAccountView
+      component: OpenAccountView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/account/open/terms',
       name: 'OpenAccountTerms',
-      component: OpenAccountTermsView
+      component: OpenAccountTermsView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/account/open/complete',
       name: 'OpenAccountComplete',
-      component: OpenAccountCompleteView
+      component: OpenAccountCompleteView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/savings',
       name: 'Savings',
-      component: SavingsView
+      component: SavingsView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/transactions',
       name: 'Transactinos',
-      component: TransactionsView
+      component: TransactionsView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/transfer',
       name: 'Transfer',
-      component: TransferView
+      component: TransferView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/transfer/confirm',
       name: 'TransferConfirm',
-      component: TransferConfirmView
+      component: TransferConfirmView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/transfer/complete',
       name: 'TransferComplete',
-      component: TransferCompleteView
+      component: TransferCompleteView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/transfer/verify',
       name: 'TransferVerify',
-      component: TransferVerifyView
+      component: TransferVerifyView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/chatbot',
       name: 'Chatbot',
-      component: ChatbotView
+      component: ChatbotView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/chatbot2',
       name: 'Chatbot2',
-      component: ChatbotView2
+      component: ChatbotView2,
+      beforEnter: requireAuth()
     },
     {
       path: '/password/setting',
       name: 'SimplePasswordSetting',
-      component: SimplePasswordSettingView
+      component: SimplePasswordSettingView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/login/social',
@@ -171,12 +194,14 @@ const router = createRouter({
     {
       path: '/setting',
       name: 'Setting',
-      component: SettingView
+      component: SettingView,
+      beforeEnter: requireAuth(),
     },
     {
       path: '/account/setting',
       name: 'AccountSetting',
-      component: AccountSettingView
+      component: AccountSettingView,
+      beforeEnter: requireAuth(),
     }
   ]
 })
