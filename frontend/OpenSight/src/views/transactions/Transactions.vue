@@ -41,7 +41,7 @@ const requestTransactionData = async (requestData) =>{
         "startDate": "20240101",
         "endDate": "20241231",
         "transactionType": "A",
-        "orderByType": "DESC"
+        "orderByType": "ASC"
       },
     })
     .then((res) => {
@@ -78,7 +78,14 @@ onMounted( async () => {
       <p class="title2" @click="router.push('/main')">&lt;</p><p class="title2">거래 내역 조회</p>
     </div>
     <div class="content">
-      <Account class="account" />
+      <div class="account">
+        <div class="account-content">
+          <p class="title1-white">{{ requestData._value.bankName }}</p>
+          <p class="body3-white">{{ requestData._value.accountName }}</p>
+          <p class="body2-white">{{ requestData._value.accountNo }}</p>
+          <p class="title2-white">{{ requestData._value.accountBalance }}</p>
+        </div>
+      </div>
       <button class="button" @click="">이체하기</button>
       <!-- <button class="">조회기간설정</button> -->
       <TransactionList :transactions="transactions" />
@@ -125,5 +132,27 @@ onMounted( async () => {
 
 .title2 {
   margin-right: 10px;
+}
+
+.account {
+  background-image: url('src/assets/img/account.png');
+  background-position: center;
+  width: 360px;
+  height: 250px;
+  border-radius: 15px;
+}
+
+.account-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  text-align: left;
+  margin-top: 40px;
+  margin-left: 50px;
+}
+
+.title1-white, .title2-white, .body2-white, .body3-white {
+  color: #ffffff;
+  margin: 5px 0px;
 }
 </style>
