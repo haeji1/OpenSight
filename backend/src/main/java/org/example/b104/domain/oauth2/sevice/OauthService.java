@@ -85,7 +85,7 @@ public class OauthService {
             System.out.println("============RegisterAccountMemberResponse====="+response.getUserName());
 
             try {
-                if (response != null) {
+                if (response == null) {
                     String userKey = response.getUserKey();
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
