@@ -15,6 +15,7 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const selectMyAccountNumber = ref(null);
     const selectedMyAccountBankCode = ref(null);
     const transactionDate = ref(null);
+    const currentAccount = ref({})
     
     const isNull = ref(false)
 
@@ -186,7 +187,7 @@ export const useAccountStore = defineStore('AccountStore', () => {
     const matchedBank = computed(() => matchBank(selectedBank.value));
 
 
-    return {myAccountList, accountTypes,selectedAccountType,transactionDate,currentIndex,
+    return {myAccountList, accountTypes,selectedAccountType,transactionDate,currentAccount,currentIndex,
       openAccountResult,selectedBank,myAccountBalance,accountNumber,selectMyAccountNumber,selectedMyAccountBankCode,
       amount,recipientName,senderName,selectedBankName, checkSimplePassword,
       inqureBankAccountListType,openAccount,inquireAccountList, inquireBalance,accountTransfer,isNull}
