@@ -227,12 +227,12 @@ watch(()=> store.getSpringResponse, async (command) => {
 
       <div v-if="textMessage">
         <div class="button" @click="sendButtonClick()">
-          <img class="speech" src="../assets/img/send.png" alt=""> 
+          <img class="speech" src="../assets/img/send.png" alt="입력한 글자를 챗봇에게 보내는 버튼"> 
         </div>
       </div>
       <div v-else>
         <div class="button" @click="sendVoiceToCommand">
-          <img class="speech" src="../assets/img/waves.png" alt=""> 
+          <img class="speech" src="../assets/img/waves.png" alt="음성으로 말하기 위한 시작 버튼"> 
         </div>
       </div>
     </div>

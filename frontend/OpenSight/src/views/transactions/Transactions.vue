@@ -6,6 +6,10 @@ import TransactionList from '@/components/transactinos/TransactionList.vue'
 import Account from '@/components/layout/Account.vue'
 import axios from 'axios';
 
+import { useAccountStore } from '@/stores/account'
+
+const store = useAccountStore()
+
 const router = useRouter()
 
 const loading = ref(false);
@@ -14,20 +18,13 @@ const transactions = ref([])
 const apiUrl = 'http://localhost:8080/api/accounts/inquire-account-transaction-history';
 const accessToken = sessionStorage.getItem('accessToken');
 
-const requestData = {
-    bankCode: "004",
-    accountNo: "0048656398367274",
-    startDate: "20240101",
-    endDate: "20241231",
-    transactionType: "A",
-    orderByType: "DESC",
-  };
+console.log('!!!', store.myAccountList.value, '!!!')
+console.log('@@@', store.currentIndex.value, '@@@')
+console.log('###', store.myAccountList[store.currentIndex.value], '###')
 
-  onMounted( async () => {
-    const aaa = await requestTransactionData(requestData);
-    console.log("transactions", aaa);
-})
+const requestData = ref(store.myAccountList[store.currentIndex.value])
 
+// 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
   try {
     await axios({
@@ -51,7 +48,11 @@ const requestTransactionData = async (requestData) =>{
 }
 
 
-
+// 페이지를 불러오면서 해당 계좌에 있는 거래내역 가져오기
+onMounted( async () => {
+  const aaa = await requestTransactionData(requestData);
+  console.log("transactions", aaa);
+})
 </script>
 
 
