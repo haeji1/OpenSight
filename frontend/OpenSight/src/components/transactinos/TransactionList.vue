@@ -24,7 +24,7 @@ const formatDateTime = (date, time) => {
 
 <template>
   <div class="transaction-content">
-    <div v-for="transaction in transactions" :key="transaction.id">
+    <div v-for="transaction in transactions" :key="transaction.transactionUniqueNo">
       <div class="content-box">
         <p class="caption1 gray">{{ formatDateTime(transaction.transactionDate, transaction.transactionTime)}}</p>
         
@@ -34,7 +34,13 @@ const formatDateTime = (date, time) => {
           </div>
           <div class="right-content">
             <div class="right-text">
-              <p class="caption1 gray">입금</p><p class="caption1">{{ transaction.transactionBalance }}원</p>
+              <p class="caption1 gray">{{ transaction.transactionTypeName }}</p>
+              <p v-if="transaction.transactionTypeName == '입금'" class="caption1 color-blue">
+                {{ transaction.transactionBalance }}원
+              </p>
+              <p v-else class="caption1 color-red">
+                {{ transaction.transactionBalance }}원
+              </p>
             </div>
             <div class="right-text">
               <p class="caption1 gray">잔액</p><p class="caption1">{{ transaction.transactionAfterBalance}}원</p>
@@ -70,6 +76,14 @@ const formatDateTime = (date, time) => {
 
 .gray {
   color: #979797;
+}
+
+.color-red {
+  color: #ff4267;
+}
+
+.color-blue {
+  color: #416692;
 }
 
 .right-text {

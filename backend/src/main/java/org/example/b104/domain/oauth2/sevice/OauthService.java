@@ -64,7 +64,7 @@ public class OauthService {
         System.out.println("**********User정보***********"+userProfile.getEmail());
         System.out.println("**********user정보**********"+userProfile.getName());
         System.out.println("====userProfile.getEmail===="+userProfile.getEmail());
-        System.out.println("=====userRepository에서 찾은 Email===="+userRepository.findByEmail(userProfile.getEmail()).getEmail());
+//        System.out.println("=====userRepository에서 찾은 Email===="+userRepository.findByEmail(userProfile.getEmail()).getEmail());
 
         if (userRepository.findByEmail(userProfile.getEmail()) == null) {
             System.out.println("==================email이 null임==================");
