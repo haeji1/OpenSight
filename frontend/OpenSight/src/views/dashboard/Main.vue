@@ -45,7 +45,7 @@ onMounted(async () => {
 
 // currentIndex가 변경될 때마다 잔액을 다시 조회
 watch(currentIndex, async (newIndex) => {
-  accountStore.currentIndex = currentIndex.value;
+  accountStore.currentIndex.value = currentIndex.value;
   await fetchAccountBalance(newIndex);
 });
 
@@ -75,8 +75,10 @@ function transferButtonClick() {
 }
 
 function transactionButtonClick() {
-  console.log('&&&', accountStore.myAccountList[currentIndex.value], '&&&')
-  console.log('***', accountStore.currentIndex.value, '***')
+  accountStore.currentAccount.value = accountStore.myAccountList[currentIndex.value]
+
+  console.log('%$%$', accountStore.currentAccount.value, '%$%$')
+  router.push({name:'Transactinos'})
 }
 
 function noContent() {

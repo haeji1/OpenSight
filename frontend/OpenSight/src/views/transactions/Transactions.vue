@@ -19,11 +19,9 @@ const transactions = ref([])
 const apiUrl = 'https://j10b104.p.ssafy.io/api/accounts/inquire-account-transaction-history'
 const accessToken = sessionStorage.getItem('accessToken');
 
-console.log('!!!', store.myAccountList.value, '!!!')
-console.log('@@@', store.currentIndex.value, '@@@')
-console.log('###', store.myAccountList[store.currentIndex.value], '###')
+const requestData = ref(store.currentAccount.value)
 
-const requestData = ref(store.myAccountList[store.currentIndex.value])
+console.log('%$%$', store.currentAccount.value, '%$%$')
 
 // 최근 거래내역조회를 가져오는 함수
 const requestTransactionData = async (requestData) =>{
