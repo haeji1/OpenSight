@@ -58,7 +58,7 @@ const formatDateTime = (date, time) => {
   border-radius: 15px;
   background-color: #ffffff;
   box-shadow: 0px 4px 30px rgba(54, 41, 183, 0.07);
-  width: 300px;
+  width: 340px;
   height: 120px;
   display: flex;
   flex-direction: column;

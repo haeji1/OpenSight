@@ -41,7 +41,7 @@ const requestTransactionData = async (requestData) =>{
         "startDate": "20240101",
         "endDate": "20241231",
         "transactionType": "A",
-        "orderByType": "ASC"
+        "orderByType": "DESC"
       },
     })
     .then((res) => {
@@ -80,10 +80,10 @@ onMounted( async () => {
     <div class="content">
       <div class="account">
         <div class="account-content">
-          <p class="title1-white">{{ store.currentAccount.bankName }}</p>
-          <p class="body3-white">{{ store.currentAccount.accountName }}</p>
-          <p class="body2-white">{{ store.currentAccount.accountNo }}</p>
-          <p class="title2-white">{{ store.currentAccount.accountBalance }}</p>
+          <p class="title1 title1-white">{{ store.currentAccount.bankName }}</p>
+          <p class="body3 body3-white">{{ store.currentAccount.accountName }}</p>
+          <p class="body2 body2-white">계좌번호 {{ store.currentAccount.accountNo }}</p>
+          <p class="title2 title2-white">잔액 {{ store.currentAccount.accountBalance }}원</p>
         </div>
       </div>
       <button class="button" @click="">이체하기</button>
