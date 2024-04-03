@@ -45,7 +45,7 @@ onMounted(async () => {
 
 // currentIndex가 변경될 때마다 잔액을 다시 조회
 watch(currentIndex, async (newIndex) => {
-  accountStore.currentIndex.value = currentIndex.value;
+  accountStore.currentIndex = currentIndex.value;
   await fetchAccountBalance(newIndex);
 });
 
