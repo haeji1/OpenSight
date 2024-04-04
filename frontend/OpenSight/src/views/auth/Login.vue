@@ -48,7 +48,7 @@ const captureImageFilter = () =>{
         sessionStorage.setItem('userId', response.data.data.id);
         sessionStorage.setItem('accessToken', response.data.data.accessToken);
         sessionStorage.setItem('refreshToken', response.data.data.refreshToken);
-        sessionStorage.setItem('username', res.data.data.name)
+        sessionStorage.setItem('username', response.data.data.name)
         router.push('/main')
       } catch (error) {
         console.error('face login failed:', error);
