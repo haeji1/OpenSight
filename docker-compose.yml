@@ -1,7 +1,7 @@
 # version: '2.25'
 services:
   app:
-    image: chiseungoh/backend:latest # Replace with your actual Spring Boot Docker image tag
+    image: username/backend:latest # Replace with your actual Spring Boot Docker image tag
     ports:
       - "8080:8080"
     container_name: backend
@@ -32,7 +32,7 @@ services:
       - docker-network
 
   frontend:
-    image: chiseungoh/frontend:latest # Replace with your actual frontend Docker image tag
+    image: username/frontend:latest # Replace with your actual frontend Docker image tag
     ports:
       - "8081:80"
     networks:
