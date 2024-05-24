@@ -24,10 +24,6 @@ public class AccountService {
 
     private final String apiKey = "010218e760dd476db9bac3b474847947";
 
-    /*
-  "managerId" : "JinhoRyu.dev@gmail.com",
-  "apiKey" : "64e3fbfadb5d4d73baf1f7523fc5887e"
-     */
 
     AccountService() {
         httpClient = HttpClient.newHttpClient();
@@ -51,7 +47,7 @@ public class AccountService {
     }
 
     public MakeManagerKeyResponse makeManagerKey(String managerId) {
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/app/issuedApiKey", "POST", "{\"managerId\": \"" + managerId + "\"}");
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST", "{\"managerId\": \"" + managerId + "\"}");
 
         if (httpResponse == null) return null;
         if (httpResponse.statusCode() != 200) return null;
@@ -72,7 +68,7 @@ public class AccountService {
         return null;
     }
     public MakeManagerKeyResponse remakeManagerKey(String managerId) {
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/app/reIssuedApiKey", "POST", "{\"managerId\": \"" + managerId + "\"}");
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST", "{\"managerId\": \"" + managerId + "\"}");
 
         if (httpResponse == null) return null;
         if (httpResponse.statusCode() != 200) return null;
@@ -100,7 +96,7 @@ public class AccountService {
         jsonObject.put("apiKey", apiKey);
         jsonObject.put("userId", userId);
 
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 jsonObject.toString());
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -147,7 +143,7 @@ public class AccountService {
         jsonObject.put("userId", userId);
 
         System.out.println(jsonObject.toString());
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/member/search", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 jsonObject.toString());
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -211,12 +207,9 @@ public class AccountService {
         String jsonNodeString2 = new String(jsonNodeStringArray);
         //*********************************************************
 
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireBankAccountTypes", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 jsonNodeString2);
 
-//        System.out.println("[+] Status Code : " + httpResponse.statusCode());
-//        System.out.println("[+] Body : " +httpResponse.body());
-//        System.out.println("##################################################");
 
         JSONObject jsonObject = new JSONObject(httpResponse.body());
         JSONObject resultHeader = jsonObject.getJSONObject("Header");
@@ -252,7 +245,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/openAccount", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"accountTypeUniqueNo\": \"" + accountTypeUniqueNo + "\"}");
 
         if (httpResponse == null) return null;
@@ -295,7 +288,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountList", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + "}");
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -342,7 +335,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountInfo", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -388,7 +381,7 @@ public class AccountService {
                 .userKey(userKey)
                 .build();
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireDepositorAccountNumber", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -436,7 +429,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountBalance", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\"}");
 
         if (httpResponse == null) return null;
@@ -484,7 +477,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/drawingTransfer", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                    "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"transactionSummary\": \"" + transactionSummary + "\"}");
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -535,7 +528,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/receivedTransferAccountNumber", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionBalance\": " + transactionBalance + ", \"transactionSummary\": \"" + transactionSummary + "\"}");
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -589,7 +582,7 @@ public class AccountService {
 
         accountRequestHeader.init();
 
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/accountTransfer", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", " +
                         "\"depositBankCode\": \"" + depositBankCode + "\", " +
                         "\"depositAccountNo\": \"" + depositAccountNo + "\", " +
@@ -647,7 +640,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireAccountTransactionHistory", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"startDate\": \"" + startDate + "\", \"endDate\": \"" + endDate + "\", \"transactionType\": \"" + transactionType + "\", \"orderByType\": \"" + orderByType + "\"}");
 
         System.out.println("[+] Status Code : " + httpResponse.statusCode());
@@ -696,7 +689,7 @@ public class AccountService {
                 .build();
 
         accountRequestHeader.init();
-        HttpResponse<String> httpResponse = SendHttpRequest("https://finapi.p.ssafy.io/ssafy/api/v1/edu/account/inquireTransactionHistoryDetail", "POST",
+        HttpResponse<String> httpResponse = SendHttpRequest("https://openbankapi", "POST",
                 "{\"Header\": " + objectMapper.valueToTree(accountRequestHeader).toString() + ", \"bankCode\": \"" + bankCode + "\", \"accountNo\": \"" + accountNo + "\", \"transactionUniqueNo\": \"" + transactionUniqueNo + "\"}");
 
 

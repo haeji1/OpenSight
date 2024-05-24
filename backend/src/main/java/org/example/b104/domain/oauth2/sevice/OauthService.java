@@ -64,20 +64,11 @@ public class OauthService {
         System.out.println("**********User정보***********"+userProfile.getEmail());
         System.out.println("**********user정보**********"+userProfile.getName());
         System.out.println("====userProfile.getEmail===="+userProfile.getEmail());
-//        System.out.println("=====userRepository에서 찾은 Email===="+userRepository.findByEmail(userProfile.getEmail()).getEmail());
+
 
         if (userRepository.findByEmail(userProfile.getEmail()) == null) {
             System.out.println("==================email이 null임==================");
-//            System.out.println("======api통신 시작=========" + userProfile.getEmail());
-//            String emailPrefix = userProfile.getEmail().substring(0, Math.min(userProfile.getEmail().length(), 10));
-//            BankApiResponse responseEntity = WebClient.create()
-//                    .post()
-//                    .uri("https://finapi.p.ssafy.io/ssafy/api/v1/member/")
-//                    .bodyValue(new OauthService.MemberRequest("96f07d05ddb44471a9f51ab483286563", userProfile.getEmail()))
-//                    .retrieve()
-//                    .bodyToMono(BankApiResponse.class)
-//                    .block();
-//            System.out.println("=====통신완료========");
+
             RegisterAccountMemberResponse response = accountService.registerAccountMember(
                     RegisterAccountMemberCommand.builder()
                             .userId(userProfile.getEmail())
@@ -139,48 +130,6 @@ public class OauthService {
                 e.printStackTrace();
             }
 
-//            if (responseEntity != null) {
-//                String userKey = responseEntity.getPayload().getUserKey();
-//                Date created = responseEntity.getPayload().getCreated();
-//                Date modified = responseEntity.getPayload().getModified();
-//                String institutionCode = responseEntity.getPayload().getInstitutionCode();
-//
-//                User newUser = User.createNewUser(
-//                        userProfile.getEmail(),
-//                        bCryptPasswordEncoder.encode("socialLogin"),
-//                        userProfile.getName(),
-//                        userKey,
-//                        created,
-//                        modified,
-//                        institutionCode,
-//                        emailPrefix
-//                );
-//                // 3. 유저 DB에 저장
-////            User user = saveOrUpdate(userProfile);
-//                User user = userRepository.save(newUser);
-//
-//                // JWT 토큰 만들기
-//                String jwtToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getUserId()));
-//                String refreshToken = jwtTokenProvider.createRefreshToken();
-//
-//                Auth auth = Auth.builder()
-//                        .user(user)
-//                        .refreshToken(refreshToken)
-//                        .build();
-//
-//                saveOrUpdate(auth, user);
-//
-////        System.out.println("jwt토큰"+jwtToken);
-//                return SocialLoginResponse.builder()
-//                        .id(user.getUserId())
-//                        .name(user.getUsername())
-//                        .email(user.getEmail())
-//                        .tokenType("Bearer")
-//                        .accessToken(tokenResponse.getAccessToken())
-//                        .jwtToken(jwtToken)
-//                        .refreshToken(refreshToken)
-//                        .build();
-//            }
 
         } else {
             System.out.println("======email이 null이 아님======");
@@ -197,9 +146,7 @@ public class OauthService {
 
             saveOrUpdate(auth, user);
 
-//            saveOrUpdate(auth.getUser());
 
-//        System.out.println("jwt토큰"+jwtToken);
             return SocialLoginResponse.builder()
                     .id(user.getUserId())
                     .name(user.getUsername())
@@ -210,11 +157,6 @@ public class OauthService {
                     .refreshToken(refreshToken)
                     .build();
         }
-
-
-
-//        System.out.println("===유저정보 출력==="+user.getName()+user.getEmail());
-
 
         return null;
     }
@@ -265,13 +207,7 @@ public class OauthService {
         return formData;
     }
 
-//    private User saveOrUpdate(UserProfile userProfile) {
-//        User user = userRepository.findByOauthId(userProfile.getOauthId())
-//                .map(entity -> entity.update(
-//                        userProfile.getName(), userProfile.getEmail()))
-//                .orElseGet(userProfile::toUser);
-//    return userRepository.save(user);
-//    }
+
 private User saveOrUpdate(UserProfile userProfile) {
     // 이메일을 기준으로 사용자를 조회
     User existingUser = userRepository.findByEmail(userProfile.getEmail());
@@ -301,20 +237,7 @@ private User saveOrUpdate(UserProfile userProfile) {
         auth.updateRefresh(authorization.getRefreshToken()); // 새로운 refresh token으로 갱신
         return authRepository.save(auth);
     }
-//
-////        Optional<Auth> optionalAuth = authRepository.findByUserUserId(user.getUserId());
-////        if (optionalAuth.isPresent()) {
-////            Auth auth = optionalAuth.get();
-////            auth.updateRefresh(authorization.getRefreshToken());
-////            return authRepository.save(auth);
-////        } else {
-////            Auth auth = Auth.builder()
-////                    .user(user)
-////                    .refreshToken(authorization.getRefreshToken())
-////                    .build();
-////            return authRepository.save(auth);
-////        }
-//    }
+
 public String getPrefixOfEmail(String email) {
     String[] parts = email.split("@");
     if (parts.length > 0) {

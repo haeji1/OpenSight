@@ -143,7 +143,7 @@ public class UserService {
         String emailPrefix = command.getEmail().substring(0, Math.min(command.getEmail().length(), 10));
         BankApiResponse responseEntity = WebClient.create()
                 .post()
-                .uri("https://finapi.p.ssafy.io/ssafy/api/v1/member/")
+                .uri("https://openbankapi")
                 .bodyValue(new MemberRequest("d16009763e1e4c82a538f3c29a090513", command.getEmail()))
                 .retrieve()
                 .bodyToMono(BankApiResponse.class)
