@@ -63,7 +63,7 @@ SSAFY 10기 특화 프로젝트
 ### 팀원
 |임지현|김혜지|류진호|오치승|임태수|
 |---|---|---|---|--|
-|팀장, FE, AI|BE, FE|BE Leader, FE|Infra, FE|FE Leader, UI/UX|
+|팀장, FE, AI|BE, FE|BE, FE|Infra, FE|FE Leader, UI/UX|
 
 #### 역할
 임지현
@@ -87,6 +87,7 @@ SSAFY 10기 특화 프로젝트
   - 네이버 소셜 로그인 구현
   - jwt 로그인 구현
   - 유저 관리 및 간편 계좌 등록 및 확인
+  - 간편 비밀번호 구현
   - Spring에서 챗봇 로직 구현
 - Frontend 개발
   - 유저 로그인, 회원가입 페이지 연동
@@ -96,7 +97,6 @@ SSAFY 10기 특화 프로젝트
 류진호
 - ERD, API 설계
 - Backend 개발
-  - 일반 로그인 구현
   - 얼굴 인식(Amazon Rekognition) 로그인 및 이체 확인 구현
   - 뱅킹 시스템(계좌조회, 이체, 생성, 내역조회) 구현
 - Frontend 개발
